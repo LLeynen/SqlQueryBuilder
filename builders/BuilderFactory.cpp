@@ -13,10 +13,8 @@ import :BuilderTypes;
 namespace DataAccessLayer::SqlQueryBuilder
 {
     BuilderFactory::BuilderFactory() = default;
-    
     BuilderFactory::~BuilderFactory() = default;
 
-    // BuilderFactory::instance
     BuilderFactory BuilderFactory::instance_;
 
     BuilderFactory& BuilderFactory::instance()
@@ -24,12 +22,10 @@ namespace DataAccessLayer::SqlQueryBuilder
         return instance_;
     }
 
-    // BuilderFactory::builder
-    IBuilderPtr BuilderFactory::builder(DatabaseEngine databaseEngine)
-    {
-        auto it = builderFactory_.find(databaseEngine);
 
-        if (it != builderFactory_.end())
+    IBuilderPtr BuilderFactory::builder(const DatabaseEngine databaseEngine)
+    {
+        if (const auto it = builderFactory_.find(databaseEngine); it != builderFactory_.end())
         {
             return it->second;
         }
@@ -40,19 +36,19 @@ namespace DataAccessLayer::SqlQueryBuilder
         }
     }
 
-    // BuilderFactory::hasBuilder
+
     bool BuilderFactory::hasBuilder(const DatabaseEngine databaseEngine) const
     {
         return builderFactory_.find(databaseEngine) != builderFactory_.end();
     }
 
-    // BuilderFactory::databaseEngineList
+
     DatabaseEngineList BuilderFactory::databaseEngineList() const
     {
         DatabaseEngineList engines;
 
         engines.reserve(builderFactory_.size());
-        for (const auto& [databaseEngine, _] : builderFactory_)
+        for (const auto& databaseEngine : builderFactory_ | std::views::keys)
         {
             engines.push_back(databaseEngine);
         }
@@ -60,43 +56,43 @@ namespace DataAccessLayer::SqlQueryBuilder
         return engines;
     }
 
-    // BuilderFactory::builderCount
+
     size_t BuilderFactory::builderCount() const noexcept
     {
         return builderFactory_.size();
     }
 
-    // BuilderFactory::defaultDatabaseEngine
+
     DatabaseEngine BuilderFactory::defaultDatabaseEngine() const
     {
         return defaultDatabaseEngine_;
     }
 
-    // BuilderFactory::setDefaultDatabaseEngine
+
     void BuilderFactory::setDefaultDatabaseEngine(DatabaseEngine databaseEngine)
     {
         defaultDatabaseEngine_ = databaseEngine;
     }
 
-    // BuilderFactory::defaultBuilder()
+
     IBuilderPtr BuilderFactory::defaultBuilder()
     {
         return builder(defaultDatabaseEngine_);
     }
 
-    // builder helper function
+
     IBuilderPtr builder(DatabaseEngine databaseEngine)
     {
         return BuilderFactory::instance().builder(databaseEngine);
     }
 
-    // defaultDatabaseEngine helper function
+
     DatabaseEngine defaultDatabaseEngine()
     {
         return BuilderFactory::instance().defaultDatabaseEngine();
     }
 
-    // defaultBuilder helper function
+
     IBuilderPtr defaultBuilder()
     {
         return BuilderFactory::instance().defaultBuilder();

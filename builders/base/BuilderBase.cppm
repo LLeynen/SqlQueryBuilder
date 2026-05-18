@@ -8,7 +8,6 @@ export module QueryBuilder:BuilderBase;
 
 import :BuilderTypes;
 import :IBuilder;
-//import :BuilderFactory;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
@@ -38,7 +37,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         ~BuilderBase() override = default;
 
 	    [[nodiscard]] DatabaseEngine databaseEngine()const noexcept override;
-        [[nodiscard]] const String databaseEngineName() const override;
+        [[nodiscard]] String databaseEngineName() const override;
 
         // Query Builders
         String buildQuery(QueryType queryType, const ComponentMap& componentMap) override;

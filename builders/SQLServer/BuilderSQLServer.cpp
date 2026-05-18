@@ -8,14 +8,13 @@ import QueryBuilder;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-    // BuilderSqlServer::SqlServerBuilder
     BuilderSqlServer::BuilderSqlServer() noexcept
         : BuilderBase(builderEngine)
     {
         setupEngineParams();
     }
 
-    // BuilderSqlServer::setupEngineParams
+
     void BuilderSqlServer::setupEngineParams()
     {
         engineParams_.databaseEngine = builderEngine;

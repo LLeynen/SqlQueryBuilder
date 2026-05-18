@@ -8,14 +8,13 @@ import QueryBuilder;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-    // BuilderPostgreSQL::BuilderPostgreSQL
     BuilderPostgreSQL::BuilderPostgreSQL() noexcept
         : BuilderBase(builderEngine)
     {
         setupEngineParams();
     }
 
-    // BuilderPostgreSQL::setupEngineParams
+
     void BuilderPostgreSQL::setupEngineParams()
     {
         engineParams_.databaseEngine = builderEngine;

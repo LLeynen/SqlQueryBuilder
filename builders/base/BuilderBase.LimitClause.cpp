@@ -11,7 +11,6 @@ import :LimitClause;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// BuilderBase::buildComponent(LimitClause)
 	String BuilderBase::buildComponent(const LimitClause& limitClause) const
 	{
 		String limitClauseString{};

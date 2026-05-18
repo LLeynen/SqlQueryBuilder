@@ -12,7 +12,6 @@ import :EnumMaps;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// BuilderBase::buildComponent(TopClause)
 	String BuilderBase::buildComponent(const TopClause& topClause) const
 	{
 		String topClauseString{};

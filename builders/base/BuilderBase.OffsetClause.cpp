@@ -11,7 +11,6 @@ import :OffsetClause;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// BuilderBase::buildComponent(SqlOffsetClause)
 	String BuilderBase::buildComponent(const OffsetClause& offsetClause) const
 	{
 		String offsetClauseString{};

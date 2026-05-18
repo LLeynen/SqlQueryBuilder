@@ -9,7 +9,6 @@ import :BuilderBase;
 import std;
 
 import :BuilderTypes;
-//import :ParameterReference;
 import :Parameter;
 
 namespace DataAccessLayer::SqlQueryBuilder
@@ -21,8 +20,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
         if (parameterMapPtr)
         {
-            auto it = parameterMapPtr->find(parameterName);
-            if (it != parameterMapPtr->end())
+            if (const auto it = parameterMapPtr->find(parameterName); it != parameterMapPtr->end())
             {
                 return buildComponent(*it->second);
             }

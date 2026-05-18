@@ -19,14 +19,13 @@ import :EnumMaps;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// BuilderBase::buildComponent(JoinClause)
 	String BuilderBase::buildComponent(const JoinClause& joinClause) const
 	{
-		Table table{ joinClause.toField().tableName() };
+		const Table table{ joinClause.toField().tableName() };
 
 		String joinClauseString{ JoinTypeMap.at(joinClause.joinType()) + " " + buildComponent(table) + " ON " };
 
-		Condition condition(joinClause.fromField(), joinClause.comparison(), joinClause.toField());
+		const Condition condition(joinClause.fromField(), joinClause.comparison(), joinClause.toField());
 
 		joinClauseString += buildComponent(condition);
 

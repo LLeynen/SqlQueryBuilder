@@ -14,20 +14,17 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
     String BuilderBase::buildComponent(const Query& query) const
     {
-        auto querySource = query.querySource();
-//        String queryString = query.queryString();
+        const auto querySource = query.querySource();
         String queryString{};
 
         if (std::holds_alternative<QueryBuilderPtr>(querySource))
         {
-            auto queryBuilderPtr = std::get<QueryBuilderPtr>(querySource);
-//            queryBuilderPtr->setDatabaseEngine(databaseEngine());
-//            queryString = queryBuilderPtr->sql();
+            const auto queryBuilderPtr = std::get<QueryBuilderPtr>(querySource);
             queryString = queryBuilderPtr->sql();
         }
         else if (std::holds_alternative<String>(querySource))
         {
-            String rawSql = std::get<String>(querySource);
+            const auto rawSql = std::get<String>(querySource);
             queryString = rawSql;
         }
         else

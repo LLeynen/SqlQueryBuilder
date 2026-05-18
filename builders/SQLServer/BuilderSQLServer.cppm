@@ -12,8 +12,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
     export class BuilderSqlServer : public BuilderBase
     {
-        // Database Engine constant
-        static constexpr DatabaseEngine builderEngine{ DatabaseEngine::SQLServer };
+        static constexpr auto builderEngine{ DatabaseEngine::SQLServer };
     
     public:
         BuilderSqlServer() noexcept;
@@ -22,8 +21,6 @@ namespace DataAccessLayer::SqlQueryBuilder
         void setupEngineParams() override;
     };
 
-
-    // BuilderSQLServer::use
 
     void BuilderSqlServer::use()
     {

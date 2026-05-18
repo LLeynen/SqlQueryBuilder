@@ -30,7 +30,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		ConditionVariant modifiedConditionValue = conditionValue;
 		if (std::holds_alternative<Parameter>(conditionValue))
 		{
-			Parameter parameter = std::get<Parameter>(conditionValue);
+			auto parameter = std::get<Parameter>(conditionValue);
 			if (!parameter.parameterMap())
 			{
 				parameter.setParameterMap(impl_->parameterMapPtr_);
@@ -80,7 +80,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	QueryBuilder& QueryBuilder::whereGroup()
 	{
 		using CC = std::remove_reference_t<decltype(*impl_->currentWhereChainPtr_)>;
-		auto newGroup = std::make_shared<CC>();
+		const auto newGroup = std::make_shared<CC>();
 
 		if (!impl_->isWhereChaining_)
 		{

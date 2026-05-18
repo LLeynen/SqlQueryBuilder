@@ -116,7 +116,6 @@ target_sources (
             querybuilder/QueryBuilder.Top.cpp
             querybuilder/QueryBuilder.Values.cpp
             querybuilder/QueryBuilder.Where.cpp
-            builders/IBuilder.cpp
             builders/BuilderFactory.cpp
             builders/base/BuilderBase.cpp
             builders/base/BuilderBase.Aggregate.cpp

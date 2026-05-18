@@ -13,7 +13,6 @@ import :EnumMaps;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// BuilderBase::buildSqlComponent(SqlOrderByClause)
 	String BuilderBase::buildComponent(const OrderByClause& orderByClause) const
 	{
 		String orderByClauseString

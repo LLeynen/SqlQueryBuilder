@@ -11,33 +11,28 @@ import :EnumMaps;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// BuilderBase::BuilderBase
 	BuilderBase::BuilderBase()
 		: databaseEngine_(DatabaseEngine::AnsiSQL)
-	{
-//		setupEngineParams();
-	}
+	{}
 
-	// BuilderBase::BuilderBase(DatabaseEngine)
+
 	BuilderBase::BuilderBase(DatabaseEngine databaseEngine)
 		: databaseEngine_(databaseEngine)
-	{
-//		setupEngineParams();
-	}
+	{}
 
-	// BuilderBase::databaseEngine
+
 	DatabaseEngine BuilderBase::databaseEngine() const noexcept
 	{
 		return databaseEngine_;
 	}
 
-	// BuilderBase::databaseEngineName
-	const String BuilderBase::databaseEngineName() const
+
+	String BuilderBase::databaseEngineName() const
 	{
 		return DatabaseEngineMap.at(databaseEngine_);
 	}
 
-	// BuilderBase::setupEngineParams
+// BuilderBase::setupEngineParams
 //	void BuilderBase::setupEngineParams()
 //	{
 		/*

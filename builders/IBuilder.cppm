@@ -19,7 +19,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		virtual ~IBuilder() = default;
 
 		[[nodiscard]] virtual DatabaseEngine databaseEngine() const = 0;
-		[[nodiscard]] virtual const String databaseEngineName() const = 0;
+		[[nodiscard]] virtual String databaseEngineName() const = 0;
 
 		// Query Builders
 		virtual String buildQuery(QueryType queryType, const ComponentMap& componentMap) = 0;
@@ -67,10 +67,4 @@ namespace DataAccessLayer::SqlQueryBuilder
 		[[nodiscard]] virtual String buildComponent(const OrderByClauseListWrapper& orderByClauseListWrapper) const = 0;
 		[[nodiscard]] virtual String buildComponent(const QueryListWrapper& queryListWrapper) const = 0;
 	};
-
-	// Get the default builder (AnsiSQL)
-//	export IBuilderPtr defaultBuilder();
-	
-	// Set the default builder
-//	export void setDefaultBuilder(const IBuilderPtr& builder);
 }

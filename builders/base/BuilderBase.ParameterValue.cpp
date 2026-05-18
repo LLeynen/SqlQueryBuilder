@@ -12,10 +12,9 @@ import :Variant;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// BuilderBase::buildComponent(Parameter)
-	String BuilderBase::buildComponent(const ParameterValue& parameter) const
+	String BuilderBase::buildComponent(const ParameterValue& parameterValue) const
 	{
-		String parameterValueString{ parameter.value().sqlFormat() };
+		String parameterValueString{ parameterValue.value().sqlFormat() };
 
 		return parameterValueString;
 	}

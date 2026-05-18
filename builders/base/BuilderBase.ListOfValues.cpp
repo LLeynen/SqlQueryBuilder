@@ -13,7 +13,6 @@ import :ListOfValues;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// BuilderBase::buildSqlComponent(ListOfValues)
 	String BuilderBase::buildComponent(const ListOfValues& listOfValues) const
 	{
 		String listOfValuesString{ };

@@ -5,19 +5,17 @@
 module BuilderMariaDB;
 
 import QueryBuilder;
-//import BuilderMariaDB;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-    // BuilderMariaDB::BuilderMariaDB
     BuilderMariaDB::BuilderMariaDB() noexcept
         : BuilderBase(builderEngine)
     {
         setupEngineParams();
     }
 
-    // BuilderMariaDB::buildLimitClause
-    String BuilderMariaDB::buildLimitClause(int limit, int offset) const
+
+    String BuilderMariaDB::buildLimitClause(const int limit, const int offset) const
     {
         if (offset > 0)
         {
@@ -27,13 +25,13 @@ namespace DataAccessLayer::SqlQueryBuilder
         return "LIMIT " + toString(limit);
     }
 
-    // BuilderMariaDB::buildAutoIncrement
+
     String BuilderMariaDB::buildAutoIncrement() const
     {
         return "AUTO_INCREMENT";
     }
 
-    // MariaDBBuilder::setupEngineParams
+
     void BuilderMariaDB::setupEngineParams()
     {
         engineParams_.databaseEngine = builderEngine;

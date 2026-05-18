@@ -12,8 +12,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
     class BuilderPostgreSQL : public BuilderBase
     {
-        // Database Engine constant
-        static constexpr DatabaseEngine builderEngine{ DatabaseEngine::PostgreSQL };
+        static constexpr auto builderEngine{ DatabaseEngine::PostgreSQL };
 
     public:
         BuilderPostgreSQL() noexcept;
@@ -31,7 +30,6 @@ namespace DataAccessLayer::SqlQueryBuilder
         // String buildArrayType(const String& elementType) const;
     };
 
-    // BuilderPostgreSQL::use
 
     void BuilderPostgreSQL::use()
     {

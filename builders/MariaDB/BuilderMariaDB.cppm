@@ -6,15 +6,13 @@ module;
 
 export module BuilderMariaDB;
 
-//import QueryBuilder:BuilderFactory; // import the factory so we can call registerBuilder
-import QueryBuilder; // keep existing import for public QueryBuilder API
+import QueryBuilder;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
     export class BuilderMariaDB : public BuilderBase
     {
-        // Database engine constant
-        static constexpr DatabaseEngine builderEngine{ DatabaseEngine::MariaDB };
+        static constexpr auto builderEngine{ DatabaseEngine::MariaDB };
 
     public:
         BuilderMariaDB() noexcept;
@@ -34,21 +32,6 @@ namespace DataAccessLayer::SqlQueryBuilder
         void setupEngineParams() override;
     };
 
-    // Auto-register the MariaDB builder when this module is imported.
-    // Export the inline variable so the module import forces the symbol to be linked
-    // and its initializer to run. The lambda performs the registration once.
-//    export inline bool builderMariaDB_registered = []() -> bool 
-//    {
-//        return registerBuilder<BuilderMariaDB>();
-//    }();
-
-//    export void __declspec(dllexport) ensureMariaDBRegistered()
-//    {
-//        (void)builderMariaDB_registered;
-//    }
-
-
-    // BuilderMariaDB::use
 
     void BuilderMariaDB::use()
     {
