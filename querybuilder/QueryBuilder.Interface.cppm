@@ -1,6 +1,5 @@
 export module QueryBuilder:Interface;
 
-// Import all necessary module partitions
 export import :BuilderTypes;
 export import :Concepts;
 export import :Operand;
@@ -8,7 +7,6 @@ export import :Component;
 export import :Alias;
 export import :Selectable;
 export import :DataSource;
-export import :ConditionBase;
 export import :Variant;
 export import :Field;
 export import :Aggregate;
@@ -19,15 +17,14 @@ export import :Table;
 export import :Query;
 export import :ParameterSelectable;
 export import :QuerySelectable;
-export import :Condition;
-export import :CompositeCondition;
-export import :Filter;
+export import :FilterBase;
+export import :ComparisonFilter;
+export import :LogicalFilter;
 export import :JoinClause;
 export import :OrderByClause;
 export import :LimitClause;
 export import :OffsetClause;
 export import :TopClause;
-export import :ParameterValue;
 export import :Parameter;
 export import :ListOfValues;
 export import :ComponentWrappers;

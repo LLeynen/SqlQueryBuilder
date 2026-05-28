@@ -107,39 +107,39 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-    const String& Field::tableName() const noexcept
+    String Field::tableName() const noexcept
     {
         return impl_->tableName_;
     }
 
 
-    void Field::setTableName(const String& tableName) const
+    void Field::setTableName(String tableName) const
     {
-        impl_->tableName_ = tableName;
+        impl_->tableName_ = std::move(tableName);
     }
 
 
-    const String& Field::columnName() const noexcept
+    String Field::columnName() const noexcept
     {
         return impl_->columnName_;
     }
 
 
-    void Field::setColumnName(const String& columnName) const
+    void Field::setColumnName(String columnName) const
     {
-        impl_->columnName_ = columnName;
+        impl_->columnName_ = std::move(columnName);
     }
 
 
-    const Variant& Field::value() const noexcept
+    Variant Field::value() const noexcept
     {
         return impl_->value_;
     }
 
 
-    void Field::setValue(const Variant& value) const
+    void Field::setValue(Variant value) const
     {
-        impl_->value_ = value;
+        impl_->value_ = std::move(value);
     }
 
 

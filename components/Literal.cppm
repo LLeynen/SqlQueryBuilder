@@ -16,11 +16,12 @@ import :Alias;
 namespace DataAccessLayer::SqlQueryBuilder
 {
 	class LiteralImpl;
+
 	export class Literal : public Selectable
 	{
 	public:
 		Literal() noexcept;
-		Literal(const Variant& value, std::optional<Alias> alias = std::nullopt);
+		Literal(Variant value, std::optional<Alias> alias = std::nullopt);
 		~Literal() override;
 
 		Literal(const Literal& other);
@@ -28,8 +29,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 		Literal(Literal&&) noexcept;
 		Literal& operator=(Literal&&) noexcept;
 
-		[[nodiscard]] const Variant& value() const noexcept;
-		void setValue(const Variant& value) const;
+		[[nodiscard]] Variant value() const noexcept;
+		void setValue(Variant value) const;
 
 		[[nodiscard]] SelectablePtr clone() const override;
 
@@ -39,4 +40,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 	private:
 		std::unique_ptr<LiteralImpl> impl_{};
 	};
+
+	export inline Literal literal(Variant value, std::optional<Alias> alias = std::nullopt)
+	{
+		return { std::move(value), std::move(alias) };
+	}
 }

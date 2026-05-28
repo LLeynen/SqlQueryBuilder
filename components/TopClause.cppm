@@ -19,7 +19,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		TopClause() noexcept;
-		TopClause(int quantity, TopUnit topUnit = TopUnit::Records) noexcept;
+		TopClause(int quantity, TopUnit unit = TopUnit::Records) noexcept;
 		~TopClause() override;
 
 		TopClause(const TopClause&);
@@ -28,9 +28,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 		TopClause& operator=(TopClause&&) noexcept ;
 
 		[[nodiscard]] int quantity() const noexcept;
-		void setQuantity(int quantity) noexcept;
-		[[nodiscard]] const TopUnit topUnit() const noexcept;
-		void setTopUnit(TopUnit topUnit) noexcept;
+		void setQuantity(int quantity) const noexcept;
+		[[nodiscard]] TopUnit unit() const noexcept;
+		void setUnit(TopUnit unit) const noexcept;
 
 	protected:
 		String toSql(const IBuilder* builderPtr) const override;

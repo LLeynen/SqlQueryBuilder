@@ -28,7 +28,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		Selectable& operator=(Selectable&&) noexcept ;
 
 		[[nodiscard]] AliasPtr aliasPtr() const;
-		[[nodiscard]] const String& alias() const;
+		[[nodiscard]] String aliasName() const;
 		void setAlias(std::optional<Alias> alias) const;
 		[[nodiscard]] bool hasAlias() const noexcept;
 

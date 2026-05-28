@@ -20,7 +20,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		TableDataSource() noexcept;
-		TableDataSource(const String& tableName, std::optional<Alias> alias = std::nullopt);
+		TableDataSource(String name, std::optional<Alias> alias = std::nullopt);
 		~TableDataSource() override;
 
 		TableDataSource(const TableDataSource& other);

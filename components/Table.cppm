@@ -19,7 +19,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		Table() noexcept;
-		Table(const String& tableName);
+		Table(String name);
 		~Table() override;
 
 		Table(const Table&);
@@ -27,8 +27,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 		Table(Table&&) noexcept ;
 		Table& operator=(Table&&) noexcept ;
 
-		[[nodiscard]] String tableName() const;
-		void setTableName(const String& tableName) const;
+		[[nodiscard]] String name() const;
+		void setName(String name) const;
 
 	protected:
 		String toSql(const IBuilder* builderPtr) const override;
@@ -36,4 +36,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 	private:
 		std::unique_ptr<TableImpl> impl_;
 	};
+
+	export inline Table table(String name)
+	{
+		return { name };
+	}
 }

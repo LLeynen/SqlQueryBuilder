@@ -52,11 +52,12 @@ namespace DataAccessLayer::SqlQueryBuilder
         // Component Builders
         [[nodiscard]] String buildComponent(const Aggregate& aggregate) const override;
         [[nodiscard]] String buildComponent(const Alias& alias) const override;
-        [[nodiscard]] String buildComponent(const CompositeCondition& compositeCondition) const override;
-        [[nodiscard]] String buildComponent(const Condition& condition) const override;
         [[nodiscard]] String buildComponent(const Expression& expression) const override;
         [[nodiscard]] String buildComponent(const Field& field) const override;
-        [[nodiscard]] String buildComponent(const Filter& filter) const override;
+//        [[nodiscard]] String buildComponent(const FilterBase& filterBase) const override;
+        [[nodiscard]] String buildComponent(const ComparisonFilter& filter) const override;
+        [[nodiscard]] String buildComponent(const LogicalFilter& filter) const override;
+        [[nodiscard]] String buildComponent(const FilterSelectable& filterSelectable) const override;
 		[[nodiscard]] String buildComponent(const Function& scalarFunction) const override;
         [[nodiscard]] String buildComponent(const JoinClause& joinClause) const override;
         [[nodiscard]] String buildComponent(const LimitClause& limitClause) const override;
@@ -64,10 +65,9 @@ namespace DataAccessLayer::SqlQueryBuilder
         [[nodiscard]] String buildComponent(const Literal& literal) const override;
         [[nodiscard]] String buildComponent(const OffsetClause& offsetClause) const override;
         [[nodiscard]] String buildComponent(const OrderByClause& orderByClause) const override;
-        [[nodiscard]] String buildComponent(const ParameterValue& parameterValue) const override;
-        [[nodiscard]] String buildComponent(const Parameter& parameterReference) const override;
+        [[nodiscard]] String buildComponent(const Parameter& parameter) const override;
 		[[nodiscard]] String buildComponent(const ParameterSelectable& parameterSelectable) const override;
-        [[nodiscard]] String buildComponent(const Selectable& selectable) const override;
+        //[[nodiscard]] String buildComponent(const Selectable& selectable) const override;
         [[nodiscard]] String buildComponent(const Query& query) const override;
         [[nodiscard]] String buildComponent(const QueryDataSource& queryDataSource) const override;
         [[nodiscard]] String buildComponent(const QuerySelectable& querySelectable) const override;

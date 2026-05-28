@@ -41,18 +41,18 @@ namespace DataAccessLayer::SqlQueryBuilder
 		Aggregate,
 		Alias,
 		Function,
-		CompositeCondition,
-		Condition,
-		ConditionBase,
+		ComparisonFilter,
 		DataSource,
 		Distinct,
 		Expression,
 		Field,
-		Filter,
+		FilterBase,
+		FilterSelectable,
 		JoinClause,
 		LimitClause,
 		ListOfValues,
 		Literal,
+		LogicalFilter,
 		OffsetClause,
 		OrderByClause,
 		Parameter,
@@ -82,6 +82,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		Equals,
 		NotEquals,
+		Not,
 		Like,
 		NotLike,
 		GreaterThan,
@@ -102,7 +103,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 	export enum class LogicOperator
 	{
 		And,
-		Or
+		Or,
+		Not
 	};
 
 	// JoinType

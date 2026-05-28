@@ -22,9 +22,9 @@ namespace DataAccessLayer::SqlQueryBuilder
     public:
         QuerySelectable() noexcept;
 
-        QuerySelectable(const QueryBuilder& queryBuilder, std::optional<Alias> alias = std::nullopt);
-        QuerySelectable(std::shared_ptr<QueryBuilder> queryBuilder, std::optional<Alias> alias = std::nullopt);
-        QuerySelectable(const String& rawSql, std::optional<Alias> alias = std::nullopt);
+        QuerySelectable(QueryBuilder queryBuilder, std::optional<Alias> alias = std::nullopt);
+        QuerySelectable(QueryBuilderPtr queryBuilderPtr, std::optional<Alias> alias = std::nullopt);
+        QuerySelectable(String rawSql, std::optional<Alias> alias = std::nullopt);
 
         ~QuerySelectable() override;
 
@@ -34,7 +34,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         QuerySelectable& operator=(QuerySelectable&&) noexcept;
 
         [[nodiscard]] QueryPtr query() const;
-        void setQuery(const Query& query) const;
+        void setQuery(Query query) const;
 
         [[nodiscard]] SelectablePtr clone() const override;
 

@@ -14,31 +14,30 @@ import :QueryDataSource;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::query(Query&)
 	QueryBuilder& QueryBuilder::query(Query query)
 	{
-		ensureSharedPtr(impl_->queryListPtr_)->emplace_back(std::make_shared<Query>(query));
+		ensureSharedPtr(impl_->queryListPtr_)->emplace_back(std::make_shared<Query>(std::move(query)));
 
 		return *this;
 	}
 
-	// QueryBuilder::query(string, alias)
-	QueryBuilder& QueryBuilder::query(const String& rawSql)
+
+	QueryBuilder& QueryBuilder::query(String rawSql)
 	{
-		ensureSharedPtr(impl_->queryListPtr_)->emplace_back(std::make_shared<Query>(rawSql));
+		ensureSharedPtr(impl_->queryListPtr_)->emplace_back(std::make_shared<Query>(std::move(rawSql)));
 
 		return *this;
 	}
 
-	// QueryBuilder::query(QueryBuilder, alias)
-	QueryBuilder& QueryBuilder::query(const QueryBuilder& queryBuilder)
+
+	QueryBuilder& QueryBuilder::query(QueryBuilder queryBuilder)
 	{
-		ensureSharedPtr(impl_->queryListPtr_)->emplace_back(std::make_shared<Query>(queryBuilder));
+		ensureSharedPtr(impl_->queryListPtr_)->emplace_back(std::make_shared<Query>(std::move(queryBuilder)));
 
 		return *this;
 	}
 
-	// QueryBuilder::queries(QueryBuilder list)
+
 	QueryBuilder& QueryBuilder::queries(std::initializer_list<QueryBuilder> queryBuilderList)
 	{
 		for (auto& queryBuilder : queryBuilderList)

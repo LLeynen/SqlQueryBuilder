@@ -10,6 +10,7 @@ import std;
 
 import :BuilderTypes;
 import :Component;
+import :Field;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
@@ -19,7 +20,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		JoinClause();
-		JoinClause(const Field& fromSqlField, Comparison sqlComparison, const Field& toSqlField, JoinType sqlJoinType = JoinType::InnerJoin);
+		JoinClause(FieldRef fromFieldRef, Comparison sqlComparison, FieldRef toFieldRef, JoinType joinType = JoinType::InnerJoin);
 		~JoinClause() override;
 
 		JoinClause(const JoinClause&);
@@ -27,14 +28,14 @@ namespace DataAccessLayer::SqlQueryBuilder
 		JoinClause(JoinClause&&) noexcept ;
 		JoinClause& operator=(JoinClause&&) noexcept ;
 
-		[[nodiscard]] const Field& fromField() const noexcept;
-		void setFromField(const Field& fromField);
-		[[nodiscard]] const Comparison comparison() const noexcept;
-		void setComparison(Comparison comparison) noexcept;
-		[[nodiscard]] const Field& toField() const noexcept;
-		void setToField(const Field& toField);
-		[[nodiscard]] const JoinType joinType() const noexcept;
-		void setJoinType(JoinType joinType) noexcept;
+		[[nodiscard]] Field fromField() const noexcept;
+		void setFromField(FieldRef fromFieldRef) const;
+		[[nodiscard]] Comparison comparison() const noexcept;
+		void setComparison(Comparison comparison) const noexcept;
+		[[nodiscard]] Field toField() const noexcept;
+		void setToField( FieldRef toFieldRef);
+		[[nodiscard]] JoinType joinType() const noexcept;
+		void setJoinType(JoinType joinType) const noexcept;
 
 	protected:
 		String toSql(const IBuilder* builderPtr) const override;
@@ -42,4 +43,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 	private:
 		std::unique_ptr<JoinClauseImpl> impl_;
 	};
+
+	export inline JoinClause join(FieldRef fromFieldRef, Comparison sqlComparison, FieldRef toFieldRef, JoinType joinType = JoinType::InnerJoin)
+	{
+		return { std::move(fromFieldRef), sqlComparison, std::move(toFieldRef), joinType };
+	}
 }

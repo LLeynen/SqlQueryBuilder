@@ -29,28 +29,28 @@ target_sources (
                 common/EnumMap.cppm
                 common/EnumMaps.cppm
 				common/Operand.cppm
+				common/ParameterRegistry.cppm
                 components/Component.cppm
 				components/Alias.cppm
                 components/Selectable.cppm
                 components/Expression.cppm
                 components/Field.cppm
+				components/FilterBase.cppm
                 components/Aggregate.cppm
                 components/Function.cppm
                 components/Literal.cppm
 		 		components/QuerySelectable.cppm
                 components/ListOfValues.cppm
-				components/ParameterValue.cppm
+				components/LogicalFilter.cppm
 				components/Parameter.cppm
                 components/ParameterSelectable.cppm
-                components/ConditionBase.cppm
-                components/CompositeCondition.cppm
-                components/Condition.cppm
+				components/ComparisonFilter.cppm
+				components/FilterSelectable.cppm
                 components/DataSource.cppm
 				components/TableDataSource.cppm
 				components/QueryDataSource.cppm
                 components/Table.cppm
 				components/Query.cppm
-                components/Filter.cppm
                 components/TopClause.cppm
                 components/OffsetClause.cppm
                 components/LimitClause.cppm
@@ -63,35 +63,39 @@ target_sources (
                 querybuilder/QueryBuilder.Interface.cppm
                 builders/IBuilder.cppm
                 builders/BuilderFactory.cppm
-                builders/base/BuilderBase.cppm
+				builders/FilterValueVisitor.cppm
+				builders/FormulaValueVisitor.cppm
+				builders/FormulaArgString.cppm
+				builders/base/BuilderBase.cppm
                 builders/MariaDB/BuilderMariaDB.cppm
                 builders/PostgreSQL/BuilderPostgreSQL.cppm
                 builders/SQLServer/BuilderSQLServer.cppm
 
         PRIVATE
             common/Variant.cpp
+			common/ParameterRegistry.cpp
+			common/Operand.cpp
             components/Component.cpp
 			components/Alias.cpp
             components/Selectable.cpp
             components/Expression.cpp
             components/Field.cpp
+			components/FilterBase.cpp
             components/Aggregate.cpp
             components/Function.cpp
             components/Literal.cpp
 			components/QuerySelectable.cpp
             components/ListOfValues.cpp
-			components/ParameterValue.cpp
 			components/Parameter.cpp
 			components/ParameterSelectable.cpp
-            components/ConditionBase.cpp
-            components/CompositeCondition.cpp
-            components/Condition.cpp
+			components/LogicalFilter.cpp
+			components/FilterSelectable.cpp
             components/DataSource.cpp
 			components/TableDataSource.cpp
 			components/QueryDataSource.cpp
             components/Table.cpp
 			components/Query.cpp
-            components/Filter.cpp
+			components/ComparisonFilter.cpp
             components/TopClause.cpp
             components/OffsetClause.cpp
             components/LimitClause.cpp
@@ -104,15 +108,19 @@ target_sources (
             querybuilder/QueryBuilder.Distinct.cpp
             querybuilder/QueryBuilder.Expression.cpp
             querybuilder/QueryBuilder.Field.cpp
+			querybuilder/QueryBuilder.Filter.cpp
+			queryBuilder/QueryBuilder.Function.cpp
             querybuilder/QueryBuilder.From.cpp
             querybuilder/QueryBuilder.GroupBy.cpp
             querybuilder/QueryBuilder.Having.cpp
+			queryBuilder/QueryBuilder.Join.cpp
             querybuilder/QueryBuilder.LimitOffset.cpp
             querybuilder/QueryBuilder.Literal.cpp
             querybuilder/QueryBuilder.OrderBy.cpp
-			querybuilder/QueryBuilder.ParameterValue.cpp
+			querybuilder/QueryBuilder.Parameter.cpp
             querybuilder/QueryBuilder.Query.cpp
             querybuilder/QueryBuilder.Sql.cpp
+			queryBuilder/QueryBuilder.SubQuery.cpp
             querybuilder/QueryBuilder.Top.cpp
             querybuilder/QueryBuilder.Values.cpp
             querybuilder/QueryBuilder.Where.cpp
@@ -129,11 +137,11 @@ target_sources (
             builders/base/BuilderBase.BuildUnionQuery.cpp
             builders/base/BuilderBase.BuildUpdateQuery.cpp
             builders/base/BuilderBase.ComponentWrappers.cpp
-            builders/base/BuilderBase.CompositeCondition.cpp
-            builders/base/BuilderBase.Condition.cpp
             builders/base/BuilderBase.Expression.cpp
             builders/base/BuilderBase.Field.cpp
-            builders/base/BuilderBase.Filter.cpp
+			builders/base/BuilderBase.ComparisonFilter.cpp
+			builders/base/BuilderBase.LogicalFilter.cpp
+			builders/base/BuilderBase.FilterSelectable.cpp
             builders/base/BuilderBase.Function.cpp
             builders/base/BuilderBase.JoinClause.cpp
             builders/base/BuilderBase.LimitClause.cpp
@@ -141,7 +149,6 @@ target_sources (
             builders/base/BuilderBase.Literal.cpp
             builders/base/BuilderBase.OffsetClause.cpp
             builders/base/BuilderBase.OrderByClause.cpp
-			builders/base/BuilderBase.ParameterValue.cpp
 			builders/base/BuilderBase.Parameter.cpp
             builders/base/BuilderBase.ParameterSelectable.cpp
 			builders/base/BuilderBase.Query.cpp

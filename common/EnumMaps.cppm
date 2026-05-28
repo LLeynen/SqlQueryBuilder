@@ -43,18 +43,18 @@ namespace DataAccessLayer::SqlQueryBuilder
 		// Individual component classes
 		{ ComponentId::Aggregate, "Aggregate" },
 		{ ComponentId::Alias, "Alias" },
-		{ ComponentId::CompositeCondition, "CompositeCondition" },
-		{ ComponentId::Condition, "Condition" },
-		{ ComponentId::ConditionBase, "ConditionBase" },
+		{ ComponentId::ComparisonFilter, "ComparisonFilter" },
 		{ ComponentId::DataSource, "DataSource" },
 		{ ComponentId::Distinct, "Distinct" },
 		{ ComponentId::Expression, "Expression" },
 		{ ComponentId::Field, "Field" },
-		{ ComponentId::Filter, "Filter" },
+		{ ComponentId::FilterBase, "FilterBase" },
+		{ ComponentId::FilterSelectable, "FilterSelectable" },
 		{ ComponentId::JoinClause, "JoinClause" },
 		{ ComponentId::LimitClause, "LimitClause" },
 		{ ComponentId::ListOfValues, "ListOfValues" },
 		{ ComponentId::Literal, "Literal" },
+		{ ComponentId::LogicalFilter, "LogicalFilter" },
 		{ ComponentId::OffsetClause, "OffsetClause" },
 		{ ComponentId::OrderByClause, "OrderByClause" },
 		{ ComponentId::Parameter, "Parameter" },
@@ -84,6 +84,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		{ Comparison::Equals, "="},
 		{ Comparison::NotEquals, "<>"},
+		{ Comparison::Not, "Not"},
 		{ Comparison::Like, "Like"},
 		{ Comparison::NotLike, "Not Like"},
 		{ Comparison::GreaterThan, ">"},
@@ -104,7 +105,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 	export const EnumMap<LogicOperator> LogicOperatorMap
 	{
 		{ LogicOperator::And, "And" },
-		{ LogicOperator::Or, "Or" }
+		{ LogicOperator::Or, "Or" },
+		{ LogicOperator::Not, "Not" }
 	};
 
 	// JoinTypeMap

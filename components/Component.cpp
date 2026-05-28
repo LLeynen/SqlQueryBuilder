@@ -17,7 +17,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		public:
 			ComponentImpl() = default;
-			ComponentImpl(ComponentId componentId)
+			ComponentImpl(const ComponentId componentId)
 				: componentId_{ componentId }
 			{}
 			ComponentImpl(const ComponentImpl& other) = default;
@@ -25,24 +25,24 @@ namespace DataAccessLayer::SqlQueryBuilder
 			ComponentId componentId_{};
 	};
 
-	// Component::Component
+
 	Component::Component() noexcept
 		: impl_{ std::make_unique<ComponentImpl>() }
 	{}
 
-	// Component::Component(ComponentId)
+
 	Component::Component(ComponentId componentId) noexcept
 		: impl_{ std::make_unique<ComponentImpl>(componentId) }
 	{}
 
 	Component::~Component() = default;
 
-	// Component::Component(const Component& other)
+
 	Component::Component(const Component& other)
 		: impl_{ std::make_unique<ComponentImpl>(*other.impl_) }
 	{}
 
-	// Component& Component::operator=(const Component& other)
+
 	Component& Component::operator=(const Component& other)
 	{
 		if (this != &other)
@@ -57,7 +57,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 	Component& Component::operator=(Component&&) noexcept = default;
 
-	// Component::componentId
+
 	ComponentId Component::componentId() const noexcept
 	{
 		return impl_->componentId_;

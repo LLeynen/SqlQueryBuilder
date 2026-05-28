@@ -19,10 +19,10 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		public:
 			JoinClauseImpl() = default;
-			JoinClauseImpl(Field fromField, const Comparison comparison, const Field& toField, JoinType joinType)
-				: fromField_{std::move( fromField )}
+			JoinClauseImpl(Field fromField, const Comparison comparison, Field toField, const JoinType joinType)
+				: fromField_ {std::move(fromField) }
 				, comparison_{ comparison }
-				, toField_{ toField }
+				, toField_{ std::move(toField) }
 				, joinType_{ joinType }
 			{}
 			~JoinClauseImpl() = default;
@@ -38,28 +38,27 @@ namespace DataAccessLayer::SqlQueryBuilder
 			JoinType joinType_{ JoinType::InnerJoin };
 	};
 
-	// JoinClause::JoinClause
-	JoinClause::JoinClause() 
+	JoinClause::JoinClause()
 		: Component(ComponentId::JoinClause)
 		, impl_{ std::make_unique<JoinClauseImpl>() }
 	{}
 
-	// JoinClause::JoinClause
-	JoinClause::JoinClause(const Field& fromField, const Comparison comparison, const Field& toField, JoinType joinType)
+
+	JoinClause::JoinClause(FieldRef fromFieldRef, const Comparison comparison, FieldRef toFieldRef, JoinType joinType)
 		: Component(ComponentId::JoinClause)
-		, impl_{ std::make_unique<JoinClauseImpl>(fromField, comparison, toField, joinType) }
+		, impl_{ std::make_unique<JoinClauseImpl>(fromFieldRef.move(), comparison, toFieldRef.move(), joinType) }
 	{}
 
-	// JoinClause::~JoinClause
+
 	JoinClause::~JoinClause() = default;
 
-	// JoinClause::JoinClause(JoinClause&)
+
 	JoinClause::JoinClause(const JoinClause& other)
 		: Component(ComponentId::JoinClause)
 		, impl_{ std::make_unique<JoinClauseImpl>(*other.impl_) }
 	{}
 
-	// JoinClause::operator=(JoinClause&)
+
 	JoinClause& JoinClause::operator=(const JoinClause& other)
 	{
 		if (this != &other)
@@ -70,13 +69,13 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// JoinClause::JoinClause(JoinClause&&)
+
 	JoinClause::JoinClause(JoinClause&& other) noexcept
 		: Component(ComponentId::JoinClause)
 		, impl_{ std::move(other.impl_) }
 	{}
 
-	// JoinClause::operator=(JoinClause&&)
+
 	JoinClause& JoinClause::operator=(JoinClause&& other) noexcept
 	{
 		if (this != &other)
@@ -87,55 +86,55 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// JoinClause::fromField
-	const Field& JoinClause::fromField() const noexcept
+
+	Field JoinClause::fromField() const noexcept
 	{
 		return impl_->fromField_;
 	}
 
-	// JoinClause::setFromField
-	void JoinClause::setFromField(const Field& fromField)
+
+	void JoinClause::setFromField(FieldRef fromFieldRef) const
 	{
-		impl_->fromField_ = fromField;
+		impl_->fromField_ = fromFieldRef.move();
 	}
 
-	// JoinClause::Comparison
-	const Comparison JoinClause::comparison() const noexcept
+
+	Comparison JoinClause::comparison() const noexcept
 	{
 		return impl_->comparison_;
 	}
 
-	// JoinClause::setComparison
-	void JoinClause::setComparison(Comparison comparison) noexcept
+
+	void JoinClause::setComparison(const Comparison comparison) const noexcept
 	{
 		impl_->comparison_ = comparison;
 	}
 
-	// JoinClause::toField
-	const Field& JoinClause::toField() const noexcept
+
+	Field JoinClause::toField() const noexcept
 	{
 		return impl_->toField_;
 	}
 
-	// JoinClause::setToField
-	void JoinClause::setToField(const Field& toField)
+
+	void JoinClause::setToField(FieldRef toFieldRef)
 	{
-		impl_->toField_ = toField;
+		impl_->toField_ = toFieldRef.move();
 	}
 
-	// JoinClause::joinType
-	const JoinType JoinClause::joinType() const noexcept
+
+	JoinType JoinClause::joinType() const noexcept
 	{
 		return impl_->joinType_;
 	}
 
-	// JoinClause::setJoinType
-	void JoinClause::setJoinType(JoinType joinType) noexcept
+
+	void JoinClause::setJoinType(JoinType joinType) const noexcept
 	{
 		impl_->joinType_ = joinType;
 	}
 
-	// JoinClause::toSql
+
 	String JoinClause::toSql(const IBuilder* builderPtr) const
 	{
 		return Component::sqlImpl(builderPtr, *this);

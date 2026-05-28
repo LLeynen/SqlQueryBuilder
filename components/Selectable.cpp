@@ -75,9 +75,9 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-    const String& Selectable::alias() const
+    String Selectable::aliasName() const
     {
-        return  impl_->alias_->value();
+        return impl_->alias_->value();
     }
 
 

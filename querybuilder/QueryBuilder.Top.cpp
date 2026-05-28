@@ -12,7 +12,6 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::top
 	QueryBuilder& QueryBuilder::top(const int quantity, const TopUnit topUnit)
 	{
 		if (quantity < 0)
@@ -21,12 +20,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 		}
 
 		ensureSharedPtr(impl_->topClausePtr_)->setQuantity(quantity);
-		impl_->topClausePtr_->setTopUnit(topUnit);
+		impl_->topClausePtr_->setUnit(topUnit);
 
 		return *this;
 	}
 
-	// QueryBuilder::topPercent
+
 	QueryBuilder& QueryBuilder::topPercent(const int quantity)
 	{
 		return top(quantity, TopUnit::Percent);

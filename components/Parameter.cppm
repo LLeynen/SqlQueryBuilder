@@ -19,8 +19,8 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
     public:
         Parameter();
-        explicit Parameter(const String& parameterName);
-        Parameter(const String& parameterName, const ParameterMapPtr& parameterMapPtr);
+        Parameter(String name);
+        Parameter(String name, Variant value);
         ~Parameter() override;
 
         Parameter(const Parameter& other);
@@ -28,21 +28,22 @@ namespace DataAccessLayer::SqlQueryBuilder
         Parameter(Parameter&&) noexcept ;
         Parameter& operator=(Parameter&&) noexcept ;
 
-        [[nodiscard]] const String& parameterName() const noexcept;
-        void setParameterName(const String& parameterName) const;
-        [[nodiscard]] ParameterMapPtr parameterMap() const noexcept;
-        void setParameterMap(const ParameterMapPtr& parameterMapPtr) const noexcept;
+        [[nodiscard]] String name() const noexcept;
+        void setName(String parameterName) const;
+        [[nodiscard]] Variant value() const noexcept;
+        void setValue(Variant value) const noexcept;
 
         [[nodiscard]] bool empty() const noexcept;
+
+        Parameter& operator=(Variant value) noexcept;
 
     protected:
         String toSql(const IBuilder* builderPtr) const override;
 
     private:
-        std::unique_ptr<ParameterImpl> impl_;
+        std::unique_ptr<ParameterImpl> impl_{};
     };
 
-    export Parameter parameter(const String& parameterName);
-
-    export Parameter parameter(const String& parameterName, const ParameterMapPtr& parameterMapPtr);
+    export [[nodiscard]] Parameter parameter(String name);
+    export [[nodiscard]] Parameter parameter(String name, Variant value);
 }

@@ -11,7 +11,7 @@ import :JoinClause;
 import :Table;
 import :Variant;
 import :Field;
-import :Condition;
+import :ComparisonFilter;
 import :Parameter;
 import :ListOfValues;
 import :Query;
@@ -23,11 +23,11 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		const Table table{ joinClause.toField().tableName() };
 
-		String joinClauseString{ JoinTypeMap.at(joinClause.joinType()) + " " + buildComponent(table) + " ON " };
+		String joinClauseString{ JoinTypeMap.at(joinClause.joinType()) + " " + table.sql(this) + " ON " };
 
-		const Condition condition(joinClause.fromField(), joinClause.comparison(), joinClause.toField());
+		const ComparisonFilter filter(FieldRef{joinClause.fromField()}, joinClause.comparison(), FieldRef{joinClause.toField()});
 
-		joinClauseString += buildComponent(condition);
+		joinClauseString += filter.sql(this);
 
 		return joinClauseString;
 	}

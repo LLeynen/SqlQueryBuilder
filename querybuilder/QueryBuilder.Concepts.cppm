@@ -9,18 +9,10 @@ export module QueryBuilder:Concepts;
 import std;
 
 import :BuilderTypes;
-//import :Variant;
-//import :Parameter;
-//import :ParameterReference;
-//import :Field;
-//import :ListOfValues;
-//import :Query;
-//import :String;
-//import :Expression;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-    // ConvertibleTo concepts
+    /*
     template<typename T>
     concept ConvertibleToConditionValue =
         std::convertible_to<T, std::nullptr_t> ||
@@ -35,6 +27,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         std::convertible_to<T, double> ||
         std::convertible_to<T, bool> ||
         std::convertible_to<T, const char*>;
+*/
 
     template<typename T>
     concept ConvertibleToString =
@@ -56,15 +49,14 @@ namespace DataAccessLayer::SqlQueryBuilder
     concept ConvertibleToNullptr_t =
         std::convertible_to<T, std::nullptr_t>;
 
-    /*
-    template<typename T>
-    concept AggregatableExpr =
-        ConvertibleToString<T> ||
-        std::same_as<std::remove_cvref_t<T>, Expression> ||
-        std::same_as<std::remove_cvref_t<T>, Field>;
-*/
+    template <typename T>
+    concept ConvertibleToFilterValue =
+        requires(T&& val) { FilterValue{ std::forward<T>(val) }; };
 
-    // ensureSharedPtr
+    template <typename T>
+    concept ConvertibleToFormulaValue =
+        requires(T&& val) { FormulaValue{ std::forward<T>(val) }; };
+
     template<typename T, typename... Args> std::shared_ptr<T>& ensureSharedPtr(std::shared_ptr<T>& slot, Args&&... args)
     {
         if (!slot)
@@ -74,7 +66,6 @@ namespace DataAccessLayer::SqlQueryBuilder
         return slot;
     }
 
-	// ensureUniquePtr
     template<typename T, typename... Args> std::shared_ptr<T>& ensureUniquePtr(std::shared_ptr<T>& slot, Args&&... args)
     {
         if (!slot)

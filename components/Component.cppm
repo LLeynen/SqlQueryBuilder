@@ -39,7 +39,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		virtual String toSql(const IBuilder* builderPtr) const = 0;
 
 		template<typename T>
-		String sqlImpl(const IBuilder* builderPtr, const T& componentRef) const
+		static String sqlImpl(const IBuilder* builderPtr, const T& componentRef)
 		{
 			auto builder = builderPtr ? builderPtr : defaultBuilder().get();
 

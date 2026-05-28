@@ -15,15 +15,15 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		String tableString;
 
-		if (table.tableName().empty())
+		if (table.name().empty())
 		{
 			return "";
 		}
 		else
 		{
-			const String tableName{ table.tableName() };
+			const String tableName{ table.name() };
 
-			if (table.tableName().find(' ') == npos)
+			if (table.name().find(' ') == npos)
 			{
 				tableString = tableName;
 			}

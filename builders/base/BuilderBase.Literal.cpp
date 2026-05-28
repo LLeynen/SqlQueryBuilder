@@ -13,11 +13,11 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
 	String BuilderBase::buildComponent(const Literal& literal) const
 	{
-		String literalString{ literal.value().toString() };
+		String literalString{ literal.value().sqlFormat() };
 
 		if (literal.hasAlias())
 		{
-			literalString += buildComponent(*literal.aliasPtr());
+			literalString += literal.aliasPtr()->sql(this);
 		}
 
 		return literalString;

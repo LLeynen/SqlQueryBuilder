@@ -14,7 +14,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
     class VariantImpl;
 
-    // VariantValue
     using VariantValue = std::variant
         <
         std::nullptr_t,
@@ -28,10 +27,8 @@ namespace DataAccessLayer::SqlQueryBuilder
     template<typename T>
     struct VariantConverter
     {
-        // Type nullptr_t
         T operator()(const std::nullptr_t&) const
         {
-            // Convert to string
             if constexpr (std::is_same_v<T, String>)
             {
                 return "NULL";
@@ -39,15 +36,13 @@ namespace DataAccessLayer::SqlQueryBuilder
             throw std::bad_variant_access();
         }
 
-        // Type int
+
         T operator()(const int& v) const
         {
-            // Convert to string
             if constexpr (std::is_same_v<T, String>)
             {
                 return toString(v);
             }
-            // Return int directly
             else if constexpr (std::is_same_v<T, int>)
             {
                 return v;
@@ -55,15 +50,13 @@ namespace DataAccessLayer::SqlQueryBuilder
             throw std::bad_variant_access();
         }
 
-        // Type long
+
         T operator()(const long& v) const
         {
-            // Convert to string
             if constexpr (std::is_same_v<T, String>)
             {
                 return toString(v);
             }
-            // Return long directly
             else if constexpr (std::is_same_v<T, long>)
             {
                 return v;
@@ -71,15 +64,13 @@ namespace DataAccessLayer::SqlQueryBuilder
             throw std::bad_variant_access();
         }
 
-        // Type double
+
         T operator()(const double& v) const
         {
-            // Convert to string
             if constexpr (std::is_same_v<T, String>)
             {
                 return toString(v);
             }
-            // Return double directly
             else if constexpr (std::is_same_v<T, double>)
             {
                 return v;
@@ -87,10 +78,9 @@ namespace DataAccessLayer::SqlQueryBuilder
             throw std::bad_variant_access();
         }
 
-        // Type string
+
         T operator()(const String& v) const
         {
-            // Return string directly
             if constexpr (std::is_same_v<T, String>)
             {
                 return v;
@@ -98,15 +88,13 @@ namespace DataAccessLayer::SqlQueryBuilder
             throw std::bad_variant_access();
         }
 
-        // Type bool
+
         T operator()(const bool& v) const
         {
-            // Convert to string
             if constexpr (std::is_same_v<T, String>)
             {
                 return v ? "TRUE" : "FALSE";
             }
-            // Return bool directly
             else if constexpr (std::is_same_v<T, bool>)
             {
                 return v;
@@ -134,7 +122,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         Variant& operator=(Variant&& other) noexcept;
 
         [[nodiscard]] const VariantValue& value() const noexcept;
-        void setValue(const VariantValue& sqlValue);
+        void setValue(const VariantValue& sqlValue) const;
 
         template<typename T>
         T get() const;
@@ -157,17 +145,17 @@ namespace DataAccessLayer::SqlQueryBuilder
         [[nodiscard]] bool isType() const;
 
     private:
-        std::unique_ptr<VariantImpl> impl_;
+        std::unique_ptr<VariantImpl> impl_{};
     };
 
-    // get
+
     template<typename T>
     T Variant::get() const
     {
         return std::visit(VariantConverter<T>{}, value());
     }
 
-    // isType
+
     template<typename T>
     bool Variant::isType() const
     {

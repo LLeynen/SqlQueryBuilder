@@ -9,8 +9,7 @@ import :Parameter;
 import std;
 
 import :BuilderTypes;
-import :Component;
-import :IBuilder;
+import :ParameterRegistry;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
@@ -18,17 +17,17 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
     public:
         ParameterImpl() = default;
-        ParameterImpl(String parameterName)
-            : parameterName_{std::move( parameterName )}
-        {}
-        ParameterImpl(String parameterName, ParameterMapPtr parameterMapPtr)
-            : parameterMapPtr_{std::move( parameterMapPtr )}
-            , parameterName_{std::move( parameterName )}
+        ParameterImpl(String name)
+            : name_{std::move( name )}
         {}
         ~ParameterImpl() = default;
 
-        ParameterMapPtr parameterMapPtr_{};
-        String parameterName_{};
+        ParameterImpl(const ParameterImpl& other) = default;
+        ParameterImpl& operator=(const ParameterImpl& other) = default;
+        ParameterImpl(ParameterImpl&&) noexcept = default;
+        ParameterImpl& operator=(ParameterImpl&&) noexcept ;
+
+        String name_{};
     };
 
 
@@ -38,17 +37,22 @@ namespace DataAccessLayer::SqlQueryBuilder
     {}
 
 
-    Parameter::Parameter(const String& parameterName)
+    Parameter::Parameter(String name)
         : Component(ComponentId::Parameter)
-        , impl_{ std::make_unique<ParameterImpl>(parameterName) }
-    {}
+        , impl_{ std::make_unique<ParameterImpl>(std::move(name)) }
+    {
+        if (ParameterRegistry::get(impl_->name_).isNull())
+        {
+            ParameterRegistry::set(impl_->name_, Variant{});
+        }
+    }
 
-
-    Parameter::Parameter(const String& parameterName, const ParameterMapPtr& parameterMapPtr)
+    Parameter::Parameter(String name, Variant value)
         : Component(ComponentId::Parameter)
-        , impl_{ std::make_unique<ParameterImpl>(parameterName, parameterMapPtr) }
-    {}
-
+        , impl_{ std::make_unique<ParameterImpl>(std::move(name)) }
+    {
+        ParameterRegistry::set(impl_->name_, std::move(value));
+    }
 
     Parameter::~Parameter() = default;
 
@@ -88,34 +92,40 @@ namespace DataAccessLayer::SqlQueryBuilder
         return *this;
     }
 
-
-    const String& Parameter::parameterName() const noexcept
+    [[nodiscard]] String Parameter::name() const noexcept
     {
-        return impl_->parameterName_;
+        return impl_->name_;
     }
 
 
-    void Parameter::setParameterName(const String& parameterName) const
+    void Parameter::setName(String name) const
     {
-        impl_->parameterName_ = parameterName;
+        impl_->name_ = std::move(name);
     }
 
 
-    ParameterMapPtr Parameter::parameterMap() const noexcept
+    [[nodiscard]] Variant Parameter::value() const noexcept
     {
-        return impl_->parameterMapPtr_;
+        return ParameterRegistry::get(impl_->name_);
     }
 
 
-    void Parameter::setParameterMap(const ParameterMapPtr& parameterMapPtr) const noexcept
+    void Parameter::setValue(Variant value) const noexcept
     {
-        impl_->parameterMapPtr_ = parameterMapPtr;
+        ParameterRegistry::set(impl_->name_, std::move(value));
     }
 
 
     bool Parameter::empty() const noexcept
     {
-        return impl_->parameterName_.empty();
+        return impl_->name_.empty();
+    }
+
+
+    Parameter& Parameter::operator=(Variant value) noexcept
+    {
+        setValue(std::move(value));
+        return *this;
     }
 
 
@@ -125,14 +135,14 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-    Parameter parameter(const String& parameterName, const ParameterMapPtr& parameterMapPtr)
+    Parameter parameter(String name)
     {
-        return { parameterName, parameterMapPtr};
+        return { std::move(name) };
     }
 
 
-    Parameter parameter(const String& parameterName)
+    Parameter parameter(String name, Variant value)
     {
-        return Parameter(parameterName);
+        return { std::move(name), std::move(value) };
     }
 }

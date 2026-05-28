@@ -11,8 +11,10 @@ import :Selectable;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
+/*
     String BuilderBase::buildComponent(const Selectable& selectable) const
     {
         return const_cast<Selectable&>(selectable).sql(this);
     }
+    */
 }

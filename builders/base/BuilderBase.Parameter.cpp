@@ -15,24 +15,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
     String BuilderBase::buildComponent(const Parameter& parameter) const
     {
-        const String& parameterName = parameter.parameterName();
-        const ParameterMapPtr parameterMapPtr = parameter.parameterMap();
-
-        if (parameterMapPtr)
-        {
-            if (const auto it = parameterMapPtr->find(parameterName); it != parameterMapPtr->end())
-            {
-                return buildComponent(*it->second);
-            }
-            else
-            {
-                throw std::runtime_error("Parameter name not found in ParameterMap.");
-            }
-        }
-        else
-        {
-            const ParameterValue parameterValue(parameterName);
-            return buildComponent(parameterValue);
-        }
+        return parameter.value().toString();
     }
 }

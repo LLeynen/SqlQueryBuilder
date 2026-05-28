@@ -12,64 +12,49 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::orderBy(Field, SortOrder)
-	QueryBuilder& QueryBuilder::orderBy(const FieldRef& fieldRef, SortOrder sortOrder)
+	QueryBuilder& QueryBuilder::orderBy(FieldRef fieldRef, const SortOrder sortOrder)
 	{
 		ensureSharedPtr(impl_->orderByClauseListPtr_);
 
-		Field field = fieldRef.get();
-
-		impl_->orderByClauseListPtr_->emplace_back(std::make_shared<OrderByClause>(std::move(field), sortOrder));
+		impl_->orderByClauseListPtr_->emplace_back(std::make_shared<OrderByClause>(fieldRef.move(), sortOrder));
 
 		return *this;
 	}
 
-	// QueryBuilder::orderBy(columnName, SortOrder)
 /*
-	QueryBuilder& QueryBuilder::orderBy(const String& columnmName, SortOrder sortOrder)
+	QueryBuilder& QueryBuilder::orderBy(FieldList fieldList, const SortOrder sortOrder)
 	{
-		return orderBy(Field(columnmName), sortOrder);
-	}
-*/
+		FieldList list = std::move(fieldList);
 
-	// QueryBuilder::orderBy(tableName, columnName, SortOrder)
-	/*
-	SqlQueryBuilder::QueryBuilder& QueryBuilder::orderBy(const String& tableName, const String& columnName, SortOrder sortOrder)
-	{
-		return orderBy(Field(tableName, columnName), sortOrder);
-	}
-*/
-
-	// QueryBuilder::OrderBy(FieldList)
-	QueryBuilder& QueryBuilder::orderBy(FieldList& fieldList, SortOrder sortOrder)
-	{
-		for (const auto& fieldPtr : fieldList)
+		for (const auto& fieldPtr : list)
 		{
 			orderBy(*fieldPtr, sortOrder);
 		}
 
 		return *this;
 	}
+*/
 
-	// QueryBuilder::orderBy(tableName, columnNameList)
-	QueryBuilder& QueryBuilder::orderBy(const String& tableName, std::initializer_list<String> columnNameList, SortOrder sortOrder)
+	QueryBuilder& QueryBuilder::orderBy(String tableName, const std::initializer_list<String> columnNameList, const SortOrder sortOrder)
 	{
+		String table = std::move(tableName);
+
 		for (const auto& columnName : columnNameList)
 		{
-			Field field{ tableName, columnName };
-			orderBy(field, sortOrder);
+			Field field{ table, columnName };
+			orderBy(std::move(field), sortOrder);
 		}
 
 		return *this;
 	}
 
-	// QueryBuilder::orderBy(columnNameList)
-	QueryBuilder& QueryBuilder::orderBy(std::initializer_list<String> columnNameList, SortOrder sortOrder)
+
+	QueryBuilder& QueryBuilder::orderBy(const std::initializer_list<FieldRef> fieldRefList, const SortOrder sortOrder)
 	{
-		for (const auto& columnName : columnNameList)
+		for (const auto& fieldRef : fieldRefList)
 		{
-			Field field{ columnName };
-			orderBy(field, sortOrder);
+//			Field field{ columnName };
+			orderBy(std::move(fieldRef), sortOrder);
 		}
 
 		return *this;

@@ -9,7 +9,6 @@ import :Query;
 import std;
 
 import :BuilderTypes;
-//import :DataSource;
 import :IBuilder;
 
 import QueryBuilder;
@@ -20,14 +19,14 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
     public:
         QueryImpl() = default;
-        QueryImpl(const QueryBuilder& queryBuilder)
-            : querySource_{ std::make_shared<QueryBuilder>(queryBuilder) }
+        QueryImpl(QueryBuilder queryBuilder)
+            : querySource_{ std::make_shared<QueryBuilder>(std::move(queryBuilder)) }
         {}
-        QueryImpl(std::shared_ptr<QueryBuilder> queryBuilder)
-            : querySource_{ queryBuilder }
+        QueryImpl(QueryBuilderPtr queryBuilderPtr)
+            : querySource_{ queryBuilderPtr }
 		{}
-        QueryImpl(const String& rawSql)
-            : querySource_{ rawSql }
+        QueryImpl(String rawSql)
+            : querySource_{ std::move(rawSql) }
 		{}
         ~QueryImpl() = default;
 
@@ -70,21 +69,21 @@ namespace DataAccessLayer::SqlQueryBuilder
     {}
 
 
-    Query::Query(const QueryBuilder& queryBuilder)
+    Query::Query(QueryBuilder queryBuilder)
         : Component(ComponentId::Query)
-		, impl_{ std::make_unique<QueryImpl>(queryBuilder) }
+		, impl_{ std::make_unique<QueryImpl>(std::move(queryBuilder)) }
     {}
 
 
-    Query::Query(std::shared_ptr<QueryBuilder> queryBuilder)
+    Query::Query(QueryBuilderPtr queryBuilderPtr) noexcept
         : Component(ComponentId::Query)
-		, impl_{ std::make_unique<QueryImpl>(queryBuilder) }
+		, impl_{ std::make_unique<QueryImpl>(queryBuilderPtr) }
     {}
 
 
-    Query::Query(const String& rawSql)
+    Query::Query(String rawSql)
         : Component(ComponentId::Query)
-		, impl_{ std::make_unique<QueryImpl>(rawSql) }
+		, impl_{ std::make_unique<QueryImpl>(std::move(rawSql)) }
     {}
 
 
@@ -133,9 +132,9 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-    void Query::setQuerySource(const QuerySourceType& querySource)
+    void Query::setQuerySource(QuerySourceType querySource) const
     {
-        impl_->querySource_ = querySource;
+        impl_->querySource_ = std::move(querySource);
     }
 
 
@@ -149,8 +148,7 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
         if (std::holds_alternative<std::shared_ptr<QueryBuilder>>(other.querySource_))
         {
-            auto otherQueryBuilder = std::get<std::shared_ptr<QueryBuilder>>(other.querySource_);
-            if (otherQueryBuilder)
+            if (const auto otherQueryBuilder = std::get<std::shared_ptr<QueryBuilder>>(other.querySource_))
             {
                 querySource_ = std::make_shared<QueryBuilder>(*otherQueryBuilder);
             }

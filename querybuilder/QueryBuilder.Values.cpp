@@ -12,28 +12,17 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	QueryBuilder& QueryBuilder::values(const ListOfValues& values)
+	QueryBuilder& QueryBuilder::values(ListOfValues values)
 	{
 		ensureSharedPtr(impl_->listOfValuesPtr_);
 
-		impl_->listOfValuesPtr_ = std::make_shared<ListOfValues>(ListOfValues());
+		impl_->listOfValuesPtr_ = std::make_shared<ListOfValues>(std::move(values));
 
 		return *this;
 	}
 
-	// QueryBuilder::values(initializer_list)
-	QueryBuilder& QueryBuilder::values(std::initializer_list<Variant> valueList)
-	{
-		ensureSharedPtr(impl_->listOfValuesPtr_);
 
-		impl_->listOfValuesPtr_->valueList().clear();
-		impl_->listOfValuesPtr_->setValueList(valueList);
-
-		return *this;
-	}
-
-	// QueryBuilder::values(VariantList)
-	QueryBuilder& QueryBuilder::values(const VariantList& valueList)
+	QueryBuilder& QueryBuilder::values(const std::initializer_list<Variant> valueList)
 	{
 		ensureSharedPtr(impl_->listOfValuesPtr_);
 
@@ -43,24 +32,35 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::appendValue
-	QueryBuilder& QueryBuilder::appendValue(const Variant& value)
+
+	QueryBuilder& QueryBuilder::values(VariantList valueList)
 	{
-		ensureSharedPtr(impl_->listOfValuesPtr_)->appendValue(value);
+		ensureSharedPtr(impl_->listOfValuesPtr_);
+
+		impl_->listOfValuesPtr_->valueList().clear();
+		impl_->listOfValuesPtr_->setValueList(std::move(valueList));
 
 		return *this;
 	}
 
-	// QueryBuilder::appendValues(VariantList)
-	QueryBuilder& QueryBuilder::appendValues(const VariantList& valueList)
+
+	QueryBuilder& QueryBuilder::appendValue(Variant value)
 	{
-		ensureSharedPtr(impl_->listOfValuesPtr_)->appendValues(valueList);
+		ensureSharedPtr(impl_->listOfValuesPtr_)->appendValue(std::move(value));
 
 		return *this;
 	}
 
-	// QueryBuilder::appendValues(initializer_list)
-	QueryBuilder& QueryBuilder::appendValues(std::initializer_list<Variant> valueList)
+
+	QueryBuilder& QueryBuilder::appendValues(VariantList valueList)
+	{
+		ensureSharedPtr(impl_->listOfValuesPtr_)->appendValues(std::move(valueList));
+
+		return *this;
+	}
+
+
+	QueryBuilder& QueryBuilder::appendValues(const std::initializer_list<Variant> valueList)
 	{
 		ensureSharedPtr(impl_->listOfValuesPtr_)->appendValues(valueList);
 

@@ -41,7 +41,8 @@ namespace DataAccessLayer::SqlQueryBuilder
             for (size_t i = 0; i < selectableListPtr->size(); ++i)
             {
                 auto sqlSelectable = (*selectableListPtr).at(i);
-                selectableListWrapperString += buildComponent(*sqlSelectable);
+//                selectableListWrapperString += buildComponent(*sqlSelectable);
+                selectableListWrapperString += sqlSelectable->sql(this);
                 if (i < selectableListPtr->size() - 1)
                 {
                     selectableListWrapperString += ", ";
@@ -57,7 +58,8 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
         String whereFilterWrapperString{ };
 
-        whereFilterWrapperString = buildComponent(*whereFilterWrapper.filter());
+//        whereFilterWrapperString = buildComponent(*whereFilterWrapper.filter());
+        whereFilterWrapperString = whereFilterWrapper.filter()->clone()->sql(this);
 
         return whereFilterWrapperString;
     }
@@ -117,7 +119,8 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
         String havingFilterWrapperString{ };
 
-        havingFilterWrapperString = buildComponent(*havingFilterWrapper.filter());
+//        havingFilterWrapperString = buildComponent(*havingFilterWrapper.filter());
+        havingFilterWrapperString = havingFilterWrapper.filter()->clone()->sql(this);
 
         return havingFilterWrapperString;
     }

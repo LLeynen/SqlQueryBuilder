@@ -29,28 +29,27 @@ namespace DataAccessLayer::SqlQueryBuilder
 		int quantity_{};
 	};
 
-	// LimitClause::LimitClause
 	LimitClause::LimitClause() noexcept
 		: Component(ComponentId::LimitClause)
 		, impl_{ std::make_unique<LimitClauseImpl>() }
 	{}
 
-	// LimitClause::LimitClause(quantity)
+
 	LimitClause::LimitClause(int quantity) noexcept
 		: Component(ComponentId::LimitClause)
 		, impl_{ std::make_unique<LimitClauseImpl>(quantity) }
 	{}
 
-	// LimitClause::~LimitClause
+
 	LimitClause::~LimitClause() = default;
 
-	// LimitClause::LimitClause(LimitClause&)
+
 	LimitClause::LimitClause(const LimitClause& other)
 		: Component(other)
 		, impl_ { std::make_unique<LimitClauseImpl>(*other.impl_) }
 	{}
 
-	// LimitClause::operator=(LimitClause&)
+
 	LimitClause& LimitClause::operator=(const LimitClause& other)
 	{
 		if (this != &other)
@@ -62,13 +61,13 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// LimitClause::LimitClause(LimitClause&&)
+
 	LimitClause::LimitClause(LimitClause&& other) noexcept
 		: Component(std::move(other)) 
 		, impl_{ std::move(other.impl_) }
 	{}
 
-	// LimitClause::operator=(LimitClause&&)
+
 	LimitClause& LimitClause::operator=(LimitClause&& other) noexcept
 	{
 		if (this != &other)
@@ -80,19 +79,19 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// LimitClause::quantity
+
 	int LimitClause::quantity() const noexcept
 	{
 		return impl_->quantity_;
 	}
 
-	// LimitClause::setQuantity
-	void LimitClause::setQuantity(int quantity) noexcept
+
+	void LimitClause::setQuantity(const int quantity) const noexcept
 	{
 		impl_->quantity_ = quantity;
 	}
 
-	// LimitClause::toSql
+
 	String LimitClause::toSql(const IBuilder* builderPtr) const
 	{
 		return Component::sqlImpl(builderPtr, *this);

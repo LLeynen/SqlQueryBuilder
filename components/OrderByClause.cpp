@@ -19,8 +19,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		OrderByClauseImpl() = default;
-		explicit OrderByClauseImpl(Field field, SortOrder sortOrder)
-			: field_{std::move( field )}
+		explicit OrderByClauseImpl(Field field, const SortOrder sortOrder)
+			: field_{std::move(field)}
 			, sortOrder_{ sortOrder }
 		{}
 		~OrderByClauseImpl() = default;
@@ -34,28 +34,27 @@ namespace DataAccessLayer::SqlQueryBuilder
 		SortOrder sortOrder_{ SortOrder::Ascending };
 	};
 
-	// OrderByClause::OrderByClause
 	OrderByClause::OrderByClause() noexcept
 		: Component(ComponentId::OrderByClause)
 		, impl_{ std::make_unique<OrderByClauseImpl>() }
 	{}
 
-	// OrderByclause::OrderByClause(Field, SortOrder)
-	OrderByClause::OrderByClause(const Field& field, SortOrder sortOrder)
+
+	OrderByClause::OrderByClause(FieldRef fieldRef, SortOrder sortOrder)
 		: Component(ComponentId::OrderByClause)
-		, impl_{ std::make_unique<OrderByClauseImpl>(field, sortOrder) }
+		, impl_{ std::make_unique<OrderByClauseImpl>(fieldRef.move(), sortOrder) }
 	{}
 
-	// OrderByClause::~OrderByClause
+
 	OrderByClause::~OrderByClause() = default;
 
-	// OrderByClause::OrderByClause(OrderByClause&)
+
 	OrderByClause::OrderByClause(const OrderByClause& other)
 		: Component(other)
 		, impl_{ std::make_unique<OrderByClauseImpl>(*other.impl_) }
 	{}
 
-	// OrderByClause::operator=(OrderByClause&)
+
 	OrderByClause& OrderByClause::operator=(const OrderByClause& other)
 	{
 		if (this != &other)
@@ -67,13 +66,13 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// OrderByClause::OrderByClause(OrderByClause&&)
+
 	OrderByClause::OrderByClause(OrderByClause&& other) noexcept
 		: Component(std::move(other))
 		, impl_{ std::move(other.impl_) }
 	{}
 
-	// OrderByClause::operator=(OrderByClause&&)
+
 	OrderByClause& OrderByClause::operator=(OrderByClause&& other) noexcept
 	{
 		if (this != &other)
@@ -84,31 +83,31 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// OrderByClause::field
-	const Field OrderByClause::field() const
+
+	Field OrderByClause::field() const
 	{
 		return impl_->field_;
 	}
 
-	// OrderByClause::setField
-	void OrderByClause::setField(const Field& field)
+
+	void OrderByClause::setField(FieldRef fieldRef) const
 	{
-		impl_->field_ = field;
+		impl_->field_ = fieldRef.move();
 	}
 
-	// OrderByClause::sortOrder
+
 	SortOrder OrderByClause::sortOrder() const noexcept
 	{
 		return impl_->sortOrder_;
 	}
 
-	// OrderByClause::setSortOrder
-	void OrderByClause::setSortOrder(SortOrder sortOrder) noexcept
+
+	void OrderByClause::setSortOrder(SortOrder sortOrder) const noexcept
 	{
 		impl_->sortOrder_ = sortOrder;
 	}
 
-	// OrderByClause::toSql
+
 	String OrderByClause::toSql(const IBuilder* builderPtr) const
 	{
 		return Component::sqlImpl(builderPtr, *this);

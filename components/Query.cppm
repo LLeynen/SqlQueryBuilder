@@ -9,14 +9,12 @@ export module QueryBuilder:Query;
 import std;
 
 import :BuilderTypes;
-//import :DataSource;
 import :Component;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
 	class QueryImpl;
 
-    // QuerySource type
     export using QuerySourceType = std::variant
         <
         QueryBuilderPtr,
@@ -27,9 +25,9 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
     public:
         Query() noexcept;
-        Query(const QueryBuilder& queryBuilder);
-        Query(std::shared_ptr<QueryBuilder> queryBuilder);
-        Query(const String& rawSql);
+        Query(QueryBuilder queryBuilder);
+        Query(QueryBuilderPtr queryBuilderPtr) noexcept;
+        Query(String rawSql);
         ~Query() override;
 
         Query(const Query& other);
@@ -38,7 +36,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         Query& operator=(Query&& other) noexcept;
 
         [[nodiscard]] QuerySourceType querySource() const;
-        void setQuerySource(const QuerySourceType& querySource);
+        void setQuerySource(QuerySourceType querySource) const;
 
     protected:
         String toSql(const IBuilder* builderPtr) const override;

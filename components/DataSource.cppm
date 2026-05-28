@@ -28,7 +28,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         DataSource& operator=(DataSource&& other) noexcept ;
 
         [[nodiscard]] AliasPtr aliasPtr() const;
-        [[nodiscard]] const String& alias() const;
+        [[nodiscard]] String aliasName() const;
         void setAlias(std::optional<Alias> alias) const;
         [[nodiscard]] bool hasAlias() const noexcept;
 
@@ -36,6 +36,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 
     protected:
         String toSql(const IBuilder* builderPtr) const override = 0;
+
+    private:
         std::unique_ptr<DataSourceImpl> impl_;
     };
 }

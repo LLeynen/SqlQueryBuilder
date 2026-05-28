@@ -11,7 +11,9 @@ import std;
 import :BuilderTypes;
 import :Selectable;
 import :Operand;
-//import :Enums;
+import :Variant;
+import :Parameter;
+import :Concepts;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
@@ -22,13 +24,17 @@ namespace DataAccessLayer::SqlQueryBuilder
 	export class Expression : public Selectable
 	{
 	public:
-
 		Expression() noexcept;
-		Expression(const Operand& left, Operator op, const Operand& right, std::optional<Alias> alias = std::nullopt) noexcept;
-		Expression(Operator op, const Operand& operand, std::optional<Alias> alias = std::nullopt) noexcept;
-		Expression(const Selectable& selectable, std::optional<Alias> alias = std::nullopt) noexcept;
-		Expression(ScalarFunction scalarFunction, std::initializer_list<Operand> args, std::optional<Alias> alias = std::nullopt);
-		Expression(AggregateFunction aggregateFunction, const Selectable& selectable, std::optional<Alias> alias = std::nullopt) noexcept;
+		Expression(Operand lhs, Operator op, Operand rhs, std::optional<Alias> alias = std::nullopt);
+		Expression(std::initializer_list<const char*> lhsTokens, Operator op, std::initializer_list<const char*> rhsTokens, std::optional<Alias> alias = std::nullopt)
+			: Expression(Operand{ FieldRef{ lhsTokens } }, op, Operand{ FieldRef{ rhsTokens } }, std::move(alias))
+		{}
+		Expression(Operand lhs, Operator op, FormulaValue rhs, std::optional<Alias> alias = std::nullopt);
+		Expression(FormulaValue lhs, Operator op, Operand rhs, std::optional<Alias> alias = std::nullopt);
+		Expression(Operator op, FormulaValue lhs, std::optional<Alias> alias = std::nullopt);
+		Expression(Operator op, Operand lhs, std::optional<Alias> alias = std::nullopt);
+		Expression(ScalarFunction scalarFunction, std::vector<FormulaArg> args, std::optional<Alias> alias = std::nullopt);
+		Expression(AggregateFunction aggregateFunction, FormulaArg arg, std::optional<Alias> alias = std::nullopt) noexcept;
 
 		~Expression() override;
 
@@ -38,9 +44,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 		Expression& operator=(Expression&&) noexcept;
 
 		[[nodiscard]] Mode mode() const;
-		[[nodiscard]] Operand left() const;
+		[[nodiscard]] FormulaArg lhs() const;
 		[[nodiscard]] Operator op() const;
-		[[nodiscard]] Operand right() const;
+		[[nodiscard]] FormulaArg rhs() const;
 
 		[[nodiscard]] SelectablePtr clone() const override;
 
@@ -49,5 +55,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 	private:
 		std::unique_ptr<ExpressionImpl> impl_{};
+
 	};
 }

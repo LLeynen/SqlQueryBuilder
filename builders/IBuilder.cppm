@@ -34,11 +34,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 		// Component Builders
 		[[nodiscard]] virtual String buildComponent(const Aggregate& aggregate) const = 0;
 		[[nodiscard]] virtual String buildComponent(const Alias& alias) const = 0;
-		[[nodiscard]] virtual String buildComponent(const CompositeCondition& compositeCondition) const = 0;
-		[[nodiscard]] virtual String buildComponent(const Condition& condition) const = 0;
 		[[nodiscard]] virtual String buildComponent(const Expression& expression) const = 0;
 		[[nodiscard]] virtual String buildComponent(const Field& field) const = 0;
-		[[nodiscard]] virtual String buildComponent(const Filter& filter) const = 0;
+//		[[nodiscard]] virtual String buildComponent(const FilterBase& filter) const = 0;
+		[[nodiscard]] virtual String buildComponent(const ComparisonFilter& filter) const = 0;
+		[[nodiscard]] virtual String buildComponent(const LogicalFilter& filter) const = 0;
+		[[nodiscard]] virtual String buildComponent(const FilterSelectable& filterSelectable) const = 0;
 		[[nodiscard]] virtual String buildComponent(const Function& scalarFunction) const = 0;
 		[[nodiscard]] virtual String buildComponent(const JoinClause& joinClause) const = 0;
 		[[nodiscard]] virtual String buildComponent(const LimitClause& limitClause) const = 0;
@@ -46,10 +47,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 		[[nodiscard]] virtual String buildComponent(const Literal& literal) const = 0;
 		[[nodiscard]] virtual String buildComponent(const OffsetClause& offsetClause) const = 0;
 		[[nodiscard]] virtual String buildComponent(const OrderByClause& orderByClause) const = 0;
-		[[nodiscard]] virtual String buildComponent(const ParameterValue& parameterValue) const = 0;
-		[[nodiscard]] virtual String buildComponent(const Parameter& parameterReference) const = 0;
+		[[nodiscard]] virtual String buildComponent(const Parameter& parameter) const = 0;
 		[[nodiscard]] virtual String buildComponent(const ParameterSelectable& parameterSelectable) const = 0;
-		[[nodiscard]] virtual String buildComponent(const Selectable& selectable) const = 0;
+	//	[[nodiscard]] virtual String buildComponent(const Selectable& selectable) const = 0;
 		[[nodiscard]] virtual String buildComponent(const Query& query) const = 0;
 		[[nodiscard]] virtual String buildComponent(const QueryDataSource& queryDataSource) const = 0;
 		[[nodiscard]] virtual String buildComponent(const QuerySelectable& subQuerySelectable) const = 0;

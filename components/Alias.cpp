@@ -17,16 +17,16 @@ namespace DataAccessLayer::SqlQueryBuilder
 	public:
 		AliasImpl() = default;
 
-		AliasImpl(const String& aliasValue, const AliasType aliasType)
-			: aliasValue_{ aliasValue }
-			, aliasType_{ aliasType }
+		AliasImpl(String aliasValue, const AliasType aliasType)
+			: aliasType_{ aliasType }
+			, aliasValue_{std::move( aliasValue )}
 		{}
 
 		AliasImpl(const AliasImpl& other) = default;
 
 		AliasImpl(AliasImpl&& other) noexcept
-			: aliasValue_{ std::move(other.aliasValue_) }
-			, aliasType_ { other.aliasType_ }
+			: aliasType_ { other.aliasType_ }
+			, aliasValue_{ std::move(other.aliasValue_) }
 		{}
 
 		AliasImpl& operator=(const AliasImpl& other)
@@ -61,16 +61,10 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{}
 
 
-	Alias::Alias(const String& aliasValue)
-	: Component { ComponentId::Alias }
-	, impl_{ std::make_unique<AliasImpl>(aliasValue, AliasType::Column) }
+	Alias::Alias(String aliasValue)
+		: Component { ComponentId::Alias }
+		, impl_{ std::make_unique<AliasImpl>(std::move(aliasValue), AliasType::Column) }
 	{}
-
-
-//	Alias::Alias(const String& aliasValue, const AliasType aliasType)
-//		: Component { ComponentId::Alias }
-//		, impl_{ std::make_unique<AliasImpl>(aliasValue, aliasType) }
-//	{}
 
 
 	Alias::~Alias() = default;
@@ -123,15 +117,15 @@ namespace DataAccessLayer::SqlQueryBuilder
 	}
 
 
-	const String& Alias::value() const noexcept
+	String Alias::value() const noexcept
 	{
 		return impl_->aliasValue_;
 	}
 
 
-	void Alias::setValue(const String& value) const
+	void Alias::setValue(String value) const
 	{
-		impl_->aliasValue_ = value;
+		impl_->aliasValue_ = std::move(value);
 	}
 
 

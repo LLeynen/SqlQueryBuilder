@@ -13,21 +13,21 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::literal(Literal&)
-	QueryBuilder& QueryBuilder::literal(const Literal& sqlLiteral)
+	QueryBuilder& QueryBuilder::literal(Literal literal)
 	{
 		ensureSharedPtr(impl_->selectableListPtr_);
-		impl_->selectableListPtr_->push_back(std::make_shared<Literal>(sqlLiteral));
+
+		impl_->selectableListPtr_->push_back(std::make_shared<Literal>(std::move(literal)));
+
 		return *this;
 	}
 
-	// QueryBuilder::literal(Variant, optional<String>)
-	QueryBuilder& QueryBuilder::literal(const Variant& literalVariant, const std::optional<String>& alias)
+
+	QueryBuilder& QueryBuilder::literal(Variant literalVariant, std::optional<Alias> alias)
 	{
 		ensureSharedPtr(impl_->selectableListPtr_);
 
-		Literal sqlLiteral(literalVariant, alias);
-		impl_->selectableListPtr_->push_back(std::make_shared<Literal>(sqlLiteral));
+		impl_->selectableListPtr_->push_back(std::make_shared<Literal>(std::move(literalVariant), std::move(alias)));
 
 		return *this;
 	}

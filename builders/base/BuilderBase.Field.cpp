@@ -34,7 +34,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		if (field.hasAlias())
 		{
-			fieldString += buildComponent(*field.aliasPtr());
+			fieldString += field.aliasPtr()->sql(this);
 		}
 
 		return fieldString;

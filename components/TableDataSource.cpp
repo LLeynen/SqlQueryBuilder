@@ -18,8 +18,8 @@ namespace DataAccessLayer::SqlQueryBuilder
     public:
         TableDataSourceImpl() = default;
 
-        TableDataSourceImpl(const String& tableName)
-            : containedTable_{ std::make_shared<Table>(tableName) }
+        TableDataSourceImpl(String name)
+            : containedTable_{ std::make_shared<Table>(std::move(name)) }
 		{}
 
         ~TableDataSourceImpl() = default;
@@ -63,9 +63,9 @@ namespace DataAccessLayer::SqlQueryBuilder
     {}
 
 
-    TableDataSource::TableDataSource(const String& tableName, std::optional<Alias> alias)
+    TableDataSource::TableDataSource(String name, std::optional<Alias> alias)
         : DataSource(ComponentId::TableDataSource)
-		, impl_{ std::make_unique<TableDataSourceImpl>(tableName) }
+		, impl_{ std::make_unique<TableDataSourceImpl>(std::move(name)) }
     {
         setAlias(std::move(alias));
     }
@@ -78,7 +78,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : DataSource(ComponentId::TableDataSource)
 		, impl_{ std::make_unique<TableDataSourceImpl>(*other.impl_) }
     {
-        setAlias(other.alias());
+        setAlias(*other.aliasPtr());
     }
 
 
@@ -98,7 +98,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : DataSource(ComponentId::TableDataSource)
 		, impl_{ std::move(other.impl_) }
     {
-        setAlias(other.alias());
+        setAlias(*other.aliasPtr());
     }
 
 

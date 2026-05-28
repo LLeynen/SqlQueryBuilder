@@ -16,9 +16,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 	String BuilderBase::buildComponent(const ListOfValues& listOfValues) const
 	{
 		String listOfValuesString{ };
-		auto valueList = listOfValues.valueList();
 
-		if (valueList.empty() == false)
+		if (const auto valueList = listOfValues.valueList(); valueList.empty() == false)
 		{
 			listOfValuesString = "(";
 

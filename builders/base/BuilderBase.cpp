@@ -16,7 +16,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{}
 
 
-	BuilderBase::BuilderBase(DatabaseEngine databaseEngine)
+	BuilderBase::BuilderBase(const DatabaseEngine databaseEngine)
 		: databaseEngine_(databaseEngine)
 	{}
 

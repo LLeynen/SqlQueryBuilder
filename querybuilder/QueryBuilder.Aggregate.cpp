@@ -12,11 +12,21 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
+	QueryBuilder& QueryBuilder::aggregate(Aggregate aggregate)
+	{
+		ensureSharedPtr(impl_->selectableListPtr_);
+
+		impl_->selectableListPtr_->push_back(std::make_shared<Aggregate>(std::move(aggregate)));
+
+		return *this;
+	}
+
+
 	QueryBuilder& QueryBuilder::aggregate(const AggregateFunction aggregateFunction, Operand operand, std::optional<Alias> alias)
 	{
 		ensureSharedPtr(impl_->selectableListPtr_);
 
-		impl_->selectableListPtr_->push_back(std::make_shared<Aggregate>(aggregateFunction, operand.get(), alias));
+		impl_->selectableListPtr_->push_back(std::make_shared<Aggregate>(aggregateFunction, std::move(operand), std::move(alias)));
 
 		return *this;
 	}

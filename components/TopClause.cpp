@@ -18,8 +18,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		TopClauseImpl() noexcept = default;
-		TopClauseImpl(int quantity, TopUnit topUnit) noexcept
-			: topUnit_{ topUnit }
+		TopClauseImpl(const int quantity, const TopUnit unit) noexcept
+			: unit_{ unit }
 			, quantity_{ quantity }
 		{}
 		~TopClauseImpl() = default;
@@ -29,32 +29,31 @@ namespace DataAccessLayer::SqlQueryBuilder
 		TopClauseImpl(TopClauseImpl&&) = default;
 		TopClauseImpl& operator=(TopClauseImpl&&) = default;
 
-		TopUnit topUnit_{ TopUnit::Records };
+		TopUnit unit_{ TopUnit::Records };
 		int quantity_{};
 	};
 
-	// TopClause::TopClause
 	TopClause::TopClause() noexcept
 		: Component(ComponentId::TopClause)
 		, impl_{ std::make_unique<TopClauseImpl>() }
 	{}
 
-	// TopClause::TopClause(quantity, topunit)
-	TopClause::TopClause(int quantity, TopUnit topUnit) noexcept
+
+	TopClause::TopClause(int quantity, TopUnit unit) noexcept
 		: Component(ComponentId::TopClause)
-		, impl_{ std::make_unique<TopClauseImpl>(quantity, topUnit) }
+		, impl_{ std::make_unique<TopClauseImpl>(quantity, unit) }
 	{}
 
-	// TopClause::~TopClause
+
 	TopClause::~TopClause() = default;
 
-	// TopClause::TopClause(TopClause&)
+
 	TopClause::TopClause(const TopClause& other)
 		: Component(ComponentId::TopClause)
 		, impl_{ std::make_unique<TopClauseImpl>(*other.impl_) }
 	{}
 
-	// TopClause::operator=(TopClause&)
+
 	TopClause& TopClause::operator=(const TopClause& other)
 	{
 		if (this != &other)
@@ -65,13 +64,13 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// TopClause::TopClause(TopClause&&)
+
 	TopClause::TopClause(TopClause&& other) noexcept
 		: Component(ComponentId::TopClause)
 		, impl_{ std::move(other.impl_) }
 	{}
 
-	// TopClause::operator=(TopClause&&)
+
 	TopClause& TopClause::operator=(TopClause&& other) noexcept
 	{
 		if (this != &other)
@@ -82,31 +81,31 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// TopClause::quantity
+
 	int TopClause::quantity() const noexcept
 	{
 		return impl_->quantity_;
 	}
 
-	// TopClause::setQuantity
-	void TopClause::setQuantity(int quantity) noexcept
+
+	void TopClause::setQuantity(const int quantity) const noexcept
 	{
 		impl_->quantity_ = quantity;
 	}
 
-	// TopClause::sqlTopUnit
-	const TopUnit TopClause::topUnit() const noexcept
+
+	TopUnit TopClause::unit() const noexcept
 	{
-		return impl_->topUnit_;
+		return impl_->unit_;
 	}
 
-	// TopClause::setTopUnit
-	void TopClause::setTopUnit(TopUnit topUnit) noexcept
+
+	void TopClause::setUnit(const TopUnit unit) const noexcept
 	{
-		impl_->topUnit_ = topUnit;
+		impl_->unit_ = unit;
 	}
 
-	// TopClause::toSql
+
 	String TopClause::toSql(const IBuilder* builderPtr) const
 	{
 		return Component::sqlImpl(builderPtr, *this);

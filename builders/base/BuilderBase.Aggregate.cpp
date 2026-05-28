@@ -10,15 +10,33 @@ import :BuilderTypes;
 import :Aggregate;
 import :Alias;
 import :EnumMaps;
+import :FormulaArgString;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
 	String BuilderBase::buildComponent(const Aggregate& aggregate) const
 	{
-		String aggregateString{};
-		String targetString{};
+		const auto arg { aggregate.arg() };
+		if (std::holds_alternative<Operand>(arg))
+		{
+			if (auto selectablePtr = std::get<Operand>(arg).get())
+			{
+				selectablePtr->suppressBrackets(true);
+			}
+		}
 
-		auto selectablePtr = aggregate.selectable();
+		String aggregateString{AggregateFunctionMap.at(aggregate.aggregateFunction())
+				+ "(" + formulaArgString(this, aggregate.arg()) + ")" };
+
+		if (aggregate.hasAlias())
+		{
+			aggregateString += aggregate.aliasPtr()->sql(this);
+		}
+
+		//		String targetString{};
+
+/*
+		const auto selectablePtr = aggregate.selectable();
 		targetString = selectablePtr->sql(this);
 
 		if (!targetString.empty())
@@ -28,10 +46,10 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 			if (aggregate.hasAlias())
 			{
-				aggregateString += buildComponent(*aggregate.aliasPtr());
+				aggregateString += aggregate.aliasPtr()->sql(this);
 			}
 		}
-
+*/
 		return aggregateString;
 	}
 }

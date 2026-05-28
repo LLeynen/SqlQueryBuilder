@@ -26,31 +26,29 @@ namespace DataAccessLayer::SqlQueryBuilder
         DataSourceImpl& operator=(DataSourceImpl&& other) noexcept = default;
 
         AliasPtr alias_{};
-//        std::optional<String> alias_{ std::nullopt };
     };
 
-	// DataSource::DataSource
     DataSource::DataSource() noexcept
         : Component(ComponentId::DataSource)
         , impl_{ std::make_unique<DataSourceImpl>() }
     {}
 
-	// DataSource::DataSource(ComponentId, const std::optional<String>&)
-    DataSource::DataSource(ComponentId componentId)
+
+    DataSource::DataSource(const ComponentId componentId)
         : Component(componentId)
         , impl_{ std::make_unique<DataSourceImpl>() }
     {}
 
-	// DataSource::~DataSource
+
     DataSource::~DataSource() = default;
 
-	// DataSource::DataSource(const DataSource&)
+
     DataSource::DataSource(const DataSource& other)
         : Component(other)
         , impl_{ std::make_unique<DataSourceImpl>(*other.impl_) }
     {}
 
-	// DataSource::operator=(const DataSource&)
+
     DataSource& DataSource::operator=(const DataSource& other)
     {
         if (this != &other)
@@ -63,11 +61,9 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-	// DataSource::DataSource(DataSource&&)
     DataSource::DataSource(DataSource&&) noexcept = default;
 
 
-	// DataSource::operator=(DataSource&&)
     DataSource& DataSource::operator=(DataSource&&) noexcept = default;
 
 
@@ -76,7 +72,8 @@ namespace DataAccessLayer::SqlQueryBuilder
         return impl_->alias_;
     }
 
-    const String& DataSource::alias() const
+
+    String DataSource::aliasName() const
     {
         return  impl_->alias_->value();
     }
@@ -89,6 +86,7 @@ namespace DataAccessLayer::SqlQueryBuilder
             impl_->alias_ = std::make_shared<Alias>(std::move(alias.value()));
             impl_->alias_->setAliasType(AliasType::Table);
         }    }
+
 
 
     bool DataSource::hasAlias() const noexcept

@@ -31,7 +31,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 		FunctionImpl& operator=(FunctionImpl&& other) noexcept = default;
 
 		ScalarFunction function_ {};
-		SelectableList selectableList_ {};
+//		SelectableList selectableList_ {};
+		std::vector<FormulaArg> arguments_{};
 	};
 
 
@@ -40,34 +41,16 @@ namespace DataAccessLayer::SqlQueryBuilder
 		, impl_{ std::make_unique<FunctionImpl>() }
     {}
 
-	Function::Function(ScalarFunction scalarFunction, const std::initializer_list<Operand> args, std::optional<Alias> alias) noexcept
-		: Selectable(ComponentId::Function)
-		, impl_{ std::make_unique<FunctionImpl>(scalarFunction) }
-    {
-    	impl_->selectableList_.reserve(args.size());
 
-    	for (const auto& arg : args)
-    	{
-    		impl_->selectableList_.push_back(arg.get());
-    	}
+	Function::Function(ScalarFunction scalarFunction, std::vector<FormulaArg> args, std::optional<Alias> alias) noexcept
+	   : Selectable(ComponentId::Function)
+	   , impl_{ std::make_unique<FunctionImpl>(scalarFunction) }
+    {
+    	impl_->arguments_ = std::move(args);
 
     	Selectable::setAlias(std::move(alias));
     }
 
-
-	Function::Function(ScalarFunction scalarFunction, std::vector<Operand> args, std::optional<Alias> alias) noexcept
-		: Selectable(ComponentId::Function)
-		, impl_{ std::make_unique<FunctionImpl>(scalarFunction) }
-    {
-    	impl_->selectableList_.reserve(args.size());
-
-    	for (const auto& arg : args)
-    	{
-    		impl_->selectableList_.push_back(std::move(arg.get()));
-    	}
-
-    	Selectable::setAlias(alias);
-    }
 
 	Function::~Function() = default;
 
@@ -76,7 +59,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : Selectable(ComponentId::Function)
 		, impl_{ std::make_unique<FunctionImpl>(*other.impl_) }
     {
-	    Selectable::setAlias(other.alias());
+	    Selectable::setAlias(*other.aliasPtr());
     }
 
 
@@ -96,7 +79,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : Selectable(ComponentId::Function)
 		, impl_{ std::move(other.impl_) }
     {
-	    Selectable::setAlias(other.alias());
+	    Selectable::setAlias(*other.aliasPtr());
     }
 
 
@@ -123,23 +106,24 @@ namespace DataAccessLayer::SqlQueryBuilder
         return impl_->function_;
     }
 
-
+/*
     void Function::setFunction(const ScalarFunction function) const noexcept
     {
         impl_->function_ = function;
     }
+*/
 
-
-	SelectableList Function::selectableList() const noexcept
+	std::vector<FormulaArg>& Function::arguments() const noexcept
     {
-	    return impl_->selectableList_;
+	    return impl_->arguments_;
     }
 
-	void Function::setSelectableList(const SelectableList& selectableList) const noexcept
+	/*
+	void Function::setSelectableList(SelectableList selectableList) const noexcept
     {
-	    impl_->selectableList_ = selectableList;
+	    impl_->selectableList_ = std::move(selectableList);
     }
-
+*/
 
     String Function::toSql(const IBuilder* builderPtr) const
     {

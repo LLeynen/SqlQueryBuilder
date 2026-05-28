@@ -14,11 +14,11 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
 	String BuilderBase::buildComponent(const QuerySelectable& querySelectable) const
 	{
-		String querySelectableString{ "(" + querySelectable.query()->sql() + ")" };
+		String querySelectableString{ "(" + querySelectable.query()->sql(this) + ")" };
 
 		if (querySelectable.hasAlias())
 		{
-			querySelectableString += buildComponent(*querySelectable.aliasPtr());
+			querySelectableString += querySelectable.aliasPtr()->sql(this);
 		}
 
 		return querySelectableString;

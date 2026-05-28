@@ -10,10 +10,9 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::distinct
 	QueryBuilder& QueryBuilder::distinct(const bool distinct)
 	{
-		impl_->distinct_ = distinct;
+		impl_->distinct_ = Variant{distinct};
 
 		return *this;
 	}

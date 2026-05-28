@@ -9,10 +9,10 @@ import :Aggregate;
 import std;
 
 import :BuilderTypes;
-import :IBuilder;
-import :Selectable;
-import :Expression;
-import :Field;
+//import :IBuilder;
+//import :Selectable;
+//import :Expression;
+//import :Field;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
@@ -20,10 +20,15 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
     public:
         AggregateImpl() = default;
-        AggregateImpl(const AggregateFunction aggregateFunction, SelectablePtr selectablePtr)
+//        AggregateImpl(const AggregateFunction aggregateFunction, SelectablePtr selectablePtr)
+//            : aggregateFunction_{ aggregateFunction }
+//            , selectablePtr_{std::move( selectablePtr )}
+//        {}
+        AggregateImpl(AggregateFunction aggregateFunction, FormulaArg arg)
             : aggregateFunction_{ aggregateFunction }
-            , selectablePtr_{std::move( selectablePtr )}
+            , arg_{ std::move(arg) }
         {}
+
         ~AggregateImpl() = default;
 
         AggregateImpl(const AggregateImpl&) = default;
@@ -32,7 +37,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		AggregateImpl& operator=(AggregateImpl&&) noexcept = default;
 
         AggregateFunction aggregateFunction_{ AggregateFunction::Sum };
-        SelectablePtr selectablePtr_;
+        FormulaArg arg_{std::monostate{}};
     };
 
 
@@ -41,19 +46,36 @@ namespace DataAccessLayer::SqlQueryBuilder
         , impl_{ std::make_unique<AggregateImpl>() }
     {}
 
-    Aggregate::Aggregate(AggregateFunction aggregateFunction, const SelectablePtr& selectablePtr, std::optional<Alias> alias)
+
+    Aggregate::Aggregate(AggregateFunction aggregateFunction, FormulaArg formulaArg, std::optional<Alias> alias)
         : Selectable(ComponentId::Aggregate)
+        , impl_{ std::make_unique<AggregateImpl>(aggregateFunction, std::move(formulaArg)) }
+    {
+/*        const SelectablePtr selectablePtr = std::move(operand).get();
+
+        if (selectablePtr)
+        {
+            selectablePtr->suppressBrackets(true);
+        }
+*/
+//        impl_ = std::make_unique<AggregateImpl>(aggregateFunction, std::move(selectablePtr));
+
+        Selectable::setAlias(std::move(alias));
+    }
+
+    /*
+    Aggregate::Aggregate(AggregateFunction aggregateFunction, SelectablePtr selectablePtr, std::optional<Alias> alias)
     {
         if (selectablePtr)
         {
             selectablePtr->suppressBrackets(true);
         }
 
-        impl_ = std::make_unique<AggregateImpl>(aggregateFunction, selectablePtr);
+        impl_ = std::make_unique<AggregateImpl>(aggregateFunction, std::move(selectablePtr));
 
         Selectable::setAlias(std::move(alias));
     }
-
+*/
 
     Aggregate::~Aggregate() = default;
 
@@ -104,18 +126,18 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-    void Aggregate::setAggregateFunction(const AggregateFunction aggregateFunction) const noexcept
+/*    void Aggregate::setAggregateFunction(const AggregateFunction aggregateFunction) const noexcept
     {
         impl_->aggregateFunction_ = aggregateFunction;
     }
+*/
 
-
-    SelectablePtr Aggregate::selectable() const noexcept
+    FormulaArg Aggregate::arg() const noexcept
     {
-        return impl_->selectablePtr_;
+        return impl_->arg_;
     }
 
-
+/*
     void Aggregate::setSelectable(const FieldPtr& fieldPtr) const
     {
         impl_->selectablePtr_ = fieldPtr;
@@ -127,7 +149,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         impl_->selectablePtr_ = expressionPtr;
     }
 
-
+*/
     String Aggregate::toSql(const IBuilder* builderPtr) const
     {
         return Component::sqlImpl(builderPtr, *this);

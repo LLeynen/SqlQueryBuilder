@@ -10,16 +10,10 @@ import std;
 
 import :BuilderTypes;
 import :Component;
-//import :Selectable;
-//import :Variant;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	enum class AliasType
-	{
-		Column,
-		Table
-	};
+	enum class AliasType { Column, Table };
 
 	class AliasImpl;
 
@@ -27,8 +21,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		Alias() noexcept;
-		Alias(const String& aliasValue);
-//		Alias(const String& aliasValue, AliasType aliasType);
+		Alias(String aliasValue);
 		~Alias() override;
 
 		Alias(const Alias& other);
@@ -38,8 +31,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		[[nodiscard]] AliasType aliasType() const noexcept;
 		void setAliasType(AliasType aliasType) const;
-		[[nodiscard]] const String& value() const noexcept;
-		void setValue(const String& value) const;
+		[[nodiscard]] String value() const noexcept;
+		void setValue(String value) const;
 
 		void suppress(bool suppress) const noexcept;
 		[[nodiscard]] bool isSuppressed() const noexcept;
@@ -51,13 +44,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 		std::unique_ptr<AliasImpl> impl_{};
 	};
 
-	export inline Alias alias(const String& aliasValue)
+	export inline Alias as(String aliasValue)
 	{
-		return { aliasValue };
-	}
-
-	export inline Alias as(const String& aliasValue)
-	{
-		return { aliasValue };
+		return { std::move(aliasValue) };
 	}
 }

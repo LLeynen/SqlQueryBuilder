@@ -31,28 +31,27 @@ namespace DataAccessLayer::SqlQueryBuilder
 		int quantity_{};
 	};
 
-	// OffsetClause::OffsetClause
 	OffsetClause::OffsetClause() noexcept
 		: Component(ComponentId::OffsetClause)
 		, impl_{ std::make_unique<OffsetClauseImpl>() }
 	{}
 
-	// OffsetClause::OffsetClause(quantity)
-	OffsetClause::OffsetClause(int quantity) noexcept
+
+	OffsetClause::OffsetClause(const int quantity) noexcept
 		: Component(ComponentId::OffsetClause)
 		, impl_{ std::make_unique<OffsetClauseImpl>(quantity) }
 	{}
 
-	// OffsetClause::~OffsetClause
+
 	OffsetClause::~OffsetClause() = default;
 
-	// OffsetClause::OffsetClause(OffsetClause&)
+
 	OffsetClause::OffsetClause(const OffsetClause& other)
 		: Component(other)
 		, impl_{ std::make_unique<OffsetClauseImpl>(*other.impl_) }
 	{}
 
-	// OffsetClause::operator=(OffsetClause&)
+
 	OffsetClause& OffsetClause::operator=(const OffsetClause& other)
 	{
 		if (this != &other)
@@ -64,13 +63,13 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// OffsetClause::OffsetClause(OffsetClause&&)
+
 	OffsetClause::OffsetClause(OffsetClause&& other) noexcept
 		: Component(std::move(other))
 		, impl_{ std::move(other.impl_) }
 	{}
 
-	// OffsetClause::operator=(OffsetClause&&)
+
 	OffsetClause& OffsetClause::operator=(OffsetClause&& other) noexcept
 	{
 		if (this != &other)
@@ -82,19 +81,19 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// OffsetClause::quantity
-	const int OffsetClause::quantity() const noexcept
+
+	int OffsetClause::quantity() const noexcept
 	{
 		return impl_->quantity_;
 	}
 
-	// OffsetClause::setQuantity
-	void OffsetClause::setQuantity(int quantity) noexcept
+
+	void OffsetClause::setQuantity(const int quantity) const noexcept
 	{
 		impl_->quantity_ = quantity;
 	}
 
-	// OffsetClause::toSql
+
 	String OffsetClause::toSql(const IBuilder* builderPtr) const
 	{
 		return Component::sqlImpl(builderPtr, *this);

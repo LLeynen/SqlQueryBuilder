@@ -10,6 +10,7 @@ import std;
 
 import :BuilderTypes;
 import :Component;
+import :Field;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
@@ -19,7 +20,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		OrderByClause() noexcept;
-		OrderByClause(const Field& field, SortOrder sortOrder = SortOrder::Ascending);
+		OrderByClause(FieldRef fieldRef, SortOrder sortOrder = SortOrder::Ascending);
 		~OrderByClause() override;
 
 		OrderByClause(const OrderByClause&);
@@ -27,10 +28,10 @@ namespace DataAccessLayer::SqlQueryBuilder
 		OrderByClause(OrderByClause&&) noexcept ;
 		OrderByClause& operator=(OrderByClause&&) noexcept ;
 
-		[[nodiscard]] const Field field() const;
-		void setField(const Field& field);
+		[[nodiscard]] Field field() const;
+		void setField(FieldRef fieldRef) const;
 		[[nodiscard]] SortOrder sortOrder() const noexcept;
-		void setSortOrder(SortOrder sortOrder) noexcept;
+		void setSortOrder(SortOrder sortOrder) const noexcept;
 
 	protected:
 		String toSql(const IBuilder* builderPtr) const override;
@@ -38,4 +39,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 	private:
 		std::unique_ptr<OrderByClauseImpl> impl_;
 	};
+
+	export inline OrderByClause orderBy(FieldRef fieldRef, SortOrder sortOrder = SortOrder::Ascending)
+	{
+		return { std::move(fieldRef), sortOrder };
+	}
 }

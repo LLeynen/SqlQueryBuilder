@@ -19,8 +19,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 	public:
 		ParameterSelectableImpl() = default;
 
-		ParameterSelectableImpl(const String& parameterName)
-			: containedParameter_{ std::make_shared<Parameter>(parameterName) }
+		ParameterSelectableImpl(String parameterName)
+			: containedParameter_{ std::make_shared<Parameter>(std::move(parameterName)) }
+		{}
+
+		ParameterSelectableImpl(Parameter parameter)
+			: containedParameter_{ std::make_shared<Parameter>(std::move(parameter)) }
 		{}
 
 		~ParameterSelectableImpl() = default;
@@ -40,12 +44,21 @@ namespace DataAccessLayer::SqlQueryBuilder
     {}
 
 
-	ParameterSelectable::ParameterSelectable(const String& parameterName, std::optional<Alias> alias)
+	ParameterSelectable::ParameterSelectable(String parameterName, std::optional<Alias> alias)
         : Selectable(ComponentId::ParameterSelectable)
-		, impl_{ std::make_unique<ParameterSelectableImpl>(parameterName) }
+		, impl_{ std::make_unique<ParameterSelectableImpl>(Parameter(std::move(parameterName))) }
     {
 	    Selectable::setAlias(std::move(alias));
     }
+
+
+	ParameterSelectable::ParameterSelectable(Parameter parameter, std::optional<Alias> alias)
+		: Selectable(ComponentId::ParameterSelectable)
+		, impl_{ std::make_unique<ParameterSelectableImpl>(std::move(parameter)) }
+	{
+		std::cout << "ParameterSelectable::ParameterSelectable(parameter, alias)" << std::endl;
+		Selectable::setAlias(std::move(alias));
+	}
 
 
 	ParameterSelectable::~ParameterSelectable() = default;
@@ -55,7 +68,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : Selectable(ComponentId::ParameterSelectable)
 		, impl_{ std::make_unique<ParameterSelectableImpl>(*other.impl_) }
     {
-	    Selectable::setAlias(other.alias());
+	    Selectable::setAlias(*other.aliasPtr());
     }
 
 
@@ -75,7 +88,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : Selectable(ComponentId::ParameterSelectable)
 		, impl_{ std::move(other.impl_) }
     {
-	    Selectable::setAlias(other.alias());
+	    Selectable::setAlias(*other.aliasPtr());
     }
 
 
@@ -103,21 +116,21 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-	void ParameterSelectable::setParameter(const Parameter& parameterReference) const
+	void ParameterSelectable::setParameter(Parameter parameter) const
 	{
-	    impl_->containedParameter_ = std::make_shared<Parameter>(parameterReference);
+	    impl_->containedParameter_ = std::make_shared<Parameter>(std::move(parameter));
     }
 
 
     String ParameterSelectable::parameterName() const noexcept
     {
-        return impl_->containedParameter_->parameterName();
+        return impl_->containedParameter_->name();
     }
 
 
-    void ParameterSelectable::setParameterName(const String& parameterName) const
+    void ParameterSelectable::setParameterName(String parameterName) const
     {
-    	impl_->containedParameter_->setParameterName(parameterName);
+    	impl_->containedParameter_->setName(std::move(parameterName));
     }
 
 

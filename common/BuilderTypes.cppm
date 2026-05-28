@@ -17,24 +17,25 @@ export namespace DataAccessLayer::SqlQueryBuilder
 	class BuilderBase;
 	class BuilderFactory;
 	class Component;
-	class CompositeCondition;
-	class Condition;
-	class ConditionBase;
 	class DataSource;
 	class Expression;
 	class Field;
-	class Filter;
+	class FieldRef;
+	class ComparisonFilter;
+	class FilterBase;
+	class FilterSelectable;
 	class Function;
 	class IBuilder;
 	class JoinClause;
 	class LimitClause;
 	class ListOfValues;
 	class Literal;
+	class LogicalFilter;
 	class OffsetClause;
 	class Operand;
 	class OrderByClause;
-	class ParameterValue;
 	class Parameter;
+	class ParameterRegistry;
 	class ParameterSelectable;
 	class Query;
 	class QueryBuilder;
@@ -57,26 +58,58 @@ export namespace DataAccessLayer::SqlQueryBuilder
 	class OrderByClauseListWrapper;
 	class QueryListWrapper;
 
+	export using FilterValue = std::variant
+		<
+			std::nullptr_t,
+			Variant,
+			Parameter,
+			ListOfValues,
+			Query,
+			String,
+			const char*
+		>;
+
+	export using ComparisonValue = std::variant
+		<
+			std::monostate,
+			Operand,
+			FilterValue
+		>;
+
+	export using FormulaValue = std::variant
+	<
+		Variant,
+		Parameter,
+		String,
+		const char*
+	>;
+
+	export using FormulaArg = std::variant
+	<
+		std::monostate,
+		Operand,
+		FormulaValue
+	>;
+
 	// Aliases for shared pointers to classes
 	using AggregatePtr = std::shared_ptr<Aggregate>;
 	using AliasPtr = std::shared_ptr<Alias>;
+	using ComparisonFilterPtr = std::shared_ptr<ComparisonFilter>;
 	using ComponentPtr = std::shared_ptr<Component>;
-	using CompositeConditionPtr = std::shared_ptr<CompositeCondition>;
-	using ConditionPtr = std::shared_ptr<Condition>;
-	using ConditionBasePtr = std::shared_ptr<ConditionBase>;
 	using DataSourcePtr = std::shared_ptr<DataSource>;
 	using ExpressionPtr = std::shared_ptr<Expression>;
 	using FieldPtr = std::shared_ptr<Field>;
-	using FilterPtr = std::shared_ptr<Filter>;
+	using FilterBasePtr = std::shared_ptr<FilterBase>;
+	using FilterSelectablePtr = std::shared_ptr<FilterSelectable>;
 	using IBuilderPtr = std::shared_ptr<IBuilder>;
 	using JoinClausePtr = std::shared_ptr<JoinClause>;
 	using LimitClausePtr = std::shared_ptr<LimitClause>;
 	using ListOfValuesPtr = std::shared_ptr<ListOfValues>;
 	using LiteralPtr = std::shared_ptr<Literal>;
+	using LogicalFilterPtr = std::shared_ptr<LogicalFilter>;
 	using OffsetClausePtr = std::shared_ptr<OffsetClause>;
 	using OperandPtr = std::shared_ptr<Operand>;
 	using OrderByClausePtr = std::shared_ptr<OrderByClause>;
-	using ParameterValuePtr = std::shared_ptr<ParameterValue>;
 	using ParameterPtr = std::shared_ptr<Parameter>;
 	using ParameterSelectablePtr = std::shared_ptr<ParameterSelectable>;
 	using QueryPtr = std::shared_ptr<Query>;
@@ -104,13 +137,10 @@ export namespace DataAccessLayer::SqlQueryBuilder
 	using OrderByClauseListPtr = std::shared_ptr<OrderByClauseList>;
 	using QueryList = std::vector<QueryPtr>;
 	using QueryListPtr = std::shared_ptr<QueryList>;
-	using ConditionBaseList = std::vector<ConditionBasePtr>;
-	using CompositeConditionList = std::vector<CompositeConditionPtr>;
 	using ComponentMap = std::unordered_map<ComponentId, ComponentPtr>;
 	using ComponentMapPtr = std::shared_ptr<ComponentMap>;
 	using BuilderFactoryMap = std::unordered_map<DatabaseEngine, IBuilderPtr>;
-	using ParameterMap = std::unordered_map<String, ParameterValuePtr>;
-	using ParameterMapPtr = std::shared_ptr<ParameterMap>;
+	using ParameterRegistryMap = std::unordered_map<String, Variant>;
 	using DistinctWrapperPtr = std::shared_ptr<DistinctWrapper>;
 	using SelectableListWrapperPtr = std::shared_ptr<SelectableListWrapper>;
 	using WhereFilterWrapperPtr = std::shared_ptr<WhereFilterWrapper>;

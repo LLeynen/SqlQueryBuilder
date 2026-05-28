@@ -11,13 +11,10 @@ import :Concepts;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// Default database engine
-//	DatabaseEngine defaultDatabaseEngine{ DatabaseEngine::AnsiSQL };
-
-	// QueryBuilder::populateComponents
 	void QueryBuilderImpl::populateComponents()
 	{
-		if (currentWhereChainPtr_ && isWhereChaining_)
+/*
+ *		if (currentWhereChainPtr_ && isWhereChaining_)
 		{
 			ensureSharedPtr(whereFilterPtr_)->setCondition(*currentWhereChainPtr_);
 
@@ -32,7 +29,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 			currentHavingChainPtr_.reset();
 			isHavingChaining_ = false;
 		}
-
+*/
 		ensureSharedPtr(componentMapPtr_)->clear();
 
 		if (!distinct_.isNull())
@@ -101,8 +98,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 		}
 	}
 
-	// QueryBuilderImpl::addConditionToWhereChain
-	void QueryBuilderImpl::addConditionToWhereChain(const ConditionBase& conditionBase, LogicOperator logicOperator)
+/*
+	void QueryBuilderImpl::addConditionToWhereChain(const ConditionBase& conditionBase, const LogicOperator logicOperator)
 	{
 		if (!isWhereChaining_)
 		{
@@ -125,8 +122,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 		}
 	}
 
-	// QueryBuilderImpl::addConditionToHavingChain
-	void QueryBuilderImpl::addConditionToHavingChain(const ConditionBase& conditionBase, LogicOperator logicOperator)
+
+	void QueryBuilderImpl::addConditionToHavingChain(const ConditionBase& conditionBase, const LogicOperator logicOperator)
 	{
 		if (!isHavingChaining_)
 		{
@@ -148,4 +145,5 @@ namespace DataAccessLayer::SqlQueryBuilder
 			}
 		}
 	}
+	*/
 }

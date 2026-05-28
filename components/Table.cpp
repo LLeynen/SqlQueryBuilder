@@ -9,8 +9,6 @@ import :Table;
 import std;
 
 import :BuilderTypes;
-//import :DataSource;
-//import :IBuilder;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
@@ -18,8 +16,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		TableImpl() = default;
-		TableImpl(String  tableName)
-			: tableName_{std::move( tableName )}
+		TableImpl(String name)
+			: name_{std::move( name )}
 		{}
 		~TableImpl() = default;
 
@@ -28,7 +26,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		TableImpl(TableImpl&&) = default;
 		TableImpl& operator=(TableImpl&&) = default;
 
-		String tableName_;
+		String name_;
 	};
 
 
@@ -38,9 +36,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{}
 
 
-	Table::Table(const String& tableName)
+	Table::Table(String tableName)
 		: Component(ComponentId::Table)
-		, impl_{ std::make_unique<TableImpl>(tableName) }
+		, impl_{ std::make_unique<TableImpl>(std::move(tableName)) }
 	{}
 
 
@@ -83,15 +81,15 @@ namespace DataAccessLayer::SqlQueryBuilder
 	}
 
 
-	String Table::tableName() const
+	String Table::name() const
 	{
-		return impl_->tableName_;
+		return impl_->name_;
 	}
 
 
-	void Table::setTableName(const String& tableName) const
+	void Table::setName(String name) const
 	{
-		impl_->tableName_ = tableName;
+		impl_->name_ = std::move(name);
 	}
 
 

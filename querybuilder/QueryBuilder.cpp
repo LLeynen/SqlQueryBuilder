@@ -4,8 +4,6 @@
 
 module QueryBuilder;
 
-//import QueryBuilder;
-
 import std;
 
 import :BuilderTypes;
@@ -15,7 +13,6 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::QueryBuilder(QueryType, DatabaseEngine)
 	QueryBuilder::QueryBuilder(const QueryType queryType, const DatabaseEngine databaseEngine)
 		: impl_{ std::make_unique<QueryBuilderImpl>() }
 	{
@@ -29,15 +26,15 @@ namespace DataAccessLayer::SqlQueryBuilder
 		}
 	}
 
-	// QueryBuilder::~QueryBuilder
+
 	QueryBuilder::~QueryBuilder() = default;
 
-	// QueryBuilder::QueryBuilder(QueryBuilder&)
+
 	QueryBuilder::QueryBuilder(const QueryBuilder& other)
 		: impl_{ std::make_unique<QueryBuilderImpl>(*other.impl_) }
 	{}
 
-	// QueryBuilder::operator=(QueryBuilder&)
+
 	QueryBuilder& QueryBuilder::operator=(const QueryBuilder& other)
 	{
 		if (this != &other)
@@ -48,12 +45,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::QueryBuilder(QueryBuilder&&)
+
 	QueryBuilder::QueryBuilder(QueryBuilder&& other) noexcept
 		: impl_{ std::move(other.impl_) }
 	{}
 
-	// QueryBuilder::operator=(QueryBuilder&&)
+
 	QueryBuilder& QueryBuilder::operator=(QueryBuilder&& other) noexcept
 	{
 		if (this != &other)
@@ -64,39 +61,34 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::setDefaultDatabaseEngine
-	//void setDefaultDatabaseEngine(const DatabaseEngine databaseEngine)
-	//{
-	//	defaultDatabaseEngine = databaseEngine;
-	//}
 
-	// QueryBuilder::queryType
 	QueryType QueryBuilder::queryType() const
 	{
 		return impl_->queryType_;
 	}
 
-	// QueryBuilder::setQueryType
-	void QueryBuilder::setQueryType(const QueryType queryType)
+
+	void QueryBuilder::setQueryType(const QueryType queryType) const
 	{
 		impl_->queryType_ = queryType;
 	}
 
-	// QueryBuilder::databaseEngine
-	const DatabaseEngine QueryBuilder::databaseEngine() const
+
+	DatabaseEngine QueryBuilder::databaseEngine() const
 	{
 		return impl_->databaseEngine_;
 	}
 
-	// QueryBuilder::setDatabaseEngine
-	void QueryBuilder::setDatabaseEngine(const DatabaseEngine databaseEngine)
+
+	void QueryBuilder::setDatabaseEngine(const DatabaseEngine databaseEngine) const
 	{
 		impl_->databaseEngine_ = databaseEngine;
 		impl_->builderPtr_ = BuilderFactory::instance().builder(databaseEngine);
 	}
 
-	void QueryBuilder::setParameterMap(const ParameterMapPtr& parameterMapPtr)
-	{
-		impl_->parameterMapPtr_ = parameterMapPtr;
-	}
+
+//	void QueryBuilder::setParameterMap(const ParameterMapPtr& parameterMapPtr) const
+//	{
+//		impl_->parameterMapPtr_ = parameterMapPtr;
+//	}
 }

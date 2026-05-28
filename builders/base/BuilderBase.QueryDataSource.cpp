@@ -14,11 +14,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
 	String BuilderBase::buildComponent(const QueryDataSource& queryDataSource) const
 	{
-		String queryDataSourceString{ "(" + queryDataSource.query()->sql() + ")" };
+		String queryDataSourceString{ "(" + queryDataSource.query()->sql(this) + ")" };
 
 		if (queryDataSource.hasAlias())
 		{
-			queryDataSourceString += buildComponent(*queryDataSource.aliasPtr());
+//			queryDataSourceString += buildComponent(*queryDataSource.aliasPtr());
+			queryDataSourceString += queryDataSource.aliasPtr()->sql(this);
 		}
 
 		return queryDataSourceString;

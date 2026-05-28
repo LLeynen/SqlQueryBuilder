@@ -20,7 +20,8 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
     public:
         ParameterSelectable() noexcept;
-        ParameterSelectable(const String& parameterName, std::optional<Alias> alias = std::nullopt);
+        ParameterSelectable(String name, std::optional<Alias> alias = std::nullopt);
+        ParameterSelectable(Parameter parameter, std::optional<Alias> alias = std::nullopt);
         ~ParameterSelectable() override;
 
         ParameterSelectable(const ParameterSelectable&);
@@ -29,9 +30,9 @@ namespace DataAccessLayer::SqlQueryBuilder
         ParameterSelectable& operator=(ParameterSelectable&&) noexcept;
 
         [[nodiscard]] ParameterPtr parameterPtr() const;
-        void setParameter(const Parameter& parameterReference) const;
+        void setParameter(Parameter parameter) const;
         [[nodiscard]] String parameterName() const noexcept;
-        void setParameterName(const String& parameterName) const;
+        void setParameterName(String parameterName) const;
 
         [[nodiscard]] SelectablePtr clone() const override;
 

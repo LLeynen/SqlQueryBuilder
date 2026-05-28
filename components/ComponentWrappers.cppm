@@ -14,11 +14,10 @@ import :Component;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-    // SelectableListWrapper
     export class SelectableListWrapper : public Component
     {
     public:
-        SelectableListWrapper(const SelectableListPtr& selectableListPtr) noexcept;
+        SelectableListWrapper(SelectableListPtr selectableListPtr) noexcept;
         [[nodiscard]] SelectableListPtr selectableListPtr() const noexcept;
 
     protected:
@@ -28,11 +27,11 @@ namespace DataAccessLayer::SqlQueryBuilder
         SelectableListPtr selectableListPtr_;
     };
 
-    // JoinClauseListWrapper
+
     export class JoinClauseListWrapper : public Component
     {
     public:
-        JoinClauseListWrapper(const JoinClauseListPtr& joinClauseListPtr) noexcept;
+        JoinClauseListWrapper(JoinClauseListPtr  joinClauseListPtr) noexcept;
         [[nodiscard]] JoinClauseListPtr joinClauseList() const noexcept;
 
     protected:
@@ -42,26 +41,26 @@ namespace DataAccessLayer::SqlQueryBuilder
         JoinClauseListPtr joinClauseListPtr_;
     };
 
-    // WhereFilterWrapper
+
     export class WhereFilterWrapper : public Component
     {
     public:
-        WhereFilterWrapper(const FilterPtr& filterPtr) noexcept;
-        [[nodiscard]] FilterPtr filter() const noexcept;
+        WhereFilterWrapper(FilterBasePtr filterPtr) noexcept;
+        [[nodiscard]] FilterBasePtr filter() const noexcept;
 
     protected:
         String toSql(const IBuilder* builderPtr) const override;
 
     private:
-        FilterPtr filterPtr_;
+        FilterBasePtr filterPtr_;
     };
 
-    // GroupByFieldListWrapper
+
     export class GroupByFieldListWrapper : public Component
     {
     public:
-        GroupByFieldListWrapper(const FieldListPtr& fieldListPtr) noexcept;
-        [[nodiscard]] const FieldListPtr fieldList() const noexcept;
+        GroupByFieldListWrapper(FieldListPtr  fieldListPtr) noexcept;
+        [[nodiscard]] FieldListPtr fieldList() const noexcept;
 
     protected:
         String toSql(const IBuilder* builderPtr) const override;
@@ -70,21 +69,21 @@ namespace DataAccessLayer::SqlQueryBuilder
         FieldListPtr fieldListPtr_;
     };
 
-    // HavingFilterWrapper
+
     export class HavingFilterWrapper : public Component
     {
     public:
-        HavingFilterWrapper(FilterPtr  filterPtr) noexcept;
-        [[nodiscard]] FilterPtr filter() const noexcept;
+        HavingFilterWrapper(FilterBasePtr filterPtr) noexcept;
+        [[nodiscard]] FilterBasePtr filter() const noexcept;
 
     protected:
         String toSql(const IBuilder* builderPtr) const override;
 
     private:
-        FilterPtr filterPtr_;
+        FilterBasePtr filterPtr_;
     };
 
-    // OrderByClauseListWrapper
+
     export class OrderByClauseListWrapper : public Component
     {
     public:
@@ -98,7 +97,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         OrderByClauseListPtr orderByClauseListPtr_;
     };
 
-    // QueryListWrapper
+
     export class QueryListWrapper : public Component
     {
     public:
@@ -112,7 +111,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         QueryListPtr queryListPtr_;
     };
 
-    // DistinctWrapper
+
     export class DistinctWrapper : public Component
     {
     public:

@@ -27,8 +27,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 		OffsetClause(OffsetClause&&) noexcept ;
 		OffsetClause& operator=(OffsetClause&&) noexcept ;
 
-		[[nodiscard]] const int quantity() const noexcept;
-		void setQuantity(int quantity) noexcept;
+		[[nodiscard]] int quantity() const noexcept;
+		void setQuantity(int quantity) const noexcept;
 
 	protected:
 		String toSql(const IBuilder* builderPtr) const override;
@@ -36,4 +36,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 	private:
 		std::unique_ptr<OffsetClauseImpl> impl_;
 	};
+
+	export inline OffsetClause offset(int quantity)
+	{
+		return { quantity };
+	}
 }

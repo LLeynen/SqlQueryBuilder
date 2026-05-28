@@ -19,8 +19,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 	public:
 		LiteralImpl() = default;
 
-		LiteralImpl(const Variant& value)
-			: value_{ value }
+		LiteralImpl(Variant value)
+			: value_{ std::move(value) }
 		{}
 
 		LiteralImpl(const LiteralImpl& other) = default;
@@ -57,9 +57,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{}
 
 
-	Literal::Literal(const Variant& value, std::optional<Alias> alias)
+	Literal::Literal(Variant value, std::optional<Alias> alias)
 		: Selectable{ ComponentId::Literal }
-		, impl_{ std::make_unique<LiteralImpl>(value) }
+		, impl_{ std::make_unique<LiteralImpl>(std::move(value)) }
 	{
 		Selectable::setAlias(std::move(alias));
 	}
@@ -109,15 +109,15 @@ namespace DataAccessLayer::SqlQueryBuilder
 	}
 
 
-	const Variant& Literal::value() const noexcept
+	Variant Literal::value() const noexcept
 	{
 		return impl_->value_;
 	}
 
 
-	void Literal::setValue(const Variant& value) const
+	void Literal::setValue(Variant value) const
 	{
-		impl_->value_ = value;
+		impl_->value_ = std::move(value);
 	}
 
 

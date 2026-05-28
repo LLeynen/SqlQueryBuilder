@@ -10,9 +10,6 @@ import std;
 
 import :BuilderTypes;
 import :DataSource;
-//import :IBuilder;
-//import :Query;
-//import QueryBuilder;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
@@ -21,16 +18,16 @@ namespace DataAccessLayer::SqlQueryBuilder
     public:
         QueryDataSourceImpl() = default;
 
-        QueryDataSourceImpl(const QueryBuilder& queryBuilder)
-            : containedQuery_{ std::make_shared<Query>(queryBuilder) }
+        QueryDataSourceImpl(QueryBuilder queryBuilder)
+            : containedQuery_{ std::make_shared<Query>(std::move(queryBuilder)) }
         {}
 
-        QueryDataSourceImpl(const std::shared_ptr<QueryBuilder>& queryBuilder)
-            : containedQuery_{ std::make_shared<Query>(queryBuilder) }
+        QueryDataSourceImpl(QueryBuilderPtr queryBuilderPtr)
+            : containedQuery_{ std::make_shared<Query>(queryBuilderPtr) }
 		{}
 
-        QueryDataSourceImpl(const String& rawSql)
-            : containedQuery_{ std::make_shared<Query>(rawSql) }
+        QueryDataSourceImpl(String rawSql)
+            : containedQuery_{ std::make_shared<Query>(std::move(rawSql)) }
 		{}
 
         ~QueryDataSourceImpl() = default;
@@ -74,25 +71,25 @@ namespace DataAccessLayer::SqlQueryBuilder
     {}
 
 
-    QueryDataSource::QueryDataSource(const QueryBuilder& queryBuilder, std::optional<Alias> alias)
+    QueryDataSource::QueryDataSource(QueryBuilder queryBuilder, std::optional<Alias> alias)
         : DataSource(ComponentId::QueryDataSource)
-		, impl_{ std::make_unique<QueryDataSourceImpl>(queryBuilder) }
+		, impl_{ std::make_unique<QueryDataSourceImpl>(std::move(queryBuilder)) }
     {
         DataSource::setAlias(std::move(alias));
     }
 
 
-    QueryDataSource::QueryDataSource(std::shared_ptr<QueryBuilder> queryBuilder, std::optional<Alias> alias)
+    QueryDataSource::QueryDataSource(QueryBuilderPtr queryBuilderPtr, std::optional<Alias> alias)
         : DataSource(ComponentId::QueryDataSource)
-		, impl_{ std::make_unique<QueryDataSourceImpl>(queryBuilder) }
+		, impl_{ std::make_unique<QueryDataSourceImpl>(queryBuilderPtr) }
     {
         DataSource::setAlias(std::move(alias));
     }
 
 
-    QueryDataSource::QueryDataSource(const String& rawSql, std::optional<Alias> alias)
+    QueryDataSource::QueryDataSource(String rawSql, std::optional<Alias> alias)
         : DataSource(ComponentId::QueryDataSource)
-		, impl_{ std::make_unique<QueryDataSourceImpl>(rawSql) }
+		, impl_{ std::make_unique<QueryDataSourceImpl>(std::move(rawSql)) }
     {
         DataSource::setAlias(std::move(alias));
     }
@@ -105,7 +102,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : DataSource(ComponentId::QueryDataSource)
 		, impl_{ std::make_unique<QueryDataSourceImpl>(*other.impl_) }
     {
-        setAlias(other.alias());
+        setAlias(*other.aliasPtr());
     }
 
 
@@ -125,7 +122,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : DataSource(ComponentId::QueryDataSource)
 		, impl_{ std::move(other.impl_) }
     {
-        setAlias(other.alias());
+        setAlias(*other.aliasPtr());
     }
 
 

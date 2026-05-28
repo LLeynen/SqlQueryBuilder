@@ -12,28 +12,27 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::limit
-	QueryBuilder& QueryBuilder::limit(const int quantity)
+	QueryBuilder& QueryBuilder::limit(const int limit)
 	{
-		if (quantity < 0)
+		if (limit < 0)
 		{
 			throw std::runtime_error("Quantity for LIMIT clause cannot be negative");
 		}
 
-		ensureSharedPtr(impl_->limitClausePtr_)->setQuantity(quantity);
+		ensureSharedPtr(impl_->limitClausePtr_)->setQuantity(limit);
 
 		return *this;
 	}
 
-	// QueryBuilder::offset
-	QueryBuilder& QueryBuilder::offset(const int quantity)
+
+	QueryBuilder& QueryBuilder::offset(const int offset)
 	{
-		if (quantity < 0)
+		if (offset < 0)
 		{
 			throw std::runtime_error("Quantity for OFFSET clause cannot be negative");
 		}
 
-		ensureSharedPtr(impl_->offsetClausePtr_)->setQuantity(quantity);
+		ensureSharedPtr(impl_->offsetClausePtr_)->setQuantity(offset);
 
 		return *this;
 	}

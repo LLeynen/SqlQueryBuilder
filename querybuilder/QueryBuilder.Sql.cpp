@@ -14,8 +14,7 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::sql
-	String QueryBuilder::sql()
+	String QueryBuilder::sql() const
 	{
 		if (impl_->componentMapPtr_ && !impl_->componentMapPtr_->empty())
 		{
@@ -29,8 +28,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return sqlStatement;
 	}
 
-	// QueryBuilder::clear
-	void QueryBuilder::clear()
+
+	void QueryBuilder::clear() const
 	{
 		impl_->componentMapPtr_->clear();
 	}

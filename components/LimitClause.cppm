@@ -28,7 +28,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		LimitClause& operator=(LimitClause&&) noexcept ;
 
 		[[nodiscard]] int quantity() const noexcept;
-		void setQuantity(int quantity) noexcept;
+		void setQuantity(int quantity) const noexcept;
 
 	protected:
 		String toSql(const IBuilder* builderPtr) const override;
@@ -36,4 +36,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 	private:
 		std::unique_ptr<LimitClauseImpl> impl_;
 	};
+
+	export inline LimitClause limit(int quantity)
+	{
+		return { quantity };
+	}
 }

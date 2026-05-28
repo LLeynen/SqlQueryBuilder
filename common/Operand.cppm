@@ -9,64 +9,33 @@ export module QueryBuilder:Operand;
 import std;
 
 import :BuilderTypes;
-import :Literal;
 import :Field;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	template <typename T>
-	concept VariantCompatible =
-	std::is_constructible_v<Variant,T>;
-
-	template <typename T>
+	export template <typename T>
 	concept OperandCompatible =
-		VariantCompatible<T> ||
 		std::is_base_of_v<Selectable, std::remove_cvref_t<T>>;
 
-	class Operand
+	export class Operand
 	{
 	public:
-		Operand() = default;
-		Operand(const Selectable& selectable);
-		Operand(const SelectablePtr& selectablePtr);
-		Operand(const FieldRef& fieldRef);
-		template<VariantCompatible T>
-		Operand(T&& value);
+		Operand();
+		Operand(FieldRef fieldRef);
+//		Operand(std::initializer_list<const char*> fieldTokens)
+//			: node_{ std::make_shared<Field>(FieldRef(fieldTokens).move()) }
+//		{}
+		Operand(Expression expression);
+		Operand(Function func);
+		Operand(Aggregate aggregate);
+		Operand(ParameterSelectable parameterSelectable);
+		Operand(Literal literal);
+		~Operand();
 
-		[[nodiscard]] SelectablePtr get() const;
+		[[nodiscard]] SelectablePtr get() const &;
+		[[nodiscard]] SelectablePtr get() && noexcept;
 
 	private:
-		SelectablePtr node{};
+		SelectablePtr node_{};
 	};
-
-	Operand::Operand(const Selectable& selectable)
-	{
-		auto cloned = selectable.clone();
-		cloned->suppressAlias(true);
-		node = std::move(cloned);
-	}
-
-
-	Operand::Operand(const SelectablePtr& selectablePtr)
-	{
-		auto cloned = selectablePtr->clone();
-		cloned->suppressAlias(true);
-		node = std::move(cloned);
-	}
-
-	Operand::Operand(const FieldRef& fieldRef)
-	{
-		node = std::make_shared<Field>(fieldRef.get());
-	}
-
-	template <VariantCompatible T>
-	Operand::Operand(T&& value)
-		: node(std::make_shared<Literal>(Variant(std::forward<T>(value))))
-	{}
-
-
-	SelectablePtr Operand::get() const
-	{
-		return node;
-	}
 }

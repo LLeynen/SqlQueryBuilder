@@ -8,37 +8,60 @@ import std;
 
 import :BuilderTypes;
 import :Concepts;
-import :Field;
-import :Condition;
-import :Parameter;
-import :Filter;
-import :CompositeCondition;
+//import :Field;
+//import :Condition;
+//import :ConditionExpression;
+//import :Parameter;
+import :FilterBase;
+//import :CompositeCondition;
 import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::where(field, comp, value)
-	QueryBuilder& QueryBuilder::where(const FieldRef& fieldRef, const Comparison comparison, const ConditionVariant& conditionValue)
+	QueryBuilder& QueryBuilder::where(const FilterBase& filter)
+	{
+		if (impl_->whereFilterPtr_)
+		{
+			impl_->whereFilterPtr_ = std::make_shared<LogicalFilter>(*impl_->whereFilterPtr_, LogicOperator::And, filter);
+		}
+		else
+		{
+			impl_->whereFilterPtr_ = filter.clone();
+		}
+		return *this;
+	}
+/*
+	QueryBuilder& QueryBuilder::where(Operand lhs, const Comparison comp, Operand rhs)
+	{
+		return where(Filter(std::move(lhs), comp, std::move(rhs)));
+	}
+*/
+
+	/*
+	QueryBuilder& QueryBuilder::where(FieldRef fieldRef, const Comparison comparison, ConditionVariant conditionValue)
 	{
 		ensureSharedPtr(impl_->whereFilterPtr_);
 
+		const auto value = std::move(conditionValue);
+
 		if (impl_->whereFilterPtr_->conditionBase())
 		{
-			return andWhere(fieldRef, comparison, conditionValue);
+			return andWhere(std::move(fieldRef), comparison, value);
 		}
 
-		ConditionVariant modifiedConditionValue = conditionValue;
-		if (std::holds_alternative<Parameter>(conditionValue))
+		ConditionVariant modifiedValue = value;
+
+		if (std::holds_alternative<Parameter>(value))
 		{
-			auto parameter = std::get<Parameter>(conditionValue);
+			auto parameter = std::get<Parameter>(value);
 			if (!parameter.parameterMap())
 			{
 				parameter.setParameterMap(impl_->parameterMapPtr_);
 			}
-			modifiedConditionValue = parameter;
+			modifiedValue = parameter;
 		}
 
-		Condition condition{ fieldRef.get(), comparison, modifiedConditionValue };
+		const Condition condition{ std::move(fieldRef), comparison, modifiedValue };
 
 		if (impl_->isWhereChaining_)
 		{
@@ -52,7 +75,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::where(ConditionBase)
+
+
 	QueryBuilder& QueryBuilder::where(const ConditionBase& conditionBase)
 	{
 		ensureSharedPtr(impl_->whereFilterPtr_)->setCondition(conditionBase);
@@ -60,23 +84,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::where(column, comp, value)
-	/*
-	QueryBuilder& QueryBuilder::where(const String& columnName, const Comparison comparison, const ConditionVariant& conditionValue)
-	{
-		return where(Field(columnName), comparison, conditionValue);
-	}
-*/
 
-	// QueryBuilder::where(table, column, comp, value)
-	/*
-	QueryBuilder& QueryBuilder::where(const String& tableName, const String& columnName, const Comparison comparison, const ConditionVariant& conditionValue)
-	{
-		return where(Field(tableName, columnName), comparison, conditionValue);
-	}
-*/
-
-	// QueryBuilder::whereGroup
 	QueryBuilder& QueryBuilder::whereGroup()
 	{
 		using CC = std::remove_reference_t<decltype(*impl_->currentWhereChainPtr_)>;
@@ -96,7 +104,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::endGroup
+
 	QueryBuilder& QueryBuilder::endGroup()
 	{
 		if (impl_->whereGroupStack_.empty())
@@ -129,22 +137,23 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::andWhere
-	QueryBuilder& QueryBuilder::andWhere(const FieldRef& fieldRef, const Comparison comparison, const ConditionVariant& conditionValue)
-	{
-		ConditionVariant modifiedConditionValue = conditionValue;
 
-		if (std::holds_alternative<Parameter>(conditionValue))
+	QueryBuilder& QueryBuilder::andWhere(FieldRef fieldRef, const Comparison comparison, ConditionVariant conditionValue)
+	{
+		const auto value = std::move(conditionValue);
+		ConditionVariant modifiedValue = value;
+
+		if (std::holds_alternative<Parameter>(value))
 		{
-			Parameter parameter = std::get<Parameter>(conditionValue);
+			auto parameter = std::get<Parameter>(value);
 			if (!parameter.parameterMap())
 			{
 				parameter.setParameterMap(impl_->parameterMapPtr_);
 			}
-			modifiedConditionValue = parameter;
+			modifiedValue = parameter;
 		}
 
-		Condition condition{ fieldRef.get(), comparison, modifiedConditionValue };
+		const Condition condition{ std::move(fieldRef), comparison, modifiedValue };
 
 		if (!impl_->isWhereChaining_ && impl_->whereFilterPtr_ && impl_->whereFilterPtr_->conditionBase())
 		{
@@ -166,22 +175,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::andWhere
-/*
-	QueryBuilder& QueryBuilder::andWhere(const String& columnName, const Comparison comparison, const ConditionVariant& conditionValue)
-	{
-		return andWhere(Field(columnName), comparison, conditionValue);
-	}
-*/
 
-	// QueryBuilder::andWhere
-/*
-	QueryBuilder& QueryBuilder::andWhere(const String& tableName, const String& columnName, const Comparison comparison, const ConditionVariant& conditionValue)
-	{
-		return andWhere(Field(tableName, columnName), comparison, conditionValue);
-	}
-*/
-	// QueryBuilder::andWhere
 	QueryBuilder& QueryBuilder::andWhere(const ConditionBase& conditionBase)
 	{
 		if (!impl_->isWhereChaining_ && impl_->whereFilterPtr_ && impl_->whereFilterPtr_->conditionBase())
@@ -204,21 +198,23 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::orWhere
-	QueryBuilder& QueryBuilder::orWhere(const FieldRef& fieldRef, const Comparison comparison, const ConditionVariant& conditionValue)
+
+	QueryBuilder& QueryBuilder::orWhere(FieldRef fieldRef, const Comparison comparison, ConditionVariant conditionValue)
 	{
-		ConditionVariant modifiedConditionValue = conditionValue;
-		if (std::holds_alternative<Parameter>(conditionValue))
+		const auto value = std::move(conditionValue);
+		ConditionVariant modifiedValue = value;
+
+		if (std::holds_alternative<Parameter>(value))
 		{
-			Parameter parameter = std::get<Parameter>(conditionValue);
+			auto parameter = std::get<Parameter>(value);
 			if (!parameter.parameterMap())
 			{
 				parameter.setParameterMap(impl_->parameterMapPtr_);
 			}
-			modifiedConditionValue = parameter;
+			modifiedValue = parameter;
 		}
 
-		Condition condition{ fieldRef.get(), comparison, modifiedConditionValue };
+		const Condition condition{ std::move(fieldRef), comparison, modifiedValue };
 
 		if (!impl_->isWhereChaining_ && impl_->whereFilterPtr_ && impl_->whereFilterPtr_->conditionBase())
 		{
@@ -240,23 +236,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::orWhere
-/*
-	QueryBuilder& QueryBuilder::orWhere(const String& columnName, const Comparison comparison, const ConditionVariant& conditionValue)
-	{
-		return orWhere(Field(columnName), comparison, conditionValue);
-	}
-*/
 
-	// QueryBuilder::orWhere
-/*
-	QueryBuilder& QueryBuilder::orWhere(const String& tableName, const String& columnName, const Comparison comparison, const ConditionVariant& conditionValue)
-	{
-		return orWhere(Field(tableName, columnName), comparison, conditionValue);
-	}
-*/
-
-	// QueryBuilder::orWhere
 	QueryBuilder& QueryBuilder::orWhere(const ConditionBase& conditionBase)
 	{
 		if (!impl_->isWhereChaining_ && impl_->whereFilterPtr_ && impl_->whereFilterPtr_->conditionBase())
@@ -279,4 +259,5 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		return *this;
 	}
+	*/
 }

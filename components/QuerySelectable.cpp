@@ -18,16 +18,16 @@ namespace DataAccessLayer::SqlQueryBuilder
 	public:
 		QuerySelectableImpl() = default;
 
-		QuerySelectableImpl(const QueryBuilder& queryBuilder)
-			: containedQuery_{ std::make_shared<Query>(queryBuilder) }
+		QuerySelectableImpl(QueryBuilder queryBuilder)
+			: containedQuery_{ std::make_shared<Query>(std::move(queryBuilder)) }
 		{}
 
-		QuerySelectableImpl(std::shared_ptr<QueryBuilder> queryBuilder)
-			: containedQuery_{ std::make_shared<Query>(queryBuilder) }
+		QuerySelectableImpl(QueryBuilderPtr queryBuilderPtr)
+			: containedQuery_{ std::make_shared<Query>(queryBuilderPtr) }
 		{}
 
-		QuerySelectableImpl(const String& rawSql)
-			: containedQuery_{ std::make_shared<Query>(rawSql) }
+		QuerySelectableImpl(String rawSql)
+			: containedQuery_{ std::make_shared<Query>(std::move(rawSql)) }
 		{}
 
 		~QuerySelectableImpl() = default;
@@ -47,25 +47,25 @@ namespace DataAccessLayer::SqlQueryBuilder
     {}
 
 
-    QuerySelectable::QuerySelectable(const QueryBuilder& queryBuilder, std::optional<Alias> alias)
+    QuerySelectable::QuerySelectable(QueryBuilder queryBuilder, std::optional<Alias> alias)
         : Selectable(ComponentId::QuerySelectable)
-		, impl_{ std::make_unique<QuerySelectableImpl>(queryBuilder) }
+		, impl_{ std::make_unique<QuerySelectableImpl>(std::move(queryBuilder)) }
     {
 	    Selectable::setAlias(std::move(alias));
     }
 
 
-    QuerySelectable::QuerySelectable(std::shared_ptr<QueryBuilder> queryBuilder, std::optional<Alias> alias)
+    QuerySelectable::QuerySelectable(QueryBuilderPtr queryBuilderPtr, std::optional<Alias> alias)
         : Selectable(ComponentId::QuerySelectable)
-		, impl_{ std::make_unique<QuerySelectableImpl>(queryBuilder) }
+		, impl_{ std::make_unique<QuerySelectableImpl>(queryBuilderPtr) }
     {
 	    Selectable::setAlias(std::move(alias));
     }
 
 
-    QuerySelectable::QuerySelectable(const String& rawSql, std::optional<Alias> alias)
+    QuerySelectable::QuerySelectable(String rawSql, std::optional<Alias> alias)
         : Selectable(ComponentId::QuerySelectable)
-		, impl_{ std::make_unique<QuerySelectableImpl>(rawSql) }
+		, impl_{ std::make_unique<QuerySelectableImpl>(std::move(rawSql)) }
     {
 	    Selectable::setAlias(std::move(alias));
     }
@@ -78,7 +78,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : Selectable(ComponentId::QuerySelectable)
 		, impl_{ std::make_unique<QuerySelectableImpl>(*other.impl_) }
     {
-	    Selectable::setAlias(other.alias());
+	    Selectable::setAlias(*other.aliasPtr());
     }
 
 
@@ -98,7 +98,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         : Selectable(ComponentId::QuerySelectable)
 		, impl_{ std::move(other.impl_) }
     {
-	    Selectable::setAlias(other.alias());
+	    Selectable::setAlias(*other.aliasPtr());
     }
 
 
@@ -125,9 +125,9 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-    void QuerySelectable::setQuery(const Query& query) const
+    void QuerySelectable::setQuery(Query query) const
     {
-        impl_->containedQuery_ = std::make_shared<Query>(query);
+        impl_->containedQuery_ = std::make_shared<Query>(std::move(query));
     }
 
 

@@ -20,9 +20,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 	public:
 		QueryDataSource() noexcept;
-		QueryDataSource(const QueryBuilder& queryBuilder, std::optional<Alias> alias = std::nullopt);
-		QueryDataSource(std::shared_ptr<QueryBuilder> queryBuilder, std::optional<Alias> alias = std::nullopt);
-		QueryDataSource(const String& rawSql, std::optional<Alias> alias = std::nullopt);
+		QueryDataSource(QueryBuilder queryBuilder, std::optional<Alias> alias = std::nullopt);
+		QueryDataSource(QueryBuilderPtr queryBuilderPtr, std::optional<Alias> alias = std::nullopt);
+		QueryDataSource(String rawSql, std::optional<Alias> alias = std::nullopt);
 		~QueryDataSource() override;
 
 		QueryDataSource(const QueryDataSource& other);

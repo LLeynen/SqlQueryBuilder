@@ -20,7 +20,7 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
     public:
         Field() noexcept;
-        explicit Field(String columnName, std::optional<Alias> alias = std::nullopt);
+        Field(String columnName, std::optional<Alias> alias = std::nullopt);
         Field(String tableName, String columnName, std::optional<Alias> alias = std::nullopt);
         ~Field() override;
 
@@ -29,12 +29,12 @@ namespace DataAccessLayer::SqlQueryBuilder
         Field(Field&&) noexcept;
         Field& operator=(Field&&) noexcept;
 
-        [[nodiscard]] const String& tableName() const noexcept;
-        void setTableName(const String& tableName) const;
-        [[nodiscard]] const String& columnName() const noexcept;
-        void setColumnName(const String& columnName) const;
-        [[nodiscard]] const Variant& value() const noexcept;
-        void setValue(const Variant& value) const;
+        [[nodiscard]] String tableName() const noexcept;
+        void setTableName(String tableName) const;
+        [[nodiscard]] String columnName() const noexcept;
+        void setColumnName(String columnName) const;
+        [[nodiscard]] Variant value() const noexcept;
+        void setValue(Variant value) const;
         [[nodiscard]] bool isNull() const noexcept;
 
         [[nodiscard]] SelectablePtr clone() const override;
@@ -49,18 +49,39 @@ namespace DataAccessLayer::SqlQueryBuilder
     export class FieldRef
     {
     public:
-        template <typename... Args>
-            requires std::is_constructible_v<Field, Args...>
-        FieldRef(Args&&... args)
-            : field_(std::forward<Args>(args)...)
+        FieldRef(Field field)
+            : field_(std::move(field))
+        {}
+/*        // 1. Single Column constructor (matches explicit single strings cleanly)
+        FieldRef(String columnName)
+            : field_(std::move(columnName))
         {}
 
-        [[nodiscard]] const Field& get() const noexcept
+        // 2. Single Column + Alias constructor
+        FieldRef(String columnName, Alias alias)
+            : field_(std::move(columnName), std::move(alias))
+        {}*/
+        FieldRef(std::initializer_list<const char*> list)
+        {
+            if (list.size() == 2)
+            {
+                auto it = list.begin();
+                String table = *it++;
+                String col = *it;
+                field_ = Field{ std::move(table), std::move(col) };
+            }
+            else
+            {
+                field_ = Field{ String(list.size() > 0 ? *list.begin() : "") };
+            }
+        }
+
+        [[nodiscard]] Field get() const noexcept
         {
             return field_;
         }
 
-        [[nodiscard]] Field move() const noexcept
+        [[nodiscard]] Field move() noexcept
         {
             return std::move(field_);
         }
@@ -68,4 +89,14 @@ namespace DataAccessLayer::SqlQueryBuilder
     private:
         Field field_;
     };
+
+    export inline Field field(String columnName, std::optional<Alias> alias = std::nullopt)
+    {
+        return { columnName, std::move(alias) };
+    }
+
+    export inline Field field(String tableName, String columnName, std::optional<Alias> alias = std::nullopt)
+    {
+        return { tableName, columnName, std::move(alias) };
+    }
 }
