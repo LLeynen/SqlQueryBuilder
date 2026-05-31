@@ -81,7 +81,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	}
 
 
-	String Table::name() const
+	String& Table::name() const
 	{
 		return impl_->name_;
 	}

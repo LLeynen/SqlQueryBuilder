@@ -71,7 +71,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         {
             if (auto joinClauseListWrapperPtr = std::dynamic_pointer_cast<JoinClauseListWrapper>(it->second))
             {
-                fromClause += " " + joinClauseListWrapperPtr->sql(this);
+                fromClause += joinClauseListWrapperPtr->sql(this);
             }
         }
 

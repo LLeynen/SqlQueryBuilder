@@ -11,7 +11,7 @@ namespace DataAccessLayer::SqlQueryBuilder
     BuilderMariaDB::BuilderMariaDB() noexcept
         : BuilderBase(builderEngine)
     {
-        setupEngineParams();
+        BuilderMariaDB::setupEngineParams();
     }
 
 
@@ -44,6 +44,8 @@ namespace DataAccessLayer::SqlQueryBuilder
         engineParams_.escapeCharacter = "\\";
         engineParams_.columnAsKeyWord = "AS";
         engineParams_.tableAsKeyWord = "AS";
+        engineParams_.MatchAll = "%";
+        engineParams_.MatchSingle = "_";
         engineParams_.supportsFilterClause = true;
         engineParams_.supportsLimitOffset = true;
         engineParams_.omitSelectInsideExists = false;

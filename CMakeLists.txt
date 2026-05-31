@@ -159,6 +159,8 @@ target_sources (
 			builders/base/BuilderBase.TableDataSource.cpp
             builders/base/BuilderBase.TopClause.cpp
             builders/MariaDB/BuilderMariaDB.cpp
+			builders/MariaDB/BuilderMariaDB.Table.cpp
+			builders/MariaDB/BuilderMariaDB.Field.cpp
             builders/PostgreSQL/BuilderPostgreSQL.cpp
             builders/SQLServer/BuilderSQLServer.cpp
             )

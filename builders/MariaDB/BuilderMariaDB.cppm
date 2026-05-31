@@ -19,9 +19,8 @@ namespace DataAccessLayer::SqlQueryBuilder
         ~BuilderMariaDB() override = default;
 
         // Override buildComponent methods only if MariaDB needs different behavior
-        // String buildComponent(const SqlTable& sqlTable) const override;
-        // String buildComponent(const SqlField& sqlField) const override;
-        // String buildComponent(const SqlSelectable& sqlSelectable) const override;
+        [[nodiscard]] String buildComponent(const Table& table) const override;
+        [[nodiscard]] String buildComponent(const Field& field) const override;
 
         // MariaDB-specific methods
         [[nodiscard]] String buildLimitClause(int limit, int offset = 0) const;
@@ -29,6 +28,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
         static void use();
 
+    protected:
         void setupEngineParams() override;
     };
 

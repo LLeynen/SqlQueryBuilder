@@ -67,26 +67,36 @@ namespace DataAccessLayer::SqlQueryBuilder
 
     String BuilderBase::buildComponent(const JoinClauseListWrapper& joinClauseListWrapper) const
     {
-        String joinClauseListWrapperString{};
+        String joinClauseListWrapperString{ " "};
+
+        std::cout << "buildComponent(JoinClauseListWrapper)" << std::endl;
 
         auto joinClauseList = joinClauseListWrapper.joinClauseList();
 
         if (!joinClauseList->empty())
         {
             size_t joinCount = 1;
+
             for (size_t i = 0; i < joinClauseList->size(); ++i)
             {
-                if (joinCount == 1)
-                {
+/*                if (joinCount == 1)
+               {
                     auto joinClause = joinClauseList->at(0);
                     joinClauseListWrapperString += " " + buildComponent(*joinClause);
-                }
-                else
+               }
+               else
                 {
                     auto joinClause = joinClauseList->at(i);
                     joinClauseListWrapperString = "(" + joinClauseListWrapperString + ") " + buildComponent(*joinClause);
                 }
-                joinCount++;
+                std::cout << "joinCount = " << joinCount << std::endl;
+                std::cout << joinClauseListWrapperString << std::endl;
+                joinCount++; */
+
+                auto joinClause = joinClauseList->at(i);
+                joinClauseListWrapperString = joinClauseListWrapperString + buildComponent(*joinClause) + " ";
+
+
             }
         }
 

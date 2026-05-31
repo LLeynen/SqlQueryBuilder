@@ -43,6 +43,7 @@ export namespace DataAccessLayer::SqlQueryBuilder
 		QueryBuilder& allFields(std::optional<String> tableName = std::nullopt);
 		QueryBuilder& fields(std::initializer_list<FieldRef> fieldRefList);
 		QueryBuilder& fields(String tableName, std::initializer_list<String> columnNameList);
+		QueryBuilder& fields(std::initializer_list<const char*> flatNames);
 
 		QueryBuilder& subQuery(QueryBuilder queryBuilder, std::optional<Alias> alias = std::nullopt);
 		QueryBuilder& subQuery(Query query, std::optional<Alias> alias = std::nullopt);

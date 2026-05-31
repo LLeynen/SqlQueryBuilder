@@ -11,6 +11,7 @@ import :IBuilder;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
+    /*
     export struct EngineParams
     {
         DatabaseEngine databaseEngine{ DatabaseEngine::AnsiSQL };
@@ -23,12 +24,14 @@ namespace DataAccessLayer::SqlQueryBuilder
         String escapeCharacter{ "\\" };
         String columnAsKeyWord{ "AS" };
         String tableAsKeyWord{ "As" };
+        String MatchAll{ "%"};
+        String MatchSingle{"_"};
 
         bool supportsFilterClause{ false };
         bool supportsLimitOffset{ true };
         bool omitSelectInsideExists{ false };
     };
-
+*/
     export class BuilderBase : public IBuilder
     {
     public:
@@ -85,9 +88,8 @@ namespace DataAccessLayer::SqlQueryBuilder
         [[nodiscard]] String buildComponent(const OrderByClauseListWrapper& orderByClauseListWrapper) const override;
         [[nodiscard]] String buildComponent(const QueryListWrapper& queryListWrapper) const override;
 
-    protected:
-        virtual void setupEngineParams() = 0;
-        EngineParams engineParams_;
+        virtual void setupEngineParams() override;
+//        EngineParams engineParams_;
 
     private:
         DatabaseEngine databaseEngine_{};

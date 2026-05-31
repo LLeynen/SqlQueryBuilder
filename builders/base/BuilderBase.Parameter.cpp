@@ -15,6 +15,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
     String BuilderBase::buildComponent(const Parameter& parameter) const
     {
-        return parameter.value().toString();
+        return parameter.value().sqlFormat();
     }
 }

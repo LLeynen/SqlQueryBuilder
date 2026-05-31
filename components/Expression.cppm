@@ -56,5 +56,22 @@ namespace DataAccessLayer::SqlQueryBuilder
 	private:
 		std::unique_ptr<ExpressionImpl> impl_{};
 
+
 	};
+
+	// 1. Operand * Operand (Handles FieldRef * FieldRef via implicit conversion to Operand)
+	inline Expression operator*(Operand lhs, Operand rhs) {
+		return Expression(std::move(lhs), Operator::Multiply, std::move(rhs));
+	}
+
+	// 2. Operand * FormulaValue (Handles FieldRef * 1.10 for calculations like adding taxes)
+	inline Expression operator*(Operand lhs, FormulaValue rhs) {
+		return Expression(std::move(lhs), Operator::Multiply, std::move(rhs));
+	}
+
+	// 3. FormulaValue * Operand (Handles 100 * FieldRef)
+	inline Expression operator*(FormulaValue lhs, Operand rhs) {
+		return Expression(std::move(lhs), Operator::Multiply, std::move(rhs));
+	}
+
 }

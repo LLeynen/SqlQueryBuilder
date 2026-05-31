@@ -126,8 +126,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 
         if (std::holds_alternative<Operand>(rhsComparisonValue))
         {
-            const auto rhsValue = std::get<Operand>(rhsComparisonValue);
-            rhsString = ComparisonMap.at(filter.comparison()) + rhsValue.get()->sql(this);
+        	const auto rhsValue = std::get<Operand>(rhsComparisonValue);
+            rhsString = ComparisonMap.at(filter.comparison()) + " " + rhsValue.get()->sql(this);
         }
         else if (std::holds_alternative<FilterValue>(rhsComparisonValue))
         {

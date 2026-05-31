@@ -32,10 +32,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return DatabaseEngineMap.at(databaseEngine_);
 	}
 
-// BuilderBase::setupEngineParams
-//	void BuilderBase::setupEngineParams()
-//	{
-		/*
+
+	void BuilderBase::setupEngineParams()
+	{
 		engineParams_.engineName = "";
 		engineParams_.startDelimiter = "\"";
 		engineParams_.endDelimiter = "\"";
@@ -43,11 +42,13 @@ namespace DataAccessLayer::SqlQueryBuilder
 		engineParams_.parameterPrefix = "";
 		engineParams_.concatOperator = "||";
 		engineParams_.escapeCharacter = "\\";
+		engineParams_.MatchAll = "%";
+		engineParams_.MatchSingle = "_";
+
 		engineParams_.supportsFilterClause = false;
 		engineParams_.supportsLimitOffset = true;
 		engineParams_.omitSelectInsideExists = false;
-		*/
-//	}
+	}
 
 	/*
 	String BuilderBase::escapeIdentifier(const String& identifier) const

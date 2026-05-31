@@ -52,7 +52,8 @@ namespace DataAccessLayer::SqlQueryBuilder
         FieldRef(Field field)
             : field_(std::move(field))
         {}
-/*        // 1. Single Column constructor (matches explicit single strings cleanly)
+/*
+        // 1. Single Column constructor (matches explicit single strings cleanly)
         FieldRef(String columnName)
             : field_(std::move(columnName))
         {}
@@ -60,7 +61,8 @@ namespace DataAccessLayer::SqlQueryBuilder
         // 2. Single Column + Alias constructor
         FieldRef(String columnName, Alias alias)
             : field_(std::move(columnName), std::move(alias))
-        {}*/
+        {}
+*/
         FieldRef(std::initializer_list<const char*> list)
         {
             if (list.size() == 2)

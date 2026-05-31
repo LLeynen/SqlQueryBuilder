@@ -4,6 +4,8 @@
 
 module QueryBuilder;
 
+import std;
+
 import :BuilderTypes;
 import :Concepts;
 //import :DataSource;
@@ -30,6 +32,10 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		Field local = primaryKey.move();
 		Field foreign = foreignKey.move();
+
+		std::cout << "QueryBuilder::Join " << std::endl;
+		std::cout << "Local = " <<  local.sql() << std::endl;;
+		std::cout << "Foreign = " <<  foreign.sql() << std::endl;;
 
 		JoinClause joinClause{ local, comparison, foreign, joinType };
 

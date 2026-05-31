@@ -88,4 +88,16 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		return *this;
 	}
+
+	QueryBuilder& QueryBuilder::fields(std::initializer_list<const char*> flatNames)
+	{
+		ensureSharedPtr(impl_->selectableListPtr_);
+
+		for (const auto* name : flatNames)
+		{
+			impl_->selectableListPtr_->push_back(std::make_unique<Field>(name));
+		}
+
+		return *this;
+	}
 }

@@ -16,7 +16,27 @@ import :Query;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-		struct FilterValueVisitor
+	namespace
+	{
+		Comparison validateComparison(const IBuilder* builder, Comparison comparison, const String sqlValue)
+		{
+			if (comparison == Comparison::Equals)
+			{
+				const bool hasWildcard =
+					(sqlValue.find(builder->engineParams_.MatchAll) != String::npos) ||
+					(sqlValue.find(builder->engineParams_.MatchSingle) != String::npos);
+
+				if (hasWildcard)
+				{
+					return Comparison::Like;
+				}
+			}
+
+			return comparison;
+		}
+	}
+
+	struct FilterValueVisitor
 		{
 			FilterValueVisitor(const IBuilder* builder, const Comparison comparison)
 				: builder_{ builder }
@@ -26,13 +46,13 @@ namespace DataAccessLayer::SqlQueryBuilder
 			const IBuilder* builder_;
 			const Comparison comparison_;
 
-			// Type nullptr_t
+			// nullptr_t
 			String operator()(const std::nullptr_t&) const
 			{
 				return (comparison_ == Comparison::Equals) ? "IS NULL" : "IS NOT NULL";
 			}
 
-			// Type Variant
+			// Variant
 			String operator()(const Variant& value) const
 			{
 				if (value.isNull())
@@ -41,17 +61,23 @@ namespace DataAccessLayer::SqlQueryBuilder
 				}
 				else
 				{
-					return ComparisonMap.at(comparison_) + " " + value.sqlFormat();
+					const String sqlValue { value.sqlFormat() };
+					Comparison comparison { validateComparison(builder_, comparison_, sqlValue) };
+
+					return ComparisonMap.at(comparison) + " " + sqlValue;
 				}
 			}
 
-			// Type Parameter
+			// Parameter
 			String operator()(const Parameter& parameter) const
 			{
-					return ComparisonMap.at(comparison_) + " " + parameter.sql(builder_);
+				String sqlValue{ parameter.sql(builder_) };
+				Comparison comparison { validateComparison(builder_, comparison_, sqlValue) };
+
+				return ComparisonMap.at(comparison) + " " + sqlValue;
 			}
 
-			// Type ListOfValues
+			// ListOfValues
 			String operator()(const ListOfValues& listOfValues) const
 			{
 				if (listOfValues.valueList().empty())
@@ -80,7 +106,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 				}
 			}
 
-			// Type Query
+			// Query
 			String operator()(const Query& query) const
 			{
 				if (comparison_ != Comparison::In
@@ -99,14 +125,18 @@ namespace DataAccessLayer::SqlQueryBuilder
 				}
 			}
 
-			// Type String
+			// String
 			String operator()(const String& value) const
 			{
 				const Variant variant{ value };
-				return ComparisonMap.at(comparison_) + " " + variant.sqlFormat();
+				const String sqlValue{ variant.sqlFormat() };
+
+				Comparison comparison { validateComparison(builder_, comparison_, sqlValue) };
+
+				return ComparisonMap.at(comparison) + " " + sqlValue;
 			}
 
-			// Type const char*
+			// const char*
 			String operator()(const char* value) const
 			{
 				return (*this)(String{ value });

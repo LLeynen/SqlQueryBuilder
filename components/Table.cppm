@@ -27,7 +27,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		Table(Table&&) noexcept ;
 		Table& operator=(Table&&) noexcept ;
 
-		[[nodiscard]] String name() const;
+		[[nodiscard]] String& name() const;
 		void setName(String name) const;
 
 	protected:

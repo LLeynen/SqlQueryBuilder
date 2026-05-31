@@ -11,7 +11,7 @@ namespace DataAccessLayer::SqlQueryBuilder
     BuilderSqlServer::BuilderSqlServer() noexcept
         : BuilderBase(builderEngine)
     {
-        setupEngineParams();
+        BuilderSqlServer::setupEngineParams();
     }
 
 
@@ -27,6 +27,8 @@ namespace DataAccessLayer::SqlQueryBuilder
         engineParams_.escapeCharacter = "\\";
         engineParams_.columnAsKeyWord = "AS";
         engineParams_.tableAsKeyWord = "AS";
+        engineParams_.MatchAll = "%";
+        engineParams_.MatchSingle = "_";
         engineParams_.supportsFilterClause = true;
         engineParams_.supportsLimitOffset = true;
         engineParams_.omitSelectInsideExists = true;

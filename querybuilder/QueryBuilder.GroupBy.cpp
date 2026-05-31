@@ -29,7 +29,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		for (auto& fieldRef : fieldRefList)
 		{
-			field(fieldRef);
+			groupBy(fieldRef);
 		}
 
 		return *this;
@@ -44,7 +44,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		for (const auto& columnName : columnNameList)
 		{
-			this->field(FieldRef( {tableName, columnName}));
+			groupBy(FieldRef( {tableName, columnName}));
 		}
 
 		return *this;
