@@ -19,15 +19,18 @@ namespace DataAccessLayer::SqlQueryBuilder
         , selectableListPtr_(std::move(selectableListPtr))
     {}
 
+
     SelectableListPtr SelectableListWrapper::selectableListPtr() const noexcept
     {
         return selectableListPtr_;
     }
 
+
     String SelectableListWrapper::toSql(const IBuilder* builderPtr) const
     {
         return Component::sqlImpl(builderPtr, *this);
     }
+
 
     JoinClauseListWrapper::JoinClauseListWrapper(JoinClauseListPtr joinClauseListPtr) noexcept
         : Component(ComponentId::JoinClauseListWrapper)

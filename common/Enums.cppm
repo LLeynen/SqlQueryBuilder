@@ -161,8 +161,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		// Date/Time
 		Now,
-		Date,
-		Time,
+		CurrentDate,
+		CurrentTime,
 		Year,
 		DateDiff,
 		DateAdd,

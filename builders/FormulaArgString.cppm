@@ -9,8 +9,6 @@ export module QueryBuilder:FormulaArgString;
 import std;
 
 import :BuilderTypes;
-//import :Expression;
-//import :Alias;
 import :Operand;
 import :FormulaValueVisitor;
 
@@ -20,7 +18,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		if (std::holds_alternative<Operand>(formulaArg))
 		{
-			auto selectablePtr { std::get<Operand>(formulaArg).get() };
+			const auto selectablePtr { std::get<Operand>(formulaArg).get() };
 			if (selectablePtr)
 			{
 				selectablePtr->suppressAlias(true);

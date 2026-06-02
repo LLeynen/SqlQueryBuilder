@@ -41,6 +41,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		std::unique_ptr<LiteralImpl> impl_{};
 	};
 
+
 	export inline Literal literal(Variant value, std::optional<Alias> alias = std::nullopt)
 	{
 		return { std::move(value), std::move(alias) };

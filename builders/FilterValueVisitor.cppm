@@ -18,7 +18,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
 	namespace
 	{
-		Comparison validateComparison(const IBuilder* builder, Comparison comparison, const String sqlValue)
+		Comparison validateComparison(const IBuilder* builder, Comparison comparison, const String& sqlValue)
 		{
 			if (comparison == Comparison::Equals)
 			{
@@ -43,8 +43,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 				, comparison_{ comparison }
 			{}
 
-			const IBuilder* builder_;
-			const Comparison comparison_;
+			const IBuilder* builder_{};
+			const Comparison comparison_{};
 
 			// nullptr_t
 			String operator()(const std::nullptr_t&) const

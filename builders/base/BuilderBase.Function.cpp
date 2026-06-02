@@ -28,12 +28,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 				+ ", arguments " + std::to_string(argCount));
 		}
 
-//		std::vector<String> resolvedSelectables;
-//		for (const auto& selectable : scalarFunction.selectableList())
-//		{
-//			resolvedSelectables.push_back(selectable->sql());
-//		}
-
 		String functionString { functionTemplate };
 
 		for (const auto& arg : args)
@@ -42,7 +36,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 			{
 				if (std::holds_alternative<Operand>(arg))
 				{
-					if (auto selectablePtr = std::get<Operand>(arg).get())
+					if (const auto selectablePtr = std::get<Operand>(arg).get())
 					{
 						selectablePtr->suppressBrackets(true);
 					}

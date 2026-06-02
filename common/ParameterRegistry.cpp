@@ -42,6 +42,26 @@ namespace DataAccessLayer::SqlQueryBuilder
 	}
 
 
+	void ParameterRegistry::incrementContext()
+	{
+		activeQueries_++;
+	}
+
+
+	void ParameterRegistry::decrementContext()
+	{
+		if (activeQueries_ > 0)
+		{
+			activeQueries_--;
+		}
+
+		if (activeQueries_ == 0)
+		{
+			clear();
+		}
+	}
+
+
 	void ParameterRegistry::clear() noexcept
 	{
 		instance().params_.clear();

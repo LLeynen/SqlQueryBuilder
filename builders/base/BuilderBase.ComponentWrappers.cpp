@@ -37,12 +37,13 @@ namespace DataAccessLayer::SqlQueryBuilder
         }
         else
         {
-            auto selectableListPtr = selectableListWrapper.selectableListPtr();
+            const auto selectableListPtr = selectableListWrapper.selectableListPtr();
+
             for (size_t i = 0; i < selectableListPtr->size(); ++i)
             {
-                auto sqlSelectable = (*selectableListPtr).at(i);
-//                selectableListWrapperString += buildComponent(*sqlSelectable);
+                const auto sqlSelectable = selectableListPtr->at(i);
                 selectableListWrapperString += sqlSelectable->sql(this);
+
                 if (i < selectableListPtr->size() - 1)
                 {
                     selectableListWrapperString += ", ";
@@ -56,12 +57,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
     String BuilderBase::buildComponent(const WhereFilterWrapper& whereFilterWrapper) const
     {
-        String whereFilterWrapperString{ };
-
-//        whereFilterWrapperString = buildComponent(*whereFilterWrapper.filter());
-        whereFilterWrapperString = whereFilterWrapper.filter()->clone()->sql(this);
-
-        return whereFilterWrapperString;
+        return whereFilterWrapper.filter()->clone()->sql(this);
     }
 
 
@@ -69,9 +65,7 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
         String joinClauseListWrapperString{ " "};
 
-        std::cout << "buildComponent(JoinClauseListWrapper)" << std::endl;
-
-        auto joinClauseList = joinClauseListWrapper.joinClauseList();
+        const auto joinClauseList = joinClauseListWrapper.joinClauseList();
 
         if (!joinClauseList->empty())
         {
@@ -79,24 +73,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 
             for (size_t i = 0; i < joinClauseList->size(); ++i)
             {
-/*                if (joinCount == 1)
-               {
-                    auto joinClause = joinClauseList->at(0);
-                    joinClauseListWrapperString += " " + buildComponent(*joinClause);
-               }
-               else
-                {
-                    auto joinClause = joinClauseList->at(i);
-                    joinClauseListWrapperString = "(" + joinClauseListWrapperString + ") " + buildComponent(*joinClause);
-                }
-                std::cout << "joinCount = " << joinCount << std::endl;
-                std::cout << joinClauseListWrapperString << std::endl;
-                joinCount++; */
-
                 auto joinClause = joinClauseList->at(i);
-                joinClauseListWrapperString = joinClauseListWrapperString + buildComponent(*joinClause) + " ";
-
-
+                joinClauseListWrapperString = joinClauseListWrapperString + joinClause->sql(this) + " ";
             }
         }
 
@@ -112,8 +90,9 @@ namespace DataAccessLayer::SqlQueryBuilder
         {
             for (size_t i = 0; i < groupByFieldListWrapper.fieldList()->size(); ++i)
             {
-                auto field = fieldList->at(i);
-                groupByFieldListWrapperString += buildComponent(*field);
+                const auto field = fieldList->at(i);
+                groupByFieldListWrapperString += field->sql(this);
+
                 if (i < fieldList->size() - 1)
                 {
                     groupByFieldListWrapperString += ", ";
@@ -127,12 +106,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
     String BuilderBase::buildComponent(const HavingFilterWrapper& havingFilterWrapper) const
     {
-        String havingFilterWrapperString{ };
-
-//        havingFilterWrapperString = buildComponent(*havingFilterWrapper.filter());
-        havingFilterWrapperString = havingFilterWrapper.filter()->clone()->sql(this);
-
-        return havingFilterWrapperString;
+        return havingFilterWrapper.filter()->clone()->sql(this);
     }
 
 
@@ -140,12 +114,13 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
         String orderByClauseListWrapperString{};
 
-        if (auto orderByClauseList = orderByClauseListWrapper.orderByClauseList(); !orderByClauseList->empty())
+        if (const auto orderByClauseList = orderByClauseListWrapper.orderByClauseList(); !orderByClauseList->empty())
         {
             for (size_t i = 0; i < orderByClauseList->size(); ++i)
             {
-                auto orderByClause = orderByClauseList->at(i);
-                orderByClauseListWrapperString += buildComponent(*orderByClause);
+                const auto orderByClause = orderByClauseList->at(i);
+                orderByClauseListWrapperString += orderByClause->sql(this);
+
                 if (i < orderByClauseList->size() - 1)
                 {
                     orderByClauseListWrapperString += ", ";
@@ -161,12 +136,12 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
         String queryListWrapperString{};
 
-        if (auto queryList = queryListWrapper.queryList(); !queryList->empty())
+        if (const auto queryList = queryListWrapper.queryList(); !queryList->empty())
         {
             for (size_t i = 0; i < queryListWrapper.queryList()->size(); ++i)
             {
-                auto query = queryList->at(i);
-                queryListWrapperString += buildComponent(*query);
+                const auto query = queryList->at(i);
+                queryListWrapperString += query->sql(this);
 
                 if (i < queryList->size() - 1)
                 {

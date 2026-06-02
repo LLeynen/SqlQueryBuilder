@@ -40,7 +40,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 			, lhs_ {std::move(aggregate) }
 		{}
 
-
 		~ExpressionImpl() = default;
 
 		ExpressionImpl(const ExpressionImpl& other) = default;
@@ -54,10 +53,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 		FormulaArg rhs_{std::monostate{}};
 	};
 
+
 	Expression::Expression() noexcept
 		: Selectable{ ComponentId::Expression }
 		, impl_{ std::make_unique<ExpressionImpl>() }
 	{}
+
 
 	Expression::Expression(Operand lhs, Operator op, Operand rhs, std::optional<Alias> alias)
 		: Selectable{ ComponentId::Expression }
@@ -66,12 +67,14 @@ namespace DataAccessLayer::SqlQueryBuilder
 		Selectable::setAlias(std::move(alias));
 	}
 
+
 	Expression::Expression(Operand lhs, Operator op, FormulaValue rhs, std::optional<Alias> alias)
 		: Selectable{ ComponentId::Expression }
 		, impl_ { std::make_unique<ExpressionImpl>(std::move(lhs), op, std::move(rhs)) }
 	{
 		Selectable::setAlias(std::move(alias));
 	}
+
 
 	Expression::Expression(FormulaValue lhs, Operator op, Operand rhs, std::optional<Alias> alias)
 		: Selectable{ ComponentId::Expression }
@@ -80,12 +83,14 @@ namespace DataAccessLayer::SqlQueryBuilder
 		Selectable::setAlias(std::move(alias));
 	}
 
+
 	Expression::Expression(Operator op, FormulaValue lhs, std::optional<Alias> alias)
 		: Selectable{ ComponentId::Expression }
 		, impl_ { std::make_unique<ExpressionImpl>(op, std::move(lhs)) }
 	{
 		Selectable::setAlias(std::move(alias));
 	}
+
 
 	Expression::Expression(Operator op, Operand lhs, std::optional<Alias> alias)
 		: Selectable{ ComponentId::Expression }
@@ -98,19 +103,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 	Expression::Expression(ScalarFunction scalarFunction, std::vector<FormulaArg> args, std::optional<Alias> alias)
 	{
 		std::vector<Operand> processedArgs;
-//		processedArgs.reserve(args.size());
-
-//		for (const auto& arg : args)
-//		{
-//			if (arg.get())
-//			{
-//				arg.get()->suppressBrackets(true);
-//				processedArgs.push_back(std::move(arg));
-//			}
-//		}
-
-//		const auto function = std::make_shared<Function>(scalarFunction, processedArgs);
-//		impl_ = std::make_unique<ExpressionImpl>(*function);
 		impl_ = std::make_unique<ExpressionImpl>(Function(scalarFunction, args));
 		Selectable::setAlias(std::move(alias));
 	}
@@ -118,14 +110,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 	Expression::Expression(AggregateFunction aggregateFunction, FormulaArg arg, std::optional<Alias> alias) noexcept
 	{
-		/*
-		auto subjectClone = selectable.clone();
-
-		subjectClone->suppressBrackets(true);
-		auto aggregate = std::make_shared<Aggregate>(aggregateFunction, std::move(subjectClone));
-		impl_ = std::make_unique<ExpressionImpl>(*aggregate);
-*/
-
 		impl_ = std::make_unique<ExpressionImpl>(Aggregate(aggregateFunction, arg));
 		Selectable::setAlias(std::move(alias));
 	}

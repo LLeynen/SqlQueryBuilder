@@ -17,10 +17,10 @@ namespace DataAccessLayer::SqlQueryBuilder
 
     template<typename T>
     concept IsRegisterableBuilder =
-        std::derived_from<T, IBuilder> && // Must be an IBuilder
+        std::derived_from<T, IBuilder> &&
         requires
         {
-            { T::use() } -> std::same_as<void>; // Must have the static use() method
+            { T::use() } -> std::same_as<void>;
         };
 
     export class BuilderFactory

@@ -31,7 +31,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 		FunctionImpl& operator=(FunctionImpl&& other) noexcept = default;
 
 		ScalarFunction function_ {};
-//		SelectableList selectableList_ {};
 		std::vector<FormulaArg> arguments_{};
 	};
 
@@ -106,24 +105,12 @@ namespace DataAccessLayer::SqlQueryBuilder
         return impl_->function_;
     }
 
-/*
-    void Function::setFunction(const ScalarFunction function) const noexcept
-    {
-        impl_->function_ = function;
-    }
-*/
 
 	std::vector<FormulaArg>& Function::arguments() const noexcept
     {
 	    return impl_->arguments_;
     }
 
-	/*
-	void Function::setSelectableList(SelectableList selectableList) const noexcept
-    {
-	    impl_->selectableList_ = std::move(selectableList);
-    }
-*/
 
     String Function::toSql(const IBuilder* builderPtr) const
     {

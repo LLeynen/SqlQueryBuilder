@@ -12,10 +12,8 @@ import std;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// Alias for standard string
 	export using String = std::string;
 
-	// toString template function
 	export template <typename T>
 		requires
 	std::is_integral_v<T> ||
@@ -25,7 +23,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return std::to_string(value);
 	}
 
-	// npos replacement for std::npos
 	export constexpr size_t npos = -1;
 }
 

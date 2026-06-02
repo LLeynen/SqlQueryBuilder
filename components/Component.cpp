@@ -35,6 +35,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		: impl_{ std::make_unique<ComponentImpl>(componentId) }
 	{}
 
+
 	Component::~Component() = default;
 
 
@@ -53,7 +54,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
+
 	Component::Component(Component&&) noexcept = default;
+
 
 	Component& Component::operator=(Component&&) noexcept = default;
 

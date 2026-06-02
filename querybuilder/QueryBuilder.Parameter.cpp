@@ -21,6 +21,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
+
 	QueryBuilder& QueryBuilder::parameter(String name, std::optional<Alias> alias)
 	{
 		ensureSharedPtr(impl_->selectableListPtr_);

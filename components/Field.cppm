@@ -49,48 +49,16 @@ namespace DataAccessLayer::SqlQueryBuilder
     export class FieldRef
     {
     public:
-        FieldRef(Field field)
-            : field_(std::move(field))
-        {}
-/*
-        // 1. Single Column constructor (matches explicit single strings cleanly)
-        FieldRef(String columnName)
-            : field_(std::move(columnName))
-        {}
+        FieldRef(Field field);
+        FieldRef(std::initializer_list<const char*> list);
 
-        // 2. Single Column + Alias constructor
-        FieldRef(String columnName, Alias alias)
-            : field_(std::move(columnName), std::move(alias))
-        {}
-*/
-        FieldRef(std::initializer_list<const char*> list)
-        {
-            if (list.size() == 2)
-            {
-                auto it = list.begin();
-                String table = *it++;
-                String col = *it;
-                field_ = Field{ std::move(table), std::move(col) };
-            }
-            else
-            {
-                field_ = Field{ String(list.size() > 0 ? *list.begin() : "") };
-            }
-        }
-
-        [[nodiscard]] Field get() const noexcept
-        {
-            return field_;
-        }
-
-        [[nodiscard]] Field move() noexcept
-        {
-            return std::move(field_);
-        }
+        [[nodiscard]] Field get() const noexcept;
+        [[nodiscard]] Field move() noexcept;
 
     private:
         Field field_;
     };
+
 
     export inline Field field(String columnName, std::optional<Alias> alias = std::nullopt)
     {

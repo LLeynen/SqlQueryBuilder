@@ -22,7 +22,6 @@ namespace DataAccessLayer::SqlQueryBuilder
     public:
         Aggregate();
         Aggregate(AggregateFunction aggregateFunction, FormulaArg formulaArg, std::optional<Alias> alias = std::nullopt);
-//        Aggregate(AggregateFunction aggregateFunction, SelectablePtr selectablePtr, std::optional<Alias> alias = std::nullopt);
         ~Aggregate() override;
 
         Aggregate(const Aggregate& other);
@@ -31,11 +30,8 @@ namespace DataAccessLayer::SqlQueryBuilder
         Aggregate& operator=(Aggregate&&) noexcept;
 
         [[nodiscard]] AggregateFunction aggregateFunction() const noexcept;
-//        void setAggregateFunction(AggregateFunction aggregateFunction) const noexcept;
 
         [[nodiscard]] FormulaArg arg() const noexcept;
-//        void setSelectable(const FieldPtr& fieldPtr) const;             // to be checked: pass FieldRef?
-//        void setSelectable(const ExpressionPtr& expressionPtr) const;   // to be checked; pass Expression by value?
 
         [[nodiscard]] SelectablePtr clone() const override;
 
@@ -45,6 +41,7 @@ namespace DataAccessLayer::SqlQueryBuilder
     private:
         std::unique_ptr<AggregateImpl> impl_{};
     };
+
 
     export inline Aggregate aggregate(const AggregateFunction aggregateFunction, FormulaArg formulaArg, std::optional<Alias> alias = std::nullopt)
     {

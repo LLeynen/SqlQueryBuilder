@@ -13,23 +13,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
 	void QueryBuilderImpl::populateComponents()
 	{
-/*
- *		if (currentWhereChainPtr_ && isWhereChaining_)
-		{
-			ensureSharedPtr(whereFilterPtr_)->setCondition(*currentWhereChainPtr_);
-
-			currentWhereChainPtr_.reset();
-			isWhereChaining_ = false;
-		}
-
-		if (currentHavingChainPtr_ && isHavingChaining_)
-		{
-			ensureSharedPtr(havingFilterPtr_)->setCondition(*currentHavingChainPtr_);
-
-			currentHavingChainPtr_.reset();
-			isHavingChaining_ = false;
-		}
-*/
 		ensureSharedPtr(componentMapPtr_)->clear();
 
 		if (!distinct_.isNull())
@@ -97,53 +80,4 @@ namespace DataAccessLayer::SqlQueryBuilder
 			(*componentMapPtr_)[ComponentId::QueryListWrapper] = std::make_shared<QueryListWrapper>(queryListPtr_);
 		}
 	}
-
-/*
-	void QueryBuilderImpl::addConditionToWhereChain(const ConditionBase& conditionBase, const LogicOperator logicOperator)
-	{
-		if (!isWhereChaining_)
-		{
-			using CC = std::remove_reference_t<decltype(*currentWhereChainPtr_)>;
-			currentWhereChainPtr_ = std::make_shared<CC>();
-			currentWhereChainPtr_->addCondition(conditionBase);
-			isWhereChaining_ = true;
-		}
-		else
-		{
-			if (currentWhereChainPtr_->conditionBaseList().empty())
-			{
-				currentWhereChainPtr_->addCondition(conditionBase);
-			}
-			else
-			{
-				currentWhereChainPtr_->setLogicOperator(logicOperator);
-				currentWhereChainPtr_->addCondition(conditionBase);
-			}
-		}
-	}
-
-
-	void QueryBuilderImpl::addConditionToHavingChain(const ConditionBase& conditionBase, const LogicOperator logicOperator)
-	{
-		if (!isHavingChaining_)
-		{
-			using CC = std::remove_reference_t<decltype(*currentHavingChainPtr_)>;
-			currentHavingChainPtr_ = std::make_shared<CC>();
-			currentHavingChainPtr_->addCondition(conditionBase);
-			isHavingChaining_ = true;
-		}
-		else
-		{
-			if (currentHavingChainPtr_->conditionBaseList().empty())
-			{
-				currentHavingChainPtr_->addCondition(conditionBase);
-			}
-			else
-			{
-				currentHavingChainPtr_->setLogicOperator(logicOperator);
-				currentHavingChainPtr_->addCondition(conditionBase);
-			}
-		}
-	}
-	*/
 }

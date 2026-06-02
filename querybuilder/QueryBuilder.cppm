@@ -68,10 +68,6 @@ export namespace DataAccessLayer::SqlQueryBuilder
 		{
 			return aggregate(AggregateFunction::Sum, std::move(operand), std::move(alias));
 		}
-//		QueryBuilder& sum(const std::initializer_list<const char*> fieldTokens, std::optional<Alias> alias = std::nullopt)
-//		{
-//			return sum(Operand{ FieldRef{ fieldTokens } }, std::move(alias));
-//		}
 
 		QueryBuilder& sum(FieldRef fieldRef, std::optional<Alias> alias = std::nullopt)
 		{
@@ -168,94 +164,39 @@ export namespace DataAccessLayer::SqlQueryBuilder
 		QueryBuilder& expression(Operand lhs, Operator op, Operand rhs, std::optional<Alias> alias = std::nullopt);
 		QueryBuilder& expression(Operand lhs, Operator op, FormulaValue formulaValue, std::optional<Alias> alias = std::nullopt);
 		QueryBuilder& expression(FormulaValue formulaValue, Operator op, Operand rhs, std::optional<Alias> alias = std::nullopt);
-
-		template <typename LhsType, typename RhsType>
-		QueryBuilder& expression(LhsType&& lhs, Operator op, RhsType&& rhs, std::optional<Alias> alias = std::nullopt)
-		{
-			ensureSharedPtr(impl_->selectableListPtr_);
-			impl_->selectableListPtr_->push_back(
-				std::make_unique<Expression>(
-					std::forward<LhsType>(lhs),
-					op,
-					std::forward<RhsType>(rhs),
-					std::move(alias)
-				)
-			);
-
-			return *this;
-		}
-
 		QueryBuilder& expression(Operator op, Operand operand, std::optional<Alias> alias = std::nullopt);
 		QueryBuilder& expression(Operator op, FormulaValue formulaValue, std::optional<Alias> alias = std::nullopt);
 
-		template <typename LhsType>
-		QueryBuilder& expression(Operator op, LhsType&& lhs, std::optional<Alias> alias = std::nullopt)
-		{
-			ensureSharedPtr(impl_->selectableListPtr_);
-			impl_->selectableListPtr_->push_back(
-				std::make_unique<Expression>(
-					op,
-					std::forward<LhsType>(lhs),
-					std::move(alias)
-				)
-			);
-
-			return *this;
-		}
-
-		// 1. Binary Math: Handles Column-to-Column operations
-		// Captures: .expression({"Quantity"}, Multiply, {"Price"})
 		QueryBuilder& expression(FieldRef lhs, Operator op, FieldRef rhs, std::optional<Alias> alias = std::nullopt)
 		{
 			ensureSharedPtr(impl_->selectableListPtr_);
-			impl_->selectableListPtr_->push_back(std::make_unique<Expression>(Operand{lhs}, op, Operand{rhs}, std::move(alias)));
+			impl_->selectableListPtr_->push_back(std::make_unique<Expression>(Operand{std::move(lhs)}, op, Operand{std::move(rhs)}, std::move(alias)));
 			return *this;
 		}
 
-		// 2. Binary Math: Handles Column-to-Value operations
-		// Captures: .expression({"Price"}, Multiply, 1.10)
 		QueryBuilder& expression(FieldRef lhs, Operator op, FormulaValue rhs, std::optional<Alias> alias = std::nullopt)
 		{
 			ensureSharedPtr(impl_->selectableListPtr_);
-			impl_->selectableListPtr_->push_back(std::make_unique<Expression>(Operand{lhs}, op, std::move(rhs), std::move(alias)));
+			impl_->selectableListPtr_->push_back(std::make_unique<Expression>(Operand{std::move(lhs)}, op, std::move(rhs), std::move(alias)));
 			return *this;
 		}
 
-		// 3. Unary Math: Handles operations like NOT or IS NULL
-		// Captures: .expression(Operator::Not, {"IsActive"})
 		QueryBuilder& expression(Operator op, FieldRef lhs, std::optional<Alias> alias = std::nullopt)
 		{
 			ensureSharedPtr(impl_->selectableListPtr_);
-			impl_->selectableListPtr_->push_back(std::make_unique<Expression>(op, Operand{lhs}, std::move(alias)));
+			impl_->selectableListPtr_->push_back(std::make_unique<Expression>(op, Operand{std::move(lhs)}, std::move(alias)));
 			return *this;
 		}
 
-		QueryBuilder& expression(FieldRef lhs, Operator op, std::initializer_list<const char*> rhsTokens, std::optional<Alias> alias = std::nullopt)
+		QueryBuilder& expression(FieldRef lhs, Operator op, const std::initializer_list<const char*> rhsTokens, std::optional<Alias> alias = std::nullopt)
 		{
 			ensureSharedPtr(impl_->selectableListPtr_);
-			impl_->selectableListPtr_->push_back(std::make_unique<Expression>(Operand{lhs}, op, Operand{FieldRef{rhsTokens}}, std::move(alias)));
+			impl_->selectableListPtr_->push_back(std::make_unique<Expression>(Operand{std::move(lhs)}, op, Operand{FieldRef{rhsTokens}}, std::move(alias)));
 			return *this;
 		}
 
-/*
-		QueryBuilder& expression(const std::initializer_list<const char*> fieldTokensLhs, const Operator op, const std::initializer_list<const char*> fieldTokensRhs, std::optional<Alias> alias = std::nullopt)
-		{
-			return expression (Operand{ FieldRef{ fieldTokensLhs }} , op, Operand{ FieldRef{ fieldTokensRhs } }, alias);
-		}
-
-		QueryBuilder& expression(const std::initializer_list<const char*> fieldTokensLhs, const Operator op, FormulaValue formulaValue, std::optional<Alias> alias = std::nullopt)
-		{
-			return expression (Operand{ FieldRef{ fieldTokensLhs }} , op, std::move(formulaValue), alias);
-		}
-
-		QueryBuilder& expression(FormulaValue formulaValue, const Operator op, const std::initializer_list<const char*> fieldTokensRhs, std::optional<Alias> alias = std::nullopt)
-		{
-			return expression (std::move(formulaValue), op, Operand{ FieldRef{ fieldTokensRhs }}, alias);
-		}
-*/
 		QueryBuilder& expression(ScalarFunction scalarFunction, std::vector<FormulaArg> args, std::optional<Alias> alias = std::nullopt);
 		QueryBuilder& expression(AggregateFunction aggregateFunction, FormulaArg arg, std::optional<Alias> alias = std::nullopt) noexcept;
-
 
 		// from
 		QueryBuilder& from(const DataSource& dataSource);
@@ -268,29 +209,17 @@ export namespace DataAccessLayer::SqlQueryBuilder
 
 		// where
 		QueryBuilder& where(const FilterBase& filter);
+
 		QueryBuilder& where(Operand lhs, Comparison comparison, FilterValue filterValue)
 		{
 			return where (ComparisonFilter { std::move(lhs), comparison, std::move(filterValue) });
 		}
+
 		QueryBuilder& where(const std::initializer_list<const char*> fieldTokens, Comparison comparison, FilterValue filterValue)
 		{
 			return where (ComparisonFilter { Operand{ FieldRef{ fieldTokens } }, comparison, std::move(filterValue) });
 		}
 
-		//QueryBuilder& where(Operand lhs, Comparison comp, Operand rhs);
-/*
-		QueryBuilder& where(FieldRef lhs, Comparison comp, Operand rhs)
-		{
-			return where(ComparisonFilter(std::move(lhs), comp, std::move(rhs)));
-		}
-		QueryBuilder& where(FieldRef lhs, Comparison comp, FieldRef rhs) {
-			return where(ComparisonFilter(std::move(lhs), comp, std::move(rhs)));
-		}
-		QueryBuilder& where(Expression lhs, Comparison comp, Operand rhs)
-		{
-			return where(ComparisonFilter(std::move(lhs), comp, std::move(rhs)));
-		}
-*/
 		// order by
 		QueryBuilder& orderBy(FieldRef fieldRef, SortOrder sortOrder = SortOrder::Ascending);
 		QueryBuilder& orderBy(String tableName, std::initializer_list<String> columnNameList, SortOrder sortOrder = SortOrder::Ascending);
@@ -299,12 +228,11 @@ export namespace DataAccessLayer::SqlQueryBuilder
 		// group by
 		QueryBuilder& groupBy(FieldRef fieldRef);
 		QueryBuilder& groupBy(std::initializer_list<FieldRef> fieldRefList);
-//		QueryBuilder& groupBy(std::initializer_list<String> columnNameList);
 		QueryBuilder& groupBy(String tableName, std::initializer_list<String> columnNameList);
 
 		// having
 		QueryBuilder& having(const FilterBase& filter);
-		QueryBuilder& having(Operand lhs, Comparison comparison, FilterValue filterValue)
+		QueryBuilder& having(Operand lhs, const Comparison comparison, FilterValue filterValue)
 		{
 			return having(ComparisonFilter { std::move(lhs), comparison, std::move(filterValue) });
 		}
@@ -312,25 +240,6 @@ export namespace DataAccessLayer::SqlQueryBuilder
 		{
 			return having (ComparisonFilter { Operand{ FieldRef{ fieldTokens } }, comparison, std::move(filterValue) });
 		}
-
-
-//		QueryBuilder& having(Operand lhs, Comparison comp, Operand rhs);
-
-/*
-		QueryBuilder& having(FieldRef lhs, Comparison comp, Operand rhs)
-		{
-			return having(Operand{ std::move(lhs) }, comp, std::move(rhs));
-		}
-
-		QueryBuilder& having(Operand lhs, Comparison comp, FieldRef rhs)
-		{
-			return having(std::move(lhs), comp, Operand{ std::move(rhs) });
-		}
-
-		QueryBuilder& having(FieldRef lhs, Comparison comp, FieldRef rhs) {
-			return having(Operand{ std::move(lhs) }, comp, Operand{ std::move(rhs) });
-		}
-*/
 
 		// value list
 		QueryBuilder& values(ListOfValues values);

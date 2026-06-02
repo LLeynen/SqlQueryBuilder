@@ -26,7 +26,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		TableImpl(TableImpl&&) = default;
 		TableImpl& operator=(TableImpl&&) = default;
 
-		String name_;
+		String name_{};
 	};
 
 

@@ -16,7 +16,6 @@ import :Impl;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-	// QueryBuilder::join (JoinClause)
 	QueryBuilder& QueryBuilder::join(const JoinClause& joinClause)
 	{
 		ensureSharedPtr(impl_->joinClauseListPtr_);
@@ -25,17 +24,13 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-	// QueryBuilder::join(primaryKey, comparison, foreignKey, joinType)
+
 	QueryBuilder& QueryBuilder::join(FieldRef primaryKey, const Comparison comparison, FieldRef foreignKey, const JoinType joinType)
 	{
 		ensureSharedPtr(impl_->joinClauseListPtr_);
 
-		Field local = primaryKey.move();
-		Field foreign = foreignKey.move();
-
-		std::cout << "QueryBuilder::Join " << std::endl;
-		std::cout << "Local = " <<  local.sql() << std::endl;;
-		std::cout << "Foreign = " <<  foreign.sql() << std::endl;;
+		const Field local = primaryKey.move();
+		const Field foreign = foreignKey.move();
 
 		JoinClause joinClause{ local, comparison, foreign, joinType };
 

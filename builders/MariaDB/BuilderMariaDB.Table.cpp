@@ -15,10 +15,11 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
 	String toLower(String& str)
 	{
-		std::transform(str.begin(), str.end(), str.begin(),
-			[](unsigned char c){ return std::tolower(c); });
+		std::ranges::transform(str, str.begin(),
+			[](const unsigned char c){ return std::tolower(c); });
 		return str;
 	}
+
 
 	String BuilderMariaDB::buildComponent(const Table& table) const
 	{

@@ -30,10 +30,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 		: Component{ ComponentId::FilterBase }
 	{}
 
+
 	FilterBase::FilterBase(ComponentId componentId, ConditionMode conditionMode) noexcept
 		: Component{ componentId }
 		, impl_{ std::make_unique<FilterBaseImpl>(conditionMode) }
 	{}
+
 
 	FilterBase::~FilterBase() = default;
 

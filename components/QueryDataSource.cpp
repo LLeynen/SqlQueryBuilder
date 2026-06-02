@@ -160,5 +160,4 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
         containedQuery_ = other.containedQuery_;
     }
-
 }

@@ -113,6 +113,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         return *this;
     }
 
+
 	SelectablePtr QuerySelectable::clone() const
     {
     	return std::make_shared<QuerySelectable>(*this);

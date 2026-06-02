@@ -153,4 +153,37 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
         return Component::sqlImpl(builderPtr, *this);
     }
+
+
+    FieldRef::FieldRef(Field field)
+            : field_(std::move(field))
+    {}
+
+
+    FieldRef::FieldRef(const std::initializer_list<const char*> list)
+    {
+        if (list.size() == 2)
+        {
+            auto it = list.begin();
+            String table = *it++;
+            String col = *it;
+            field_ = Field{ std::move(table), std::move(col) };
+        }
+        else
+        {
+            field_ = Field{ String(list.size() > 0 ? *list.begin() : "") };
+        }
+    }
+
+
+    Field FieldRef::get() const noexcept
+    {
+        return field_;
+    }
+
+
+    Field FieldRef::move() noexcept
+    {
+        return std::move(field_);
+    }
 }

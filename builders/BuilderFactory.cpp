@@ -39,7 +39,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
     bool BuilderFactory::hasBuilder(const DatabaseEngine databaseEngine) const
     {
-        return builderFactory_.find(databaseEngine) != builderFactory_.end();
+        return builderFactory_.contains(databaseEngine);
     }
 
 

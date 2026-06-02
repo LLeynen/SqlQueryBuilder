@@ -34,6 +34,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		SortOrder sortOrder_{ SortOrder::Ascending };
 	};
 
+
 	OrderByClause::OrderByClause() noexcept
 		: Component(ComponentId::OrderByClause)
 		, impl_{ std::make_unique<OrderByClauseImpl>() }

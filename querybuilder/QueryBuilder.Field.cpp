@@ -31,6 +31,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
+
 	QueryBuilder& QueryBuilder::field(FieldRef fieldRef)
 	{
 		ensureSharedPtr(impl_->selectableListPtr_);
@@ -61,7 +62,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 	}
 
 
-
 	QueryBuilder& QueryBuilder::fields(const std::initializer_list<FieldRef> fieldRefList)
 	{
 		ensureSharedPtr(impl_->selectableListPtr_);
@@ -88,6 +88,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		return *this;
 	}
+
 
 	QueryBuilder& QueryBuilder::fields(std::initializer_list<const char*> flatNames)
 	{

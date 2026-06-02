@@ -33,6 +33,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		int quantity_{};
 	};
 
+
 	TopClause::TopClause() noexcept
 		: Component(ComponentId::TopClause)
 		, impl_{ std::make_unique<TopClauseImpl>() }

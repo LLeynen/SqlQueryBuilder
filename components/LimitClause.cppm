@@ -34,8 +34,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 		String toSql(const IBuilder* builderPtr) const override;
 
 	private:
-		std::unique_ptr<LimitClauseImpl> impl_;
+		std::unique_ptr<LimitClauseImpl> impl_{};
 	};
+
 
 	export inline LimitClause limit(int quantity)
 	{

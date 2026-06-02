@@ -52,37 +52,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 		std::unique_ptr<ComparisonFilterImpl> impl_{};
 	};
 
-	/*
-	export inline Filter filter(Operand left, Comparison comparison, Operand right)
-	{
-		return { std::move(left), std::move(comparison), std::move(right) };
-	}
-
-	export inline Filter filter(Operand left, LogicOperator logicOperator, Operand right)
-	{
-		return { std::move(left), std::move(logicOperator), std::move(right) };
-	}
-
-	export inline Filter filter(Comparison comparison, Operand operand)
-	{
-		return { std::move(comparison), std::move(operand) };
-	}
-
-	export inline Filter filter(LogicOperator logicOperator, Operand operand)
-	{
-		return { std::move(logicOperator), std::move(operand) };
-	}
-
-	export [[nodiscard]] inline Filter operator&&(Filter lhs, Filter rhs) noexcept
-	{
-			return {Operand(std::move(lhs)), LogicOperator::And, Operand(std::move(rhs))};
-	}
-
-	export [[nodiscard]] inline Filter operator||(Filter lhs, Filter rhs) noexcept
-	{
-		return {Operand(std::move(lhs)), LogicOperator::Or, Operand(std::move(rhs))};
-	}
-*/
 
 	export [[nodiscard]] inline ComparisonFilter operator==(Operand lhs, Operand rhs) noexcept
 	{

@@ -15,10 +15,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
 	String BuilderBase::buildComponent(const OrderByClause& orderByClause) const
 	{
-		String orderByClauseString
-			{ orderByClause.field().sql(this) + " " +
-			  SortOrderMap.at(orderByClause.sortOrder()) };
-
-		return orderByClauseString;
+		return orderByClause.field().sql(this) + " " + SortOrderMap.at(orderByClause.sortOrder());
 	}
 }

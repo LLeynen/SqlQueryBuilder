@@ -18,13 +18,13 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
         if (filter.logicOperator() == LogicOperator::Not)
         {
-            String rhsString = (filter.rhs()) ? filter.rhs()->sql(this) : "";
+            const String rhsString = (filter.rhs()) ? filter.rhs()->sql(this) : "";
             return LogicOperatorMap.at(LogicOperator::Not) + " (" + rhsString + ")";
         }
         else
         {
-            String lhsString = (filter.lhs()) ? filter.lhs()->sql(this) : "";
-            String rhsString = (filter.rhs()) ? filter.rhs()->sql(this) : "";
+            const String lhsString = (filter.lhs()) ? filter.lhs()->sql(this) : "";
+            const String rhsString = (filter.rhs()) ? filter.rhs()->sql(this) : "";
             return "(" + lhsString + " " + LogicOperatorMap.at(filter.logicOperator()) + " " + rhsString + ")";
         }
     }

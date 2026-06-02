@@ -15,23 +15,6 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-    String BuilderMariaDB::buildLimitClause(const int limit, const int offset) const
-    {
-        if (offset > 0)
-        {
-            return "LIMIT " + toString(limit) + " OFFSET " + toString(offset);
-        }
-
-        return "LIMIT " + toString(limit);
-    }
-
-
-    String BuilderMariaDB::buildAutoIncrement() const
-    {
-        return "AUTO_INCREMENT";
-    }
-
-
     void BuilderMariaDB::setupEngineParams()
     {
         engineParams_.databaseEngine = builderEngine;

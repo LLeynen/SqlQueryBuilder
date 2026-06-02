@@ -34,6 +34,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 			VariantList valueList_{};
 	};
 
+
 	ListOfValues::ListOfValues()
 		: Selectable(ComponentId::ListOfValues)
 		, impl_{ std::make_unique<ListOfValuesImpl>() }

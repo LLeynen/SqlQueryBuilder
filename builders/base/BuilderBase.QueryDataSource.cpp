@@ -18,7 +18,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		if (queryDataSource.hasAlias())
 		{
-//			queryDataSourceString += buildComponent(*queryDataSource.aliasPtr());
 			queryDataSourceString += queryDataSource.aliasPtr()->sql(this);
 		}
 

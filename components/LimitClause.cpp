@@ -29,6 +29,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		int quantity_{};
 	};
 
+
 	LimitClause::LimitClause() noexcept
 		: Component(ComponentId::LimitClause)
 		, impl_{ std::make_unique<LimitClauseImpl>() }

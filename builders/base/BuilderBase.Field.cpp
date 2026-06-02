@@ -4,9 +4,8 @@
 
 module QueryBuilder;
 
-import :BuilderBase;
-
 import :BuilderTypes;
+import :BuilderBase;
 import :Field;
 import :Table;
 

@@ -11,27 +11,6 @@ import :IBuilder;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-    /*
-    export struct EngineParams
-    {
-        DatabaseEngine databaseEngine{ DatabaseEngine::AnsiSQL };
-        String engineName{};
-        String startDelimiter{ "\"" };
-        String endDelimiter{ "\"" };
-        String parameterPlaceHolder{ "?" };
-        String parameterPrefix{ "" };
-        String concatOperator{ "||" };
-        String escapeCharacter{ "\\" };
-        String columnAsKeyWord{ "AS" };
-        String tableAsKeyWord{ "As" };
-        String MatchAll{ "%"};
-        String MatchSingle{"_"};
-
-        bool supportsFilterClause{ false };
-        bool supportsLimitOffset{ true };
-        bool omitSelectInsideExists{ false };
-    };
-*/
     export class BuilderBase : public IBuilder
     {
     public:
@@ -57,7 +36,6 @@ namespace DataAccessLayer::SqlQueryBuilder
         [[nodiscard]] String buildComponent(const Alias& alias) const override;
         [[nodiscard]] String buildComponent(const Expression& expression) const override;
         [[nodiscard]] String buildComponent(const Field& field) const override;
-//        [[nodiscard]] String buildComponent(const FilterBase& filterBase) const override;
         [[nodiscard]] String buildComponent(const ComparisonFilter& filter) const override;
         [[nodiscard]] String buildComponent(const LogicalFilter& filter) const override;
         [[nodiscard]] String buildComponent(const FilterSelectable& filterSelectable) const override;
@@ -70,7 +48,6 @@ namespace DataAccessLayer::SqlQueryBuilder
         [[nodiscard]] String buildComponent(const OrderByClause& orderByClause) const override;
         [[nodiscard]] String buildComponent(const Parameter& parameter) const override;
 		[[nodiscard]] String buildComponent(const ParameterSelectable& parameterSelectable) const override;
-        //[[nodiscard]] String buildComponent(const Selectable& selectable) const override;
         [[nodiscard]] String buildComponent(const Query& query) const override;
         [[nodiscard]] String buildComponent(const QueryDataSource& queryDataSource) const override;
         [[nodiscard]] String buildComponent(const QuerySelectable& querySelectable) const override;
@@ -88,8 +65,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         [[nodiscard]] String buildComponent(const OrderByClauseListWrapper& orderByClauseListWrapper) const override;
         [[nodiscard]] String buildComponent(const QueryListWrapper& queryListWrapper) const override;
 
-        virtual void setupEngineParams() override;
-//        EngineParams engineParams_;
+        void setupEngineParams() override;
 
     private:
         DatabaseEngine databaseEngine_{};

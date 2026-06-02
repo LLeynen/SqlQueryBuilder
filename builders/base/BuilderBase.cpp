@@ -49,22 +49,4 @@ namespace DataAccessLayer::SqlQueryBuilder
 		engineParams_.supportsLimitOffset = true;
 		engineParams_.omitSelectInsideExists = false;
 	}
-
-	/*
-	String BuilderBase::escapeIdentifier(const String& identifier) const
-	{
-		// Common escaping logic that can be overridden
-		if (identifier.empty()) return identifier;
-
-		String result = identifier;
-		std::replace(result.begin(), result.end(), ' ', '_');
-		return result;
-	}
-
-	String BuilderBase::formatParameter(const String& parameter) const
-	{
-		// Common parameter formatting
-		return engineParams_.parameterPrefix + parameter;
-	}
-	*/
 }

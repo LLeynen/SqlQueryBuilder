@@ -21,7 +21,8 @@ namespace DataAccessLayer::SqlQueryBuilder
         long,
         double,
         String,
-        bool
+        bool,
+        Date
         >;
 
     template<typename T>
@@ -101,6 +102,19 @@ namespace DataAccessLayer::SqlQueryBuilder
             }
             throw std::bad_variant_access();
         }
+
+        T operator()(const Date& v) const
+        {
+            if constexpr (std::is_same_v<T, String>)
+            {
+                return std::format("{}", v);
+            }
+            else if constexpr (std::is_same_v<T, Date>)
+            {
+                return v;
+            }
+            throw std::bad_variant_access();
+        }
     };
 
     export class Variant
@@ -114,6 +128,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         Variant(const char* val);
         Variant(const String& val);
         Variant(bool val) noexcept;
+        Variant(Date val) noexcept;
         ~Variant();
 
         Variant(const Variant& other);

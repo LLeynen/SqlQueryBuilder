@@ -20,7 +20,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 			: builder_{ builder }
 		{}
 
-		const IBuilder* builder_;
+		const IBuilder* builder_{};
 
 		// Type nullptr_t
 		String operator()(const std::nullptr_t&) const

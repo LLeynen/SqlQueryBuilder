@@ -9,10 +9,6 @@ import :Aggregate;
 import std;
 
 import :BuilderTypes;
-//import :IBuilder;
-//import :Selectable;
-//import :Expression;
-//import :Field;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
@@ -20,10 +16,6 @@ namespace DataAccessLayer::SqlQueryBuilder
     {
     public:
         AggregateImpl() = default;
-//        AggregateImpl(const AggregateFunction aggregateFunction, SelectablePtr selectablePtr)
-//            : aggregateFunction_{ aggregateFunction }
-//            , selectablePtr_{std::move( selectablePtr )}
-//        {}
         AggregateImpl(AggregateFunction aggregateFunction, FormulaArg arg)
             : aggregateFunction_{ aggregateFunction }
             , arg_{ std::move(arg) }
@@ -51,31 +43,9 @@ namespace DataAccessLayer::SqlQueryBuilder
         : Selectable(ComponentId::Aggregate)
         , impl_{ std::make_unique<AggregateImpl>(aggregateFunction, std::move(formulaArg)) }
     {
-/*        const SelectablePtr selectablePtr = std::move(operand).get();
-
-        if (selectablePtr)
-        {
-            selectablePtr->suppressBrackets(true);
-        }
-*/
-//        impl_ = std::make_unique<AggregateImpl>(aggregateFunction, std::move(selectablePtr));
-
         Selectable::setAlias(std::move(alias));
     }
 
-    /*
-    Aggregate::Aggregate(AggregateFunction aggregateFunction, SelectablePtr selectablePtr, std::optional<Alias> alias)
-    {
-        if (selectablePtr)
-        {
-            selectablePtr->suppressBrackets(true);
-        }
-
-        impl_ = std::make_unique<AggregateImpl>(aggregateFunction, std::move(selectablePtr));
-
-        Selectable::setAlias(std::move(alias));
-    }
-*/
 
     Aggregate::~Aggregate() = default;
 
@@ -126,30 +96,12 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
-/*    void Aggregate::setAggregateFunction(const AggregateFunction aggregateFunction) const noexcept
-    {
-        impl_->aggregateFunction_ = aggregateFunction;
-    }
-*/
-
     FormulaArg Aggregate::arg() const noexcept
     {
         return impl_->arg_;
     }
 
-/*
-    void Aggregate::setSelectable(const FieldPtr& fieldPtr) const
-    {
-        impl_->selectablePtr_ = fieldPtr;
-    }
 
-
-    void Aggregate::setSelectable(const ExpressionPtr& expressionPtr) const
-    {
-        impl_->selectablePtr_ = expressionPtr;
-    }
-
-*/
     String Aggregate::toSql(const IBuilder* builderPtr) const
     {
         return Component::sqlImpl(builderPtr, *this);

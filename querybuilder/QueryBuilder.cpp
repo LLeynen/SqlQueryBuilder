@@ -85,10 +85,4 @@ namespace DataAccessLayer::SqlQueryBuilder
 		impl_->databaseEngine_ = databaseEngine;
 		impl_->builderPtr_ = BuilderFactory::instance().builder(databaseEngine);
 	}
-
-
-//	void QueryBuilder::setParameterMap(const ParameterMapPtr& parameterMapPtr) const
-//	{
-//		impl_->parameterMapPtr_ = parameterMapPtr;
-//	}
 }

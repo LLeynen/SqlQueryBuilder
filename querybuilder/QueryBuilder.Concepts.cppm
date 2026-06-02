@@ -12,23 +12,6 @@ import :BuilderTypes;
 
 namespace DataAccessLayer::SqlQueryBuilder
 {
-    /*
-    template<typename T>
-    concept ConvertibleToConditionValue =
-        std::convertible_to<T, std::nullptr_t> ||
-        std::convertible_to<T, Variant> ||
-        std::convertible_to<T, ParameterValue> ||
-        std::convertible_to<T, Parameter> ||
-        std::convertible_to<T, Field> ||
-        std::convertible_to<T, ListOfValues> ||
-        std::convertible_to<T, QueryDataSource> ||
-        std::convertible_to<T, String> ||
-        std::convertible_to<T, int> ||
-        std::convertible_to<T, double> ||
-        std::convertible_to<T, bool> ||
-        std::convertible_to<T, const char*>;
-*/
-
     template<typename T>
     concept ConvertibleToString =
         std::convertible_to<T, String>;

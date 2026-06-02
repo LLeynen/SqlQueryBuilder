@@ -37,6 +37,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		std::unique_ptr<TableImpl> impl_;
 	};
 
+
 	export inline Table table(String name)
 	{
 		return { name };

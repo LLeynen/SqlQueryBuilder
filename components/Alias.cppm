@@ -44,6 +44,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		std::unique_ptr<AliasImpl> impl_{};
 	};
 
+
 	export inline Alias as(String aliasValue)
 	{
 		return { std::move(aliasValue) };

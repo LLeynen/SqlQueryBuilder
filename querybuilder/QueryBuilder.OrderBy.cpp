@@ -21,19 +21,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
-/*
-	QueryBuilder& QueryBuilder::orderBy(FieldList fieldList, const SortOrder sortOrder)
-	{
-		FieldList list = std::move(fieldList);
-
-		for (const auto& fieldPtr : list)
-		{
-			orderBy(*fieldPtr, sortOrder);
-		}
-
-		return *this;
-	}
-*/
 
 	QueryBuilder& QueryBuilder::orderBy(String tableName, const std::initializer_list<String> columnNameList, const SortOrder sortOrder)
 	{
@@ -53,7 +40,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		for (const auto& fieldRef : fieldRefList)
 		{
-//			Field field{ columnName };
 			orderBy(std::move(fieldRef), sortOrder);
 		}
 

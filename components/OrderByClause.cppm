@@ -40,6 +40,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		std::unique_ptr<OrderByClauseImpl> impl_;
 	};
 
+
 	export inline OrderByClause orderBy(FieldRef fieldRef, SortOrder sortOrder = SortOrder::Ascending)
 	{
 		return { std::move(fieldRef), sortOrder };

@@ -22,14 +22,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 	public:
 		Operand();
 		Operand(FieldRef fieldRef);
-//		Operand(std::initializer_list<const char*> fieldTokens)
-//			: node_{ std::make_shared<Field>(FieldRef(fieldTokens).move()) }
-//		{}
 		Operand(Expression expression);
 		Operand(Function func);
 		Operand(Aggregate aggregate);
 		Operand(ParameterSelectable parameterSelectable);
 		Operand(Literal literal);
+		Operand(QueryBuilder queryBuilder);
 		~Operand();
 
 		[[nodiscard]] SelectablePtr get() const &;

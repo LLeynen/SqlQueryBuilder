@@ -19,6 +19,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		if (topClause.quantity() > 0)
 		{
 			topClauseString = "TOP " + toString(topClause.quantity()) + " ";
+
 			if (topClause.unit() == TopUnit::Percent)
 			{
 				topClauseString += TopUnitMap.at(topClause.unit()) + " ";

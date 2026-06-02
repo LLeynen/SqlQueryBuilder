@@ -32,11 +32,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 			JoinClauseImpl(JoinClauseImpl&& other) = default;
 			JoinClauseImpl& operator=(JoinClauseImpl&& other) = default;
 
-			Field fromField_;
+			Field fromField_{};
 			Comparison comparison_ { Comparison::Equals};
-			Field toField_;
+			Field toField_{};
 			JoinType joinType_{ JoinType::InnerJoin };
 	};
+
 
 	JoinClause::JoinClause()
 		: Component(ComponentId::JoinClause)

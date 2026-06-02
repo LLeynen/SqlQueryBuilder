@@ -31,6 +31,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
+
 	QueryBuilder& QueryBuilder::expression(Operand lhs, Operator op, FormulaValue formulaValue, std::optional<Alias> alias)
 	{
 		ensureSharedPtr(impl_->selectableListPtr_);
@@ -40,6 +41,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		return *this;
 	}
+
 
 	QueryBuilder& QueryBuilder::expression(FormulaValue formulaValue, Operator op, Operand rhs, std::optional<Alias> alias)
 	{
@@ -51,6 +53,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
+
 	QueryBuilder& QueryBuilder::expression(Operator op, Operand operand, std::optional<Alias> alias)
 	{
 		ensureSharedPtr(impl_->selectableListPtr_);
@@ -60,6 +63,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		return *this;
 	}
+
 
 	QueryBuilder& QueryBuilder::expression(Operator op, FormulaValue formulaValue, std::optional<Alias> alias)
 	{

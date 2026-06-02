@@ -36,6 +36,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 		String toSql(const IBuilder* builderPtr) const override;
 
 	private:
-		std::unique_ptr<TopClauseImpl> impl_;
+		std::unique_ptr<TopClauseImpl> impl_{};
 	};
 }

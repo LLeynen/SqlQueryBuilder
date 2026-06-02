@@ -48,6 +48,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		std::unique_ptr<ListOfValuesImpl> impl_;
 	};
 
+
 	export inline ListOfValues listOfValues(VariantList valueList)
 	{
 		return { std::move(valueList) };

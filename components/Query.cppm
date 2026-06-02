@@ -15,12 +15,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 {
 	class QueryImpl;
 
-    export using QuerySourceType = std::variant
-        <
-        QueryBuilderPtr,
-        String
-        >;
-
     export class Query : public Component
     {
     public:

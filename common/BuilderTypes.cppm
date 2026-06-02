@@ -57,40 +57,6 @@ export namespace DataAccessLayer::SqlQueryBuilder
 	class HavingFilterWrapper;
 	class OrderByClauseListWrapper;
 	class QueryListWrapper;
-
-	export using FilterValue = std::variant
-		<
-			std::nullptr_t,
-			Variant,
-			Parameter,
-			ListOfValues,
-			Query,
-			String,
-			const char*
-		>;
-
-	export using ComparisonValue = std::variant
-		<
-			std::monostate,
-			Operand,
-			FilterValue
-		>;
-
-	export using FormulaValue = std::variant
-	<
-		Variant,
-		Parameter,
-		String,
-		const char*
-	>;
-
-	export using FormulaArg = std::variant
-	<
-		std::monostate,
-		Operand,
-		FormulaValue
-	>;
-
 	// Aliases for shared pointers to classes
 	using AggregatePtr = std::shared_ptr<Aggregate>;
 	using AliasPtr = std::shared_ptr<Alias>;
@@ -131,7 +97,7 @@ export namespace DataAccessLayer::SqlQueryBuilder
 	using JoinClauseListPtr = std::shared_ptr<JoinClauseList>;
 	using FieldList = std::vector<FieldPtr>;
 	using FieldListPtr = std::shared_ptr<FieldList>;
-	using OperandList = std::vector<OperandPtr>;	//???
+	using OperandList = std::vector<OperandPtr>;
 	using OperandListPtr = std::shared_ptr<OperandList>;
 	using OrderByClauseList = std::vector<OrderByClausePtr>;
 	using OrderByClauseListPtr = std::shared_ptr<OrderByClauseList>;
@@ -149,4 +115,47 @@ export namespace DataAccessLayer::SqlQueryBuilder
 	using HavingFilterWrapperPtr = std::shared_ptr<HavingFilterWrapper>;
 	using OrderByClauseListWrapperPtr = std::shared_ptr<OrderByClauseListWrapper>;
 	using QueryListWrapperPtr = std::shared_ptr<QueryListWrapper>;
+
+	// Various aliases
+	using Date = std::chrono::year_month_day;
+
+	// std::variant types
+	export using FilterValue = std::variant
+		<
+			std::nullptr_t,
+			Variant,
+			Parameter,
+			ListOfValues,
+			Query,
+			String,
+			const char*
+		>;
+
+	export using ComparisonValue = std::variant
+		<
+			std::monostate,
+			Operand,
+			FilterValue
+		>;
+
+	export using FormulaValue = std::variant
+	<
+		Variant,
+		Parameter,
+		String,
+		const char*
+	>;
+
+	export using FormulaArg = std::variant
+	<
+		std::monostate,
+		Operand,
+		FormulaValue
+	>;
+
+	export using QuerySourceType = std::variant
+		<
+		QueryBuilderPtr,
+		String
+		>;
 }

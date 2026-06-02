@@ -37,21 +37,9 @@ namespace DataAccessLayer::SqlQueryBuilder
 		OrderByClauseListPtr orderByClauseListPtr_{};
 		ListOfValuesPtr listOfValuesPtr_{};
 		QueryListPtr queryListPtr_{};
-//		ParameterMapPtr parameterMapPtr_{};
 		bool parameterChange_{ false };
 		LimitClausePtr limitClausePtr_{};
 		OffsetClausePtr offsetClausePtr_{};
-
-//		CompositeConditionPtr currentWhereChainPtr_{};
-//		CompositeConditionList whereGroupStack_{};
-//		bool isWhereChaining_{ false };
-
-//		CompositeConditionPtr currentHavingChainPtr_{};
-//		CompositeConditionList havingGroupStack_{};
-//		bool isHavingChaining_{ false };
-
-//		void addConditionToWhereChain(const ConditionBase& conditionBase, LogicOperator logicOperator);
-//		void addConditionToHavingChain(const ConditionBase& conditionBase, LogicOperator logicOperator);
 
 		ComponentMapPtr componentMapPtr_{};
 		void populateComponents();

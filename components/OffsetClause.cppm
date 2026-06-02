@@ -37,6 +37,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		std::unique_ptr<OffsetClauseImpl> impl_;
 	};
 
+
 	export inline OffsetClause offset(int quantity)
 	{
 		return { quantity };

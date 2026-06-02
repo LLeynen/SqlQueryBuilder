@@ -28,6 +28,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         AliasPtr alias_{};
     };
 
+
     DataSource::DataSource() noexcept
         : Component(ComponentId::DataSource)
         , impl_{ std::make_unique<DataSourceImpl>() }
@@ -86,7 +87,6 @@ namespace DataAccessLayer::SqlQueryBuilder
             impl_->alias_ = std::make_shared<Alias>(std::move(alias.value()));
             impl_->alias_->setAliasType(AliasType::Table);
         }    }
-
 
 
     bool DataSource::hasAlias() const noexcept

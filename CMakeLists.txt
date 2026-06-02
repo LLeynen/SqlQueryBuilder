@@ -153,7 +153,6 @@ target_sources (
             builders/base/BuilderBase.ParameterSelectable.cpp
 			builders/base/BuilderBase.Query.cpp
 			builders/base/BuilderBase.QueryDataSource.cpp
-            builders/base/BuilderBase.Selectable.cpp
 			builders/base/BuilderBase.QuerySelectable.cpp
             builders/base/BuilderBase.Table.cpp
 			builders/base/BuilderBase.TableDataSource.cpp

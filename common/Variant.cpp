@@ -81,6 +81,13 @@ namespace DataAccessLayer::SqlQueryBuilder
     }
 
 
+    Variant::Variant(Date val) noexcept
+        : impl_{ std::make_unique<VariantImpl>() }
+    {
+        impl_->value_ = val;
+    }
+
+
     Variant::~Variant() = default;
 
 
@@ -187,6 +194,11 @@ namespace DataAccessLayer::SqlQueryBuilder
         String operator()(const bool v) const 
         { 
             return v ? "TRUE" : "FALSE"; 
+        }
+
+        String operator()(const Date& v) const
+        {
+            return std::format("'{}'", v);
         }
     };
 

@@ -31,6 +31,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		int quantity_{};
 	};
 
+
 	OffsetClause::OffsetClause() noexcept
 		: Component(ComponentId::OffsetClause)
 		, impl_{ std::make_unique<OffsetClauseImpl>() }

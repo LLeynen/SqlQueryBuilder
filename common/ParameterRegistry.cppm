@@ -20,7 +20,12 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 		static void set(const String& name, Variant value) noexcept;
 		[[nodiscard]] static Variant get(const String& name) noexcept;
-
 		static void clear() noexcept;
+
+		static void incrementContext();
+		static void decrementContext();
+
+	private:
+		static inline size_t activeQueries_ { 0 };
 	};
 }

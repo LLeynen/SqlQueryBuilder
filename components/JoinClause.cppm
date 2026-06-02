@@ -44,6 +44,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		std::unique_ptr<JoinClauseImpl> impl_;
 	};
 
+
 	export inline JoinClause join(FieldRef fromFieldRef, Comparison sqlComparison, FieldRef toFieldRef, JoinType joinType = JoinType::InnerJoin)
 	{
 		return { std::move(fromFieldRef), sqlComparison, std::move(toFieldRef), joinType };

@@ -56,7 +56,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 		[[nodiscard]] virtual String buildComponent(const Alias& alias) const = 0;
 		[[nodiscard]] virtual String buildComponent(const Expression& expression) const = 0;
 		[[nodiscard]] virtual String buildComponent(const Field& field) const = 0;
-//		[[nodiscard]] virtual String buildComponent(const FilterBase& filter) const = 0;
 		[[nodiscard]] virtual String buildComponent(const ComparisonFilter& filter) const = 0;
 		[[nodiscard]] virtual String buildComponent(const LogicalFilter& filter) const = 0;
 		[[nodiscard]] virtual String buildComponent(const FilterSelectable& filterSelectable) const = 0;
@@ -69,7 +68,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 		[[nodiscard]] virtual String buildComponent(const OrderByClause& orderByClause) const = 0;
 		[[nodiscard]] virtual String buildComponent(const Parameter& parameter) const = 0;
 		[[nodiscard]] virtual String buildComponent(const ParameterSelectable& parameterSelectable) const = 0;
-	//	[[nodiscard]] virtual String buildComponent(const Selectable& selectable) const = 0;
 		[[nodiscard]] virtual String buildComponent(const Query& query) const = 0;
 		[[nodiscard]] virtual String buildComponent(const QueryDataSource& queryDataSource) const = 0;
 		[[nodiscard]] virtual String buildComponent(const QuerySelectable& subQuerySelectable) const = 0;

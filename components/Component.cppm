@@ -52,6 +52,6 @@ namespace DataAccessLayer::SqlQueryBuilder
 		}
 
 	private:
-		std::unique_ptr<ComponentImpl> impl_;
+		std::unique_ptr<ComponentImpl> impl_{};
 	};
 }

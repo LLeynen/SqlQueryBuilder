@@ -34,7 +34,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		ParameterSelectableImpl(ParameterSelectableImpl&& other) noexcept = default;
 		ParameterSelectableImpl& operator=(ParameterSelectableImpl&& other) noexcept = default;
 
-		ParameterPtr containedParameter_;
+		ParameterPtr containedParameter_{};
 		};
 
 

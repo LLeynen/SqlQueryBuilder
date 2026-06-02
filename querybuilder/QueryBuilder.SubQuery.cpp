@@ -28,8 +28,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		ensureSharedPtr(impl_->selectableListPtr_);
 
-		auto querySource = query.querySource();
-		if (std::holds_alternative<QueryBuilderPtr>(querySource))
+		if (auto querySource = query.querySource(); std::holds_alternative<QueryBuilderPtr>(querySource))
 		{
 			auto queryBuilderPtr = std::get<QueryBuilderPtr>(querySource);
 			auto querySelectable = std::make_shared<QuerySelectable>(queryBuilderPtr, std::move(alias));

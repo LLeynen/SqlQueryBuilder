@@ -18,6 +18,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 		return *this;
 	}
 
+
 	QueryBuilder& QueryBuilder::from(String tableName, std::optional<Alias> alias)
 	{
 		impl_->dataSourcePtr_ = std::make_shared<TableDataSource>(std::move(tableName), std::move(alias));

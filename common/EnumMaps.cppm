@@ -84,97 +84,97 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		{ Comparison::Equals, "="},
 		{ Comparison::NotEquals, "<>"},
-		{ Comparison::Not, "Not"},
-		{ Comparison::Like, "Like"},
-		{ Comparison::NotLike, "Not Like"},
+		{ Comparison::Not, "NOT"},
+		{ Comparison::Like, "LIKE"},
+		{ Comparison::NotLike, "NOT LIKE"},
 		{ Comparison::GreaterThan, ">"},
 		{ Comparison::GreaterOrEquals, ">="},
 		{ Comparison::LessThan, "<"},
 		{ Comparison::LessOrEquals , "<="},
-		{ Comparison::In, "In"},
-		{ Comparison::NotIn, "Not In"},
-		{ Comparison::Between, "Between"},
-		{ Comparison::Exists, "Exists"},
-		{ Comparison::NotExists, "Not Exists"},
-		{ Comparison::Any, "Any"},
-		{ Comparison::Some, "Some"},
-		{ Comparison::All, "All"}
+		{ Comparison::In, "IN"},
+		{ Comparison::NotIn, "NOT IN"},
+		{ Comparison::Between, "BETWEEN"},
+		{ Comparison::Exists, "EXISTS"},
+		{ Comparison::NotExists, "NOT EXISTS"},
+		{ Comparison::Any, "ANY"},
+		{ Comparison::Some, "SOME"},
+		{ Comparison::All, "ALL"}
 	};
 
 	// LogicOperatorMap
 	export const EnumMap<LogicOperator> LogicOperatorMap
 	{
-		{ LogicOperator::And, "And" },
-		{ LogicOperator::Or, "Or" },
-		{ LogicOperator::Not, "Not" }
+		{ LogicOperator::And, "AND" },
+		{ LogicOperator::Or, "OR" },
+		{ LogicOperator::Not, "NOT" }
 	};
 
 	// JoinTypeMap
 	export const EnumMap<JoinType> JoinTypeMap
 	{
-		{ JoinType::InnerJoin, "Inner Join" },
-		{ JoinType::OuterJoin, "Outer Join" },
-		{ JoinType::LeftJoin, "Left Join" },
-		{ JoinType::RightJoin, "Right Join" }
+		{ JoinType::InnerJoin, "INNER JOIN" },
+		{ JoinType::OuterJoin, "OUTER JOIN" },
+		{ JoinType::LeftJoin, "LEFT JOIN" },
+		{ JoinType::RightJoin, "RIGHT JOIN" }
 	};
 
 	// SortOrderMap
 	export const EnumMap<SortOrder> SortOrderMap
 	{
-		{ SortOrder::Ascending, "Asc" },
-		{ SortOrder::Descending, "Desc" }
+		{ SortOrder::Ascending, "ASC" },
+		{ SortOrder::Descending, "DESC" }
 	};
 
 	// AggregateFunctionMap
 	export const EnumMap<AggregateFunction> AggregateFunctionMap
 	{
-		{ AggregateFunction::Sum, "Sum" },
-		{ AggregateFunction::Avg, "Avg" },
-		{ AggregateFunction::Min, "Min" },
-		{ AggregateFunction::Max, "Max" },
-		{ AggregateFunction::Count, "Count" },
-		{ AggregateFunction::StdDev, "StdDev" },
-		{ AggregateFunction::Var, "Var" },
-		{ AggregateFunction::First, "First" },
-		{ AggregateFunction::Last, "Last" }
+		{ AggregateFunction::Sum, "SUM" },
+		{ AggregateFunction::Avg, "AVG" },
+		{ AggregateFunction::Min, "MIN" },
+		{ AggregateFunction::Max, "MAX" },
+		{ AggregateFunction::Count, "COUNT" },
+		{ AggregateFunction::StdDev, "STDDEV" },
+		{ AggregateFunction::Var, "VAR" },
+		{ AggregateFunction::First, "FIRST" },
+		{ AggregateFunction::Last, "LAST" }
 	};
 
 	export const EnumMap<ScalarFunction> ScalarFunctionMap
 	{
 		// String
-		{ ScalarFunction::Upper, "Upper" },
-		{ ScalarFunction::Lower, "Lower" },
-		{ ScalarFunction::Length, "Length"},
-		{ ScalarFunction::Trim, "Trim" },
-		{ ScalarFunction::Substring, "SubString" },
-		{ ScalarFunction::Replace, "Replace" },
-		{ ScalarFunction::Concat, "Concat" },
-		{ ScalarFunction::Instr, "Instr" },
+		{ ScalarFunction::Upper, "UPPER" },
+		{ ScalarFunction::Lower, "LOWER" },
+		{ ScalarFunction::Length, "LENGTH"},
+		{ ScalarFunction::Trim, "TRIM" },
+		{ ScalarFunction::Substring, "SUBSTRING" },
+		{ ScalarFunction::Replace, "REPLACE" },
+		{ ScalarFunction::Concat, "CONCAT" },
+		{ ScalarFunction::Instr, "INSTR" },
 
 		// Numeric
-		{ ScalarFunction::Abs, "Abs" },
-		{ ScalarFunction::Ceil, "Ceil" },
-		{ ScalarFunction::Floor, "Floor" },
-		{ ScalarFunction::Round, "Round" },
-		{ ScalarFunction::Power, "Pow" },
-		{ ScalarFunction::Sqrt, "Sqrt" },
-		{ ScalarFunction::Random, "Rand" },
+		{ ScalarFunction::Abs, "ABS" },
+		{ ScalarFunction::Ceil, "CEIL" },
+		{ ScalarFunction::Floor, "FLOOR" },
+		{ ScalarFunction::Round, "ROUND" },
+		{ ScalarFunction::Power, "POW" },
+		{ ScalarFunction::Sqrt, "SQRT" },
+		{ ScalarFunction::Random, "RAND" },
 
 		// Date/Time
-		{ ScalarFunction::Now, "Now" },
-		{ ScalarFunction::Date, "CurDate" },
-		{ ScalarFunction::Time, "CurTime" },
-		{ ScalarFunction::Year, "Year" },
-		{ ScalarFunction::DateDiff, "DateDiff" },
-		{ ScalarFunction::DateAdd, "DateAdd" },
+		{ ScalarFunction::Now, "NOW" },
+		{ ScalarFunction::CurrentDate, "CURDATE" },
+		{ ScalarFunction::CurrentTime, "CURTIME" },
+		{ ScalarFunction::Year, "YEAR" },
+		{ ScalarFunction::DateDiff, "DATEDIFF" },
+		{ ScalarFunction::DateAdd, "DATEADD" },
 
 		// Conversion
-		{ ScalarFunction::Cast, "Cast" },
-		{ ScalarFunction::DateFormat, "Date_Format" },
+		{ ScalarFunction::Cast, "CAST" },
+		{ ScalarFunction::DateFormat, "DATE_FORMAT" },
 
 		// Null Handling
-		{ ScalarFunction::IfNull, "IfNull" },
-		{ ScalarFunction::Coalesce, "Coalesce" }
+		{ ScalarFunction::IfNull, "IFNULL" },
+		{ ScalarFunction::Coalesce, "COALESCE" }
 	};
 
 	export const EnumMap<ScalarFunction> ScalarFunctionTemplate
@@ -200,8 +200,8 @@ namespace DataAccessLayer::SqlQueryBuilder
 
 			// Date/Time
 			{ ScalarFunction::Now, "NOW()" },
-			{ ScalarFunction::Date, "CURDATE()" },
-			{ ScalarFunction::Time, "CURTIME()" },
+			{ ScalarFunction::CurrentDate, "CURDATE()" },
+			{ ScalarFunction::CurrentTime, "CURTIME()" },
 			{ ScalarFunction::Year, "YEAR({})" },
 			{ ScalarFunction::DateDiff, "DATEDIFF({},{})" },
 			{ ScalarFunction::DateAdd, "DATEADD({},INTERVAL {} DAY)" },
@@ -228,7 +228,7 @@ namespace DataAccessLayer::SqlQueryBuilder
 	// TopUnitMap
 	export const EnumMap<TopUnit> TopUnitMap
 	{
-		{ TopUnit::Records, "Records" },
-		{ TopUnit::Percent, "Percent" }
+		{ TopUnit::Records, "RECORDS" },
+		{ TopUnit::Percent, "PERCENT" }
 	};
 }

@@ -34,6 +34,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         void setValue(Variant value) const noexcept;
 
         [[nodiscard]] bool empty() const noexcept;
+        [[nodiscard]] bool isNull() const noexcept;
 
         Parameter& operator=(Variant value) noexcept;
 

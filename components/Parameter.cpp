@@ -47,6 +47,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         }
     }
 
+
     Parameter::Parameter(String name, Variant value)
         : Component(ComponentId::Parameter)
         , impl_{ std::make_unique<ParameterImpl>(std::move(name)) }
@@ -92,6 +93,7 @@ namespace DataAccessLayer::SqlQueryBuilder
         return *this;
     }
 
+
     [[nodiscard]] String Parameter::name() const noexcept
     {
         return impl_->name_;
@@ -119,6 +121,12 @@ namespace DataAccessLayer::SqlQueryBuilder
     bool Parameter::empty() const noexcept
     {
         return impl_->name_.empty();
+    }
+
+
+    bool Parameter::isNull() const noexcept
+    {
+        return value().isNull();
     }
 
 
