@@ -38,8 +38,8 @@ target_compile_features(SqlQueryBuilder PUBLIC cxx_std_23)
 # Usage Examples
 1. Basic SELECT Query
 Constructing a clean query with explicit field criteria:
-
-''import SqlQueryBuilder;
+```
+import SqlQueryBuilder;
 import std;
 
 int main() 
@@ -61,10 +61,11 @@ int main()
     // FROM `investment` AS Inv
     // WHERE `Symbol` = 'AMZN'
 }
+```
 
 2. Complex Subqueries
 SqlQueryBuilder allows you to treat subqueries as distinct selectable entities:
-
+```
     subQuery
         .from("permissions")
         .field({"user_id"})
@@ -76,6 +77,7 @@ SqlQueryBuilder allows you to treat subqueries as distinct selectable entities:
         .where("id", In, subQuery);
 
     // Output: SELECT name, email FROM users WHERE id IN (SELECT user_id FROM permissions WHERE access_level > 5);
+```
 
 # Building & Testing
 To build the library locally and run the test suite:
