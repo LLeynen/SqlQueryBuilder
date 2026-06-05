@@ -263,6 +263,9 @@ export namespace DataAccessLayer::SqlQueryBuilder
 		[[nodiscard]] String sql() const;
 		void clear() const;
 
+		// Query metadata
+		[[nodiscard]] FieldList fieldList() const;
+
 	private:
 		std::unique_ptr<QueryBuilderImpl> impl_{ nullptr };
 	};

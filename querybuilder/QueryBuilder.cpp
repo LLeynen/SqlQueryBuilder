@@ -7,6 +7,7 @@ module QueryBuilder;
 import std;
 
 import :BuilderTypes;
+import :Enums;
 import :BuilderFactory;
 import :Variant;
 import :Impl;
@@ -84,5 +85,36 @@ namespace DataAccessLayer::SqlQueryBuilder
 	{
 		impl_->databaseEngine_ = databaseEngine;
 		impl_->builderPtr_ = BuilderFactory::instance().builder(databaseEngine);
+	}
+
+
+	FieldList QueryBuilder::fieldList() const
+	{
+		const auto builderPtr = impl_->builderPtr_.get();
+		FieldList queryFields;
+
+		for (const auto selectablePtr : *impl_->selectableListPtr_)
+		{
+			if (selectablePtr->hasAlias())
+			{
+				queryFields.push_back(std::make_shared<Field>(selectablePtr->aliasName()));
+			}
+			else
+			{
+				if (selectablePtr->componentId() == ComponentId::Field)
+				{
+					auto clonedField = std::static_pointer_cast<Field>(selectablePtr->clone());
+					queryFields.push_back(clonedField);
+				}
+				else
+				{
+					std::cout << "Selectable " <<
+						ComponentIdMap.at(selectablePtr->componentId())
+						<< " without name or alias" << std::endl;
+				}
+			}
+		}
+
+		return queryFields;
 	}
 }
