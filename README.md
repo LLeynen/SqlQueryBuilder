@@ -39,7 +39,7 @@ target_compile_features(SqlQueryBuilder PUBLIC cxx_std_23)
 1. Basic SELECT Query
 Constructing a clean query with explicit field criteria:
 
-'''import SqlQueryBuilder;
+''import SqlQueryBuilder;
 import std;
 
 int main() 
